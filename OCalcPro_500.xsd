@@ -261,6 +261,8 @@
    //   Include When Substituting:   Yes
    //   Enum Values:
    //   Advanced  (Advanced)
+   //   F3DD  (F3DD)
+   //   BFEA  (BFEA)
    //
    //
    //   Attr Name:   District
@@ -2323,20 +2325,6 @@
    //   Include When Substituting:   Yes
    //
    //
-   //   Attr Name:   StrengthRemainingGL
-   //   Attr Group:Circumference
-   //   Alt Display Name:GL Remaining Strength (%)
-   //   Description:   % remaining strength at the groundline
-   //   Displayed Units:   store as PERCENT 0 TO 1 display as PERCENT 0 TO 100
-   //   User Level Required:   All user levels may access this attribute
-   //   Format Expression:   0.00
-   //   Attribute Type:   FLOAT
-   //   Default Value:   1
-   //   ReadOnly Value:   No
-   //   Visible in Data Entry Panel:   Yes
-   //   Include When Substituting:   Yes
-   //
-   //
    //   Attr Name:   Modulus of Elasticity
    //   Attr Group:Phys. Consts
    //   Alt Display Name:Modulus of Elasticity (psi)
@@ -2981,20 +2969,6 @@
    //   Include When Substituting:   Yes
    //
    //
-   //   Attr Name:   StrengthRemainingGL
-   //   Attr Group:Circumference
-   //   Alt Display Name:GL Remaining Strength (%)
-   //   Description:   % remaining strength at the groundline
-   //   Displayed Units:   store as PERCENT 0 TO 1 display as PERCENT 0 TO 100
-   //   User Level Required:   All user levels may access this attribute
-   //   Format Expression:   0.00
-   //   Attribute Type:   FLOAT
-   //   Default Value:   1
-   //   ReadOnly Value:   No
-   //   Visible in Data Entry Panel:   Yes
-   //   Include When Substituting:   Yes
-   //
-   //
    //   Attr Name:   Modulus of Elasticity
    //   Attr Group:Phys. Consts
    //   Alt Display Name:Modulus of Elasticity (psi)
@@ -3634,20 +3608,6 @@
    //   Format Expression:   0.00
    //   Attribute Type:   FLOAT
    //   Default Value:   9
-   //   ReadOnly Value:   No
-   //   Visible in Data Entry Panel:   Yes
-   //   Include When Substituting:   Yes
-   //
-   //
-   //   Attr Name:   StrengthRemainingGL
-   //   Attr Group:Circumference
-   //   Alt Display Name:GL Remaining Strength (%)
-   //   Description:   % remaining strength at the groundline
-   //   Displayed Units:   store as PERCENT 0 TO 1 display as PERCENT 0 TO 100
-   //   User Level Required:   All user levels may access this attribute
-   //   Format Expression:   0.00
-   //   Attribute Type:   FLOAT
-   //   Default Value:   1
    //   ReadOnly Value:   No
    //   Visible in Data Entry Panel:   Yes
    //   Include When Substituting:   Yes
@@ -5121,6 +5081,7 @@
    //   Front  (Front)
    //   Back  (Back)
    //   Both  (Both)
+   //   Split  (Split)
    //
    //
    //   Attr Name:   CoordinateX
@@ -8776,6 +8737,9 @@
                   <xs:sequence>
                      <xs:choice maxOccurs="unbounded">
                         <xs:element ref="WoodPole" />
+                        <xs:element ref="SteelPole" />
+                        <xs:element ref="ConcretePole" />
+                        <xs:element ref="CompositePole" />
                         <xs:element ref="Crossarm" />
                         <xs:element ref="LoadCase" />
                         <xs:element ref="LatticeSection" />
@@ -8926,12 +8890,23 @@
    //
    //   Attr Name:   BeamRenderDiam
    //   Alt Display Name:Beam Render (in)
-   //   Description:   Node render diameter
+   //   Description:   Beam render diameter
    //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
    //   User Level Required:   Limited users can NOT access this attribute
    //   Format Expression:   0.00
    //   Attribute Type:   TRACKERZ
    //   Default Value:   6
+   //   ReadOnly Value:   No
+   //   Visible in Data Entry Panel:   Yes
+   //   Include When Substituting:   Yes
+   //
+   //
+   //   Attr Name:   RenderLoads
+   //   Alt Display Name:Render Loads
+   //   Description:   Render loads
+   //   User Level Required:   Limited users can NOT access this attribute
+   //   Attribute Type:   BOOLEAN
+   //   Default Value:   Yes
    //   ReadOnly Value:   No
    //   Visible in Data Entry Panel:   Yes
    //   Include When Substituting:   Yes
@@ -9230,12 +9205,24 @@
    //   Attr Name:   BeamRenderDiam
    //   Attr Group:Rendering
    //   Alt Display Name:Beam Render (in)
-   //   Description:   Node render diameter
+   //   Description:   Beam render diameter
    //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
    //   User Level Required:   Limited users can NOT access this attribute
    //   Format Expression:   0.00
    //   Attribute Type:   TRACKERZ
    //   Default Value:   12
+   //   ReadOnly Value:   No
+   //   Visible in Data Entry Panel:   Yes
+   //   Include When Substituting:   Yes
+   //
+   //
+   //   Attr Name:   RenderLoads
+   //   Attr Group:Rendering
+   //   Alt Display Name:Render Loads
+   //   Description:   Render loads
+   //   User Level Required:   Limited users can NOT access this attribute
+   //   Attribute Type:   BOOLEAN
+   //   Default Value:   Yes
    //   ReadOnly Value:   No
    //   Visible in Data Entry Panel:   Yes
    //   Include When Substituting:   Yes
@@ -9374,12 +9361,24 @@
    //   Attr Name:   BeamRenderDiam
    //   Attr Group:Rendering
    //   Alt Display Name:Beam Render (in)
-   //   Description:   Node render diameter
+   //   Description:   Beam render diameter
    //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
    //   User Level Required:   Limited users can NOT access this attribute
    //   Format Expression:   0.00
    //   Attribute Type:   TRACKERZ
    //   Default Value:   12
+   //   ReadOnly Value:   No
+   //   Visible in Data Entry Panel:   Yes
+   //   Include When Substituting:   Yes
+   //
+   //
+   //   Attr Name:   RenderLoads
+   //   Attr Group:Rendering
+   //   Alt Display Name:Render Loads
+   //   Description:   Render loads
+   //   User Level Required:   Limited users can NOT access this attribute
+   //   Attribute Type:   BOOLEAN
+   //   Default Value:   Yes
    //   ReadOnly Value:   No
    //   Visible in Data Entry Panel:   Yes
    //   Include When Substituting:   Yes
@@ -10069,7 +10068,7 @@
    //
    //   Attr Name:   WidthInInches
    //   Alt Display Name:Unit Width (in)
-   //   Description:   The effective width for wind area of the insulator structure
+   //   Description:   The effective width for wind area of the junction bolt
    //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
    //   User Level Required:   All user levels may access this attribute
    //   Format Expression:   0.00
@@ -10984,7 +10983,6 @@
          <xs:enumeration value="LeanAmount" />
          <xs:enumeration value="RadiusAtTipInInches" />
          <xs:enumeration value="RadiusAtBaseInInches" />
-         <xs:enumeration value="StrengthRemainingGL" />
          <xs:enumeration value="Modulus of Elasticity" />
          <xs:enumeration value="WindDragCoef" />
          <xs:enumeration value="Density" />
@@ -11040,7 +11038,6 @@
          <xs:enumeration value="LeanAmount" />
          <xs:enumeration value="RadiusAtTipInInches" />
          <xs:enumeration value="RadiusAtBaseInInches" />
-         <xs:enumeration value="StrengthRemainingGL" />
          <xs:enumeration value="Modulus of Elasticity" />
          <xs:enumeration value="WindDragCoef" />
          <xs:enumeration value="Density" />
@@ -11096,7 +11093,6 @@
          <xs:enumeration value="LeanAmount" />
          <xs:enumeration value="RadiusAtTipInInches" />
          <xs:enumeration value="RadiusAtBaseInInches" />
-         <xs:enumeration value="StrengthRemainingGL" />
          <xs:enumeration value="Modulus of Elasticity" />
          <xs:enumeration value="WindDragCoef" />
          <xs:enumeration value="Density" />
@@ -11711,6 +11707,7 @@
          <xs:enumeration value="LineOfLead" />
          <xs:enumeration value="NodeRenderDiam" />
          <xs:enumeration value="BeamRenderDiam" />
+         <xs:enumeration value="RenderLoads" />
          <xs:enumeration value="GravitationalAccellerationX" />
          <xs:enumeration value="GravitationalAccellerationY" />
          <xs:enumeration value="GravitationalAccellerationZ" />
@@ -11738,6 +11735,7 @@
          <xs:enumeration value="OverrideRendering" />
          <xs:enumeration value="NodeRenderDiam" />
          <xs:enumeration value="BeamRenderDiam" />
+         <xs:enumeration value="RenderLoads" />
          <xs:enumeration value="DescriptionOverride" />
          <xs:enumeration value="Guid" />
          <xs:enumeration value="TreeNodeExpanded" />
@@ -11761,6 +11759,7 @@
          <xs:enumeration value="OverrideRendering" />
          <xs:enumeration value="NodeRenderDiam" />
          <xs:enumeration value="BeamRenderDiam" />
+         <xs:enumeration value="RenderLoads" />
          <xs:enumeration value="DescriptionOverride" />
          <xs:enumeration value="Guid" />
          <xs:enumeration value="TreeNodeExpanded" />

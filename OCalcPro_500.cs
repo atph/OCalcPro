@@ -14,7 +14,12 @@ namespace PPL_Model_Wrapper
     //--------------------------------------------------------------------------------------------
     public class PPLX
     {
-        public Scene m_Scene = new Scene();
+        private Scene m_Scene = new Scene();
+        public Scene Scene
+        {
+            set{ m_Scene = value; }
+            get{ return m_Scene; }
+        }
 
         //Write to PPLX
         public void SavePPLX(String pFullPath)
@@ -40,6 +45,95 @@ namespace PPL_Model_Wrapper
     }
 
    //--------------------------------------------------------------------------------------------
+   //   Class: ValTable
+   //--------------------------------------------------------------------------------------------
+
+    public class ValTable
+    {
+        public ValTable()
+        {
+        }
+
+        public class ValuePair
+        {
+            public ValuePair()
+            {
+                Position = 0;
+                ValueAtPosition = 0;
+            }
+            public double Position { set; get; }
+            public double ValueAtPosition { set; get; }
+        }
+
+        private List<ValuePair> m_DataValues = new List<ValuePair>();
+
+        public List<ValuePair> DataValues
+        {
+            set
+            {
+                m_DataValues = value;
+            }
+            get
+            {
+                return m_DataValues;
+            }
+        }
+
+        public String Label { set; get; }
+
+        public void ParseTokens(String pTokens)
+        {
+            String[] toks = pTokens.Split(';');
+            System.Diagnostics.Debug.Assert(toks.Length >= 2);
+            try
+            {
+                Label = toks[0];
+            }
+            catch { }
+            try
+            {
+                for (int idx = 1; idx < toks.Length; idx++)
+                {
+                    String s = toks[idx].Trim();
+                    if (s == String.Empty) continue;
+                    try
+                    {
+                        String[] vp = s.Split(',');
+                        System.Diagnostics.Debug.Assert(vp.Length == 2);
+                        ValuePair tvp = new ValuePair();
+                        tvp.Position = Convert.ToDouble(vp[0]);
+                        tvp.ValueAtPosition = Convert.ToDouble(vp[1]);
+                        m_DataValues.Add(tvp);
+                    }
+                    catch { }
+                }
+            }
+            catch { }
+        }
+
+        public String BuildTokens()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Label);
+            sb.Append(';');
+            foreach (ValuePair tvp in m_DataValues)
+            {
+                sb.Append(tvp.Position.ToString());
+                sb.Append(',');
+                sb.Append(tvp.ValueAtPosition.ToString());
+                sb.Append(';');
+            }
+            return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            return BuildTokens();
+        }
+    }
+
+
+   //--------------------------------------------------------------------------------------------
    //   Class: ElementBase
    // Mirrors: PPLElement
    //--------------------------------------------------------------------------------------------
@@ -60,6 +154,11 @@ namespace PPL_Model_Wrapper
 
      //Children
      private List<ElementBase> m_Children = new List<ElementBase>();
+     public List<ElementBase> Children
+     {
+         set{ m_Children = value; }
+         get{ return m_Children; }
+     }
      public IReadOnlyList<ElementBase> GetChildren() { return m_Children.AsReadOnly(); }
      public abstract bool IsLegalChild(ElementBase pChildCandidate);
      public void AddChild(ElementBase pChild)
@@ -85,6 +184,7 @@ namespace PPL_Model_Wrapper
              BindingFlags.SetProperty | BindingFlags.GetProperty))
          {
              String sname = fi.Name.Replace("_"," ");
+             if (sname == "Children") continue;
              String stype = fi.PropertyType.Name.ToString();
              String sval = fi.GetValue(this).ToString();
              if( stype.EndsWith("_val"))
@@ -121,6 +221,15 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "PPLScene";
       public override string XMLkey() { return gXMLkey; }
 
+      public Scene(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_SelectedLoadCase = 0;
+               m_PPLVersion = 500;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is WoodPole) return true;
@@ -143,7 +252,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_SelectedLoadCase = 0;
+        private int m_SelectedLoadCase;
         [Category("Standard")]
         [Description("SelectedLoadCase")]
         public int SelectedLoadCase
@@ -164,7 +273,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_PPLVersion = 500;
+        private int m_PPLVersion;
         [Category("Standard")]
         [Description("PPLVersion")]
         public int PPLVersion
@@ -186,6 +295,75 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "LoadCase";
       public override string XMLkey() { return gXMLkey; }
 
+      public LoadCase(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Name = "";
+               m_Method = Method_val.NESC;
+               m_Deflection = Deflection_val.Linear;
+               m_Fixity = Fixity_val.Fixed;
+               m_Solver = Solver_val.Advanced;
+               m_Radial_Ice = 0.25;
+               m_Ice_Density = 0.032986;
+               m_Wind_Speed = 39.53;
+               m_Horiz_Wind_Pres = 4;
+               m_Temperature = 65;
+               m_TempMin = 32;
+               m_TempMax = 212;
+               m_WindType = WindType_val.WindType_2007;
+               m_Construction_Grade = Construction_Grade_val.B;
+               m_Crossing_Conditions = Crossing_Conditions_val.Unknown;
+               m_Installation_or_Replacement = Installation_or_Replacement_val.At_Installation;
+               m_Override_Wind = false;
+               m_NomWindAngle = 0;
+               m_Terrian_Exposure = Terrian_Exposure_val.N_A;
+               m_Force_Coef = 0;
+               m_Strength_Reduction_Factor = 1;
+               m_Load_Duration_Factor = 1;
+               m_Immaturity_Factor = 1;
+               m_Shaving_Factor = 1;
+               m_Processing_Factor = 1;
+               m_Degradation_Factor = 1;
+               m_Shear_Area = Shear_Area_val.Tip;
+               m_Attr_250_Rule = Attr_250_Rule_val.Rule_250B;
+               m_Vertical_LF = 1.5;
+               m_TransWind_LF = 2.5;
+               m_TransTension_LF = 1.65;
+               m_GeneralLongitude_LF = 1.1;
+               m_DeadendLongitude_LF = 1.65;
+               m_Guy_Vertical_LF = 1.5;
+               m_Guy_TransWind_LF = 2.5;
+               m_Guy_TransTension_LF = 1.65;
+               m_Guy_GeneralLongitude_LF = 1.1;
+               m_Guy_DeadendLongitude_LF = 1.65;
+               m_Anchor_Vertical_LF = 1.5;
+               m_Anchor_TransWind_LF = 2.5;
+               m_Anchor_TransTension_LF = 1.65;
+               m_Anchor_GeneralLongitude_LF = 1.1;
+               m_Anchor_DeadendLongitude_LF = 1.65;
+               m_Pole_Strength_Factor = 0.85;
+               m_Crossarm_Strength_Factor = 0.5;
+               m_Guy_Strength_Factor = 0.9;
+               m_Anchor_Strength_Factor = 1;
+               m_PoleCapacityThreshhold = 75;
+               m_Guy_Inadequate_Thresh = 0.5;
+               m_Guy_At_Cap_Thresh = 2;
+               m_Guy_Near_Cap_Thresh = 10;
+               m_Span_Cap_Thresh = 10;
+               m_Apply_FSR = false;
+               m_BucklingConstUnguyed = 2;
+               m_BucklingConstGuyed = 0.707106781186548;
+               m_SectionHeightMethod = SectionHeightMethod_val.Standard;
+               m_BucklingSectionPercentBCH = 0.33333333;
+               m_ReportingAngleMode = ReportingAngleMode_val.Load;
+               m_ReportingAngle = 1.5707963267949;
+               m_SpanCapSignal = false;
+               m_ArmCapSignal = false;
+               m_GuyCapSignal = false;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -203,7 +381,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -245,7 +423,7 @@ namespace PPL_Model_Wrapper
            [Description("N/A")]
            N_A     //No special calculations
         }
-        private Method_val m_Method = Method_val.NESC;
+        private Method_val m_Method;
         [Category("Standard")]
         [Description("Method")]
         public Method_val Method
@@ -324,7 +502,7 @@ namespace PPL_Model_Wrapper
            [Description("2nd Order P-Δ")]
            Deflection_2nd_Order_P_Delta     //Static Fully Converged P-Delta
         }
-        private Deflection_val m_Deflection = Deflection_val.Linear;
+        private Deflection_val m_Deflection;
         [Category("Standard")]
         [Description("Deflection")]
         public Deflection_val Deflection
@@ -388,7 +566,7 @@ namespace PPL_Model_Wrapper
            [Description("Pinned")]
            Pinned     //Pole is gimbaled at groundline for guy analysis
         }
-        private Fixity_val m_Fixity = Fixity_val.Fixed;
+        private Fixity_val m_Fixity;
         [Category("Standard")]
         [Description("Fixity")]
         public Fixity_val Fixity
@@ -440,14 +618,20 @@ namespace PPL_Model_Wrapper
         //   Include When Substituting:   Yes
         //   Enum Values:
         //        Advanced  (Advanced)
+        //        F3DD  (F3DD)
+        //        BFEA  (BFEA)
         public enum Solver_val
         {
            [Description("Legacy")]
            Legacy,    //Legacy
            [Description("Advanced")]
-           Advanced     //Advanced
+           Advanced,    //Advanced
+           [Description("F3DD")]
+           F3DD,    //F3DD
+           [Description("BFEA")]
+           BFEA     //BFEA
         }
-        private Solver_val m_Solver = Solver_val.Advanced;
+        private Solver_val m_Solver;
         [Category("Standard")]
         [Description("Solver")]
         public Solver_val Solver
@@ -466,6 +650,10 @@ namespace PPL_Model_Wrapper
                    return Solver_val.Legacy;    //Legacy
                 case "Advanced":
                    return Solver_val.Advanced;    //Advanced
+                case "F3DD":
+                   return Solver_val.F3DD;    //F3DD
+                case "BFEA":
+                   return Solver_val.BFEA;    //BFEA
                 default:
                    break;
            }
@@ -480,6 +668,10 @@ namespace PPL_Model_Wrapper
                    return "Legacy";    //Legacy
                 case Solver_val.Advanced:
                    return "Advanced";    //Advanced
+                case Solver_val.F3DD:
+                   return "F3DD";    //F3DD
+                case Solver_val.BFEA:
+                   return "BFEA";    //BFEA
                 default:
                    break;
            }
@@ -573,7 +765,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Radial_Ice = 0.25;
+        private double m_Radial_Ice;
         [Category("Ice")]
         [Description("Radial Ice")]
         public double Radial_Ice
@@ -596,7 +788,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Ice_Density = 0.032986;
+        private double m_Ice_Density;
         [Category("Ice")]
         [Description("Ice Density")]
         public double Ice_Density
@@ -619,7 +811,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Wind_Speed = 39.53;
+        private double m_Wind_Speed;
         [Category("Wind")]
         [Description("Wind Speed")]
         public double Wind_Speed
@@ -642,7 +834,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Horiz_Wind_Pres = 4;
+        private double m_Horiz_Wind_Pres;
         [Category("Wind")]
         [Description("Horiz Wind Pres")]
         public double Horiz_Wind_Pres
@@ -665,7 +857,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Temperature = 65;
+        private double m_Temperature;
         [Category("Temperature")]
         [Description("Temperature")]
         public double Temperature
@@ -688,7 +880,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TempMin = 32;
+        private double m_TempMin;
         [Category("Temperature")]
         [Description("TempMin")]
         public double TempMin
@@ -711,7 +903,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TempMax = 212;
+        private double m_TempMax;
         [Category("Temperature")]
         [Description("TempMax")]
         public double TempMax
@@ -750,7 +942,7 @@ namespace PPL_Model_Wrapper
            [Description("N/A")]
            N_A     //N/A
         }
-        private WindType_val m_WindType = WindType_val.WindType_2007;
+        private WindType_val m_WindType;
         [Category("Wind")]
         [Description("WindType")]
         public WindType_val WindType
@@ -839,7 +1031,7 @@ namespace PPL_Model_Wrapper
            [Description("N/A")]
            N_A     //N/A
         }
-        private Construction_Grade_val m_Construction_Grade = Construction_Grade_val.B;
+        private Construction_Grade_val m_Construction_Grade;
         [Category("Standard")]
         [Description("Construction Grade")]
         public Construction_Grade_val Construction_Grade
@@ -925,7 +1117,7 @@ namespace PPL_Model_Wrapper
            [Description("At Crossing")]
            At_Crossing     //At Crossing
         }
-        private Crossing_Conditions_val m_Crossing_Conditions = Crossing_Conditions_val.Unknown;
+        private Crossing_Conditions_val m_Crossing_Conditions;
         [Category("Standard")]
         [Description("Crossing Conditions")]
         public Crossing_Conditions_val Crossing_Conditions
@@ -988,7 +1180,7 @@ namespace PPL_Model_Wrapper
            [Description("At Replacement")]
            At_Replacement     //At Replacement
         }
-        private Installation_or_Replacement_val m_Installation_or_Replacement = Installation_or_Replacement_val.At_Installation;
+        private Installation_or_Replacement_val m_Installation_or_Replacement;
         [Category("Standard")]
         [Description("Installation or Replacement")]
         public Installation_or_Replacement_val Installation_or_Replacement
@@ -1038,7 +1230,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_Override_Wind = false;
+        private bool m_Override_Wind;
         [Category("Wind")]
         [Description("Override Wind")]
         public bool Override_Wind
@@ -1061,7 +1253,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_NomWindAngle = 0;
+        private double m_NomWindAngle;
         [Category("Wind")]
         [Description("NomWindAngle")]
         public double NomWindAngle
@@ -1097,7 +1289,7 @@ namespace PPL_Model_Wrapper
            [Description("N/A")]
            N_A     //N/A
         }
-        private Terrian_Exposure_val m_Terrian_Exposure = Terrian_Exposure_val.N_A;
+        private Terrian_Exposure_val m_Terrian_Exposure;
         [Category("Standard")]
         [Description("Terrian Exposure")]
         public Terrian_Exposure_val Terrian_Exposure
@@ -1156,7 +1348,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   Yes
-        private double m_Force_Coef = 0;
+        private double m_Force_Coef;
         [Category("Standard")]
         [Description("Force Coef")]
         public double Force_Coef
@@ -1178,7 +1370,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Strength_Reduction_Factor = 1;
+        private double m_Strength_Reduction_Factor;
         [Category("AS/NZS 7000")]
         [Description("Strength Reduction Factor")]
         public double Strength_Reduction_Factor
@@ -1200,7 +1392,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Load_Duration_Factor = 1;
+        private double m_Load_Duration_Factor;
         [Category("AS/NZS 7000")]
         [Description("Load Duration Factor")]
         public double Load_Duration_Factor
@@ -1222,7 +1414,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Immaturity_Factor = 1;
+        private double m_Immaturity_Factor;
         [Category("AS/NZS 7000")]
         [Description("Immaturity Factor")]
         public double Immaturity_Factor
@@ -1244,7 +1436,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Shaving_Factor = 1;
+        private double m_Shaving_Factor;
         [Category("AS/NZS 7000")]
         [Description("Shaving Factor")]
         public double Shaving_Factor
@@ -1266,7 +1458,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Processing_Factor = 1;
+        private double m_Processing_Factor;
         [Category("AS/NZS 7000")]
         [Description("Processing Factor")]
         public double Processing_Factor
@@ -1288,7 +1480,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Degradation_Factor = 1;
+        private double m_Degradation_Factor;
         [Category("AS/NZS 7000")]
         [Description("Degradation Factor")]
         public double Degradation_Factor
@@ -1317,7 +1509,7 @@ namespace PPL_Model_Wrapper
            [Description("Actual")]
            Actual     //Actual
         }
-        private Shear_Area_val m_Shear_Area = Shear_Area_val.Tip;
+        private Shear_Area_val m_Shear_Area;
         [Category("AS/NZS 7000")]
         [Description("Shear Area")]
         public Shear_Area_val Shear_Area
@@ -1385,7 +1577,7 @@ namespace PPL_Model_Wrapper
            [Description("N/A")]
            N_A     //N/A
         }
-        private Attr_250_Rule_val m_Attr_250_Rule = Attr_250_Rule_val.Rule_250B;
+        private Attr_250_Rule_val m_Attr_250_Rule;
         [Category("Pole LFs")]
         [Description("250 Rule")]
         public Attr_250_Rule_val Attr_250_Rule
@@ -1449,7 +1641,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Vertical_LF = 1.5;
+        private double m_Vertical_LF;
         [Category("Pole LFs")]
         [Description("Vertical LF")]
         public double Vertical_LF
@@ -1471,7 +1663,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TransWind_LF = 2.5;
+        private double m_TransWind_LF;
         [Category("Pole LFs")]
         [Description("TransWind LF")]
         public double TransWind_LF
@@ -1493,7 +1685,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TransTension_LF = 1.65;
+        private double m_TransTension_LF;
         [Category("Pole LFs")]
         [Description("TransTension LF")]
         public double TransTension_LF
@@ -1515,7 +1707,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_GeneralLongitude_LF = 1.1;
+        private double m_GeneralLongitude_LF;
         [Category("Pole LFs")]
         [Description("GeneralLongitude LF")]
         public double GeneralLongitude_LF
@@ -1537,7 +1729,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DeadendLongitude_LF = 1.65;
+        private double m_DeadendLongitude_LF;
         [Category("Pole LFs")]
         [Description("DeadendLongitude LF")]
         public double DeadendLongitude_LF
@@ -1559,7 +1751,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_Vertical_LF = 1.5;
+        private double m_Guy_Vertical_LF;
         [Category("Guy LFs")]
         [Description("Guy Vertical LF")]
         public double Guy_Vertical_LF
@@ -1581,7 +1773,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_TransWind_LF = 2.5;
+        private double m_Guy_TransWind_LF;
         [Category("Guy LFs")]
         [Description("Guy TransWind LF")]
         public double Guy_TransWind_LF
@@ -1603,7 +1795,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_TransTension_LF = 1.65;
+        private double m_Guy_TransTension_LF;
         [Category("Guy LFs")]
         [Description("Guy TransTension LF")]
         public double Guy_TransTension_LF
@@ -1625,7 +1817,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_GeneralLongitude_LF = 1.1;
+        private double m_Guy_GeneralLongitude_LF;
         [Category("Guy LFs")]
         [Description("Guy GeneralLongitude LF")]
         public double Guy_GeneralLongitude_LF
@@ -1647,7 +1839,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_DeadendLongitude_LF = 1.65;
+        private double m_Guy_DeadendLongitude_LF;
         [Category("Guy LFs")]
         [Description("Guy DeadendLongitude LF")]
         public double Guy_DeadendLongitude_LF
@@ -1669,7 +1861,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Anchor_Vertical_LF = 1.5;
+        private double m_Anchor_Vertical_LF;
         [Category("Anchor LFs")]
         [Description("Anchor Vertical LF")]
         public double Anchor_Vertical_LF
@@ -1691,7 +1883,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Anchor_TransWind_LF = 2.5;
+        private double m_Anchor_TransWind_LF;
         [Category("Anchor LFs")]
         [Description("Anchor TransWind LF")]
         public double Anchor_TransWind_LF
@@ -1713,7 +1905,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Anchor_TransTension_LF = 1.65;
+        private double m_Anchor_TransTension_LF;
         [Category("Anchor LFs")]
         [Description("Anchor TransTension LF")]
         public double Anchor_TransTension_LF
@@ -1735,7 +1927,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Anchor_GeneralLongitude_LF = 1.1;
+        private double m_Anchor_GeneralLongitude_LF;
         [Category("Anchor LFs")]
         [Description("Anchor GeneralLongitude LF")]
         public double Anchor_GeneralLongitude_LF
@@ -1757,7 +1949,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Anchor_DeadendLongitude_LF = 1.65;
+        private double m_Anchor_DeadendLongitude_LF;
         [Category("Anchor LFs")]
         [Description("Anchor DeadendLongitude LF")]
         public double Anchor_DeadendLongitude_LF
@@ -1778,7 +1970,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Pole_Strength_Factor = 0.85;
+        private double m_Pole_Strength_Factor;
         [Category("Strength")]
         [Description("Pole Strength Factor")]
         public double Pole_Strength_Factor
@@ -1799,7 +1991,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Crossarm_Strength_Factor = 0.5;
+        private double m_Crossarm_Strength_Factor;
         [Category("Strength")]
         [Description("Crossarm Strength Factor")]
         public double Crossarm_Strength_Factor
@@ -1820,7 +2012,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_Strength_Factor = 0.9;
+        private double m_Guy_Strength_Factor;
         [Category("Strength")]
         [Description("Guy Strength Factor")]
         public double Guy_Strength_Factor
@@ -1841,7 +2033,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Anchor_Strength_Factor = 1;
+        private double m_Anchor_Strength_Factor;
         [Category("Strength")]
         [Description("Anchor Strength Factor")]
         public double Anchor_Strength_Factor
@@ -1863,7 +2055,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoleCapacityThreshhold = 75;
+        private double m_PoleCapacityThreshhold;
         [Category("Threshold")]
         [Description("PoleCapacityThreshhold")]
         public double PoleCapacityThreshhold
@@ -1886,7 +2078,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_Inadequate_Thresh = 0.5;
+        private double m_Guy_Inadequate_Thresh;
         [Category("Threshold")]
         [Description("Guy Inadequate Thresh")]
         public double Guy_Inadequate_Thresh
@@ -1909,7 +2101,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_At_Cap_Thresh = 2;
+        private double m_Guy_At_Cap_Thresh;
         [Category("Threshold")]
         [Description("Guy At Cap Thresh")]
         public double Guy_At_Cap_Thresh
@@ -1932,7 +2124,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Guy_Near_Cap_Thresh = 10;
+        private double m_Guy_Near_Cap_Thresh;
         [Category("Threshold")]
         [Description("Guy Near Cap Thresh")]
         public double Guy_Near_Cap_Thresh
@@ -1955,7 +2147,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Span_Cap_Thresh = 10;
+        private double m_Span_Cap_Thresh;
         [Category("Threshold")]
         [Description("Span Cap Thresh")]
         public double Span_Cap_Thresh
@@ -1975,7 +2167,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_Apply_FSR = false;
+        private bool m_Apply_FSR;
         [Category("Standard")]
         [Description("Apply FSR")]
         public bool Apply_FSR
@@ -1997,7 +2189,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BucklingConstUnguyed = 2;
+        private double m_BucklingConstUnguyed;
         [Category("Buckling")]
         [Description("BucklingConstUnguyed")]
         public double BucklingConstUnguyed
@@ -2019,7 +2211,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BucklingConstGuyed = 0.707106781186548;
+        private double m_BucklingConstGuyed;
         [Category("Buckling")]
         [Description("BucklingConstGuyed")]
         public double BucklingConstGuyed
@@ -2049,7 +2241,7 @@ namespace PPL_Model_Wrapper
            [Description("Percent BCH")]
            Percent_BCH     //Percent BCH
         }
-        private SectionHeightMethod_val m_SectionHeightMethod = SectionHeightMethod_val.Standard;
+        private SectionHeightMethod_val m_SectionHeightMethod;
         [Category("Buckling")]
         [Description("SectionHeightMethod")]
         public SectionHeightMethod_val SectionHeightMethod
@@ -2102,7 +2294,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   Yes
-        private double m_BucklingSectionPercentBCH = 0.33333333;
+        private double m_BucklingSectionPercentBCH;
         [Category("Buckling")]
         [Description("BucklingSectionPercentBCH")]
         public double BucklingSectionPercentBCH
@@ -2141,7 +2333,7 @@ namespace PPL_Model_Wrapper
            [Description("Fixed")]
            Fixed     //Fixed
         }
-        private ReportingAngleMode_val m_ReportingAngleMode = ReportingAngleMode_val.Load;
+        private ReportingAngleMode_val m_ReportingAngleMode;
         [Category("Reporting")]
         [Description("ReportingAngleMode")]
         public ReportingAngleMode_val ReportingAngleMode
@@ -2206,7 +2398,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ReportingAngle = 1.5707963267949;
+        private double m_ReportingAngle;
         [Category("Reporting")]
         [Description("ReportingAngle")]
         public double ReportingAngle
@@ -2227,7 +2419,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_SpanCapSignal = false;
+        private bool m_SpanCapSignal;
         [Category("Reporting")]
         [Description("SpanCapSignal")]
         public bool SpanCapSignal
@@ -2248,7 +2440,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_ArmCapSignal = false;
+        private bool m_ArmCapSignal;
         [Category("Reporting")]
         [Description("ArmCapSignal")]
         public bool ArmCapSignal
@@ -2269,7 +2461,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_GuyCapSignal = false;
+        private bool m_GuyCapSignal;
         [Category("Reporting")]
         [Description("GuyCapSignal")]
         public bool GuyCapSignal
@@ -2291,6 +2483,20 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Notes";
       public override string XMLkey() { return gXMLkey; }
 
+      public Notes(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Note";
+               m_Owner = "<Undefined>";
+               m_Author = "";
+               m_Date = "";
+               m_Contents = "";
+               m_Grid = "";
+               m_SplitPercent = 0.6;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -2308,7 +2514,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Note";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -2328,7 +2534,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -2348,7 +2554,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Author = "";
+        private string m_Author;
         [Category("Standard")]
         [Description("Author")]
         public string Author
@@ -2368,7 +2574,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Date = "";
+        private string m_Date;
         [Category("Standard")]
         [Description("Date")]
         public string Date
@@ -2388,7 +2594,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Contents = "";
+        private string m_Contents;
         [Category("Standard")]
         [Description("Contents")]
         public string Contents
@@ -2408,7 +2614,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   Yes
-        private string m_Grid = "";
+        private string m_Grid;
         [Category("Standard")]
         [Description("Grid")]
         public string Grid
@@ -2428,7 +2634,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   Yes
-        private double m_SplitPercent = 0.6;
+        private double m_SplitPercent;
         [Category("Standard")]
         [Description("SplitPercent")]
         public double SplitPercent
@@ -2450,6 +2656,17 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "PoleInfoPoint";
       public override string XMLkey() { return gXMLkey; }
 
+      public PoleInfoPoint(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "";
+               m_Owner = "<Undefined>";
+               m_CoordinateZ = 120;
+               m_CoordinateA = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -2467,7 +2684,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -2487,7 +2704,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -2510,7 +2727,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 120;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -2533,7 +2750,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -2555,6 +2772,25 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "PoleSegment";
       public override string XMLkey() { return gXMLkey; }
 
+      public PoleSegment(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Material";
+               m_Name = "<tbd>";
+               m_CoordinateZ = 0;
+               m_LengthInInches = 60;
+               m_RadiusAtTipInInches = 8;
+               m_MaterialTip = "<unset>";
+               m_RadiusAtBaseInInches = 8;
+               m_MaterialBase = "<unset>";
+               m_Shape = Shape_val.Round;
+               m_Faces = 8;
+               m_Color = "#FFD2B48C";
+               m_Function = Function_val.Linear;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Material) return true;
@@ -2573,7 +2809,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Material";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -2593,7 +2829,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "<tbd>";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -2616,7 +2852,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 0;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -2639,7 +2875,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 60;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -2662,7 +2898,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtTipInInches = 8;
+        private double m_RadiusAtTipInInches;
         [Category("Standard")]
         [Description("RadiusAtTipInInches")]
         public double RadiusAtTipInInches
@@ -2683,7 +2919,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MaterialTip = "<unset>";
+        private string m_MaterialTip;
         [Category("Standard")]
         [Description("MaterialTip")]
         public string MaterialTip
@@ -2706,7 +2942,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtBaseInInches = 8;
+        private double m_RadiusAtBaseInInches;
         [Category("Standard")]
         [Description("RadiusAtBaseInInches")]
         public double RadiusAtBaseInInches
@@ -2727,7 +2963,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MaterialBase = "<unset>";
+        private string m_MaterialBase;
         [Category("Standard")]
         [Description("MaterialBase")]
         public string MaterialBase
@@ -2756,7 +2992,7 @@ namespace PPL_Model_Wrapper
            [Description("Polygonal")]
            Polygonal     //Polygonal
         }
-        private Shape_val m_Shape = Shape_val.Round;
+        private Shape_val m_Shape;
         [Category("Standard")]
         [Description("Shape")]
         public Shape_val Shape
@@ -2807,7 +3043,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_Faces = 8;
+        private int m_Faces;
         [Category("Standard")]
         [Description("Faces")]
         public int Faces
@@ -2828,7 +3064,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Color = "#FFD2B48C";
+        private string m_Color;
         [Category("Standard")]
         [Description("Color")]
         public string Color
@@ -2866,7 +3102,7 @@ namespace PPL_Model_Wrapper
            [Description("Fourth Power")]
            Fourth_Power     //Fourth Power
         }
-        private Function_val m_Function = Function_val.Linear;
+        private Function_val m_Function;
         [Category("Standard")]
         [Description("Function")]
         public Function_val Function
@@ -2930,6 +3166,52 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "WoodPole";
       public override string XMLkey() { return gXMLkey; }
 
+      public WoodPole(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_Structure_Type = Structure_Type_val.Auto;
+               m_Class = "4";
+               m_LengthInInches = 480;
+               m_Species = "SOUTHERN PINE";
+               m_Species_Code = "NESC Standard";
+               m_BuryDepthInInches = 72;
+               m_LineOfLead = 0;
+               m_LeanDirection = 0;
+               m_LeanAmount = 0;
+               m_RadiusAtTipInInches = 3.3422538049298;
+               m_GLCircumMethod = GLCircumMethod_val.By_Specs;
+               m_Circum6ft = 33.5;
+               m_MeasuredRadiusGL = 5.33169059357849;
+               m_ApplyEffectiveRadiusGL = false;
+               m_EffectiveRadiusGL = 5.33169059357849;
+               m_StrengthRemainingGL = 1;
+               m_Modulus_of_Rupture = 8000;
+               m_Modulus_of_Elasticity = 1600000;
+               m_WindDragCoef = 0;
+               m_Density = 0.0347222222222222;
+               m_Characteristic_Shear_Strength = 450;
+               m_Characteristic_Compression_Strength = 3500;
+               m_Effective_Length = -1;
+               m_Material_Constant = 1.24;
+               m_PoleMfgLength = 480;
+               m_Table_No = "ANSI8";
+               m_Offset = 0;
+               m_Aux_Data_1 = "Unset";
+               m_Aux_Data_2 = "Unset";
+               m_Aux_Data_3 = "Unset";
+               m_Aux_Data_4 = "Unset";
+               m_Aux_Data_5 = "Unset";
+               m_Aux_Data_6 = "Unset";
+               m_Aux_Data_7 = "Unset";
+               m_Aux_Data_8 = "Unset";
+               m_UseMomentCapacityTable = false;
+               m_MomentCapacityTable = new ValTable("Moment;0,50000;");
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Crossarm) return true;
@@ -2958,7 +3240,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -2978,7 +3260,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -3016,7 +3298,7 @@ namespace PPL_Model_Wrapper
            [Description("Junction")]
            Junction     //Pole with wires crossing at or near the pole
         }
-        private Structure_Type_val m_Structure_Type = Structure_Type_val.Auto;
+        private Structure_Type_val m_Structure_Type;
         [Category("Standard")]
         [Description("Structure Type")]
         public Structure_Type_val Structure_Type
@@ -3079,7 +3361,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Class = "4";
+        private string m_Class;
         [Category("Standard")]
         [Description("Class")]
         public string Class
@@ -3102,7 +3384,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 480;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -3122,7 +3404,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Species = "SOUTHERN PINE";
+        private string m_Species;
         [Category("Standard")]
         [Description("Species")]
         public string Species
@@ -3143,7 +3425,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Species_Code = "NESC Standard";
+        private string m_Species_Code;
         [Category("Standard")]
         [Description("Species Code")]
         public string Species_Code
@@ -3166,7 +3448,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BuryDepthInInches = 72;
+        private double m_BuryDepthInInches;
         [Category("Standard")]
         [Description("BuryDepthInInches")]
         public double BuryDepthInInches
@@ -3189,7 +3471,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -3212,7 +3494,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanDirection = 0;
+        private double m_LeanDirection;
         [Category("Standard")]
         [Description("LeanDirection")]
         public double LeanDirection
@@ -3235,7 +3517,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanAmount = 0;
+        private double m_LeanAmount;
         [Category("Standard")]
         [Description("LeanAmount")]
         public double LeanAmount
@@ -3258,7 +3540,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtTipInInches = 3.3422538049298;
+        private double m_RadiusAtTipInInches;
         [Category("Circumference")]
         [Description("RadiusAtTipInInches")]
         public double RadiusAtTipInInches
@@ -3288,7 +3570,7 @@ namespace PPL_Model_Wrapper
            [Description("Measured")]
            Measured     //Measured
         }
-        private GLCircumMethod_val m_GLCircumMethod = GLCircumMethod_val.By_Specs;
+        private GLCircumMethod_val m_GLCircumMethod;
         [Category("Circumference")]
         [Description("GLCircumMethod")]
         public GLCircumMethod_val GLCircumMethod
@@ -3341,7 +3623,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   Yes
-        private double m_Circum6ft = 33.5;
+        private double m_Circum6ft;
         [Category("Circumference")]
         [Description("Circum6ft")]
         public double Circum6ft
@@ -3364,7 +3646,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MeasuredRadiusGL = 5.33169059357849;
+        private double m_MeasuredRadiusGL;
         [Category("Circumference")]
         [Description("MeasuredRadiusGL")]
         public double MeasuredRadiusGL
@@ -3385,7 +3667,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_ApplyEffectiveRadiusGL = false;
+        private bool m_ApplyEffectiveRadiusGL;
         [Category("Circumference")]
         [Description("ApplyEffectiveRadiusGL")]
         public bool ApplyEffectiveRadiusGL
@@ -3408,7 +3690,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_EffectiveRadiusGL = 5.33169059357849;
+        private double m_EffectiveRadiusGL;
         [Category("Circumference")]
         [Description("EffectiveRadiusGL")]
         public double EffectiveRadiusGL
@@ -3431,7 +3713,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrengthRemainingGL = 1;
+        private double m_StrengthRemainingGL;
         [Category("Circumference")]
         [Description("StrengthRemainingGL")]
         public double StrengthRemainingGL
@@ -3454,7 +3736,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Rupture = 8000;
+        private double m_Modulus_of_Rupture;
         [Category("Phys. Consts")]
         [Description("Modulus of Rupture")]
         public double Modulus_of_Rupture
@@ -3477,7 +3759,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Elasticity = 1600000;
+        private double m_Modulus_of_Elasticity;
         [Category("Phys. Consts")]
         [Description("Modulus of Elasticity")]
         public double Modulus_of_Elasticity
@@ -3499,7 +3781,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Phys. Consts")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -3522,7 +3804,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Density = 0.0347222222222222;
+        private double m_Density;
         [Category("Phys. Consts")]
         [Description("Density")]
         public double Density
@@ -3545,7 +3827,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Shear_Strength = 450;
+        private double m_Characteristic_Shear_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Shear Strength")]
         public double Characteristic_Shear_Strength
@@ -3568,7 +3850,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Compression_Strength = 3500;
+        private double m_Characteristic_Compression_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Compression Strength")]
         public double Characteristic_Compression_Strength
@@ -3591,7 +3873,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Effective_Length = -1;
+        private double m_Effective_Length;
         [Category("AS/NZS 7000")]
         [Description("Effective Length")]
         public double Effective_Length
@@ -3612,7 +3894,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Material_Constant = 1.24;
+        private double m_Material_Constant;
         [Category("AS/NZS 7000")]
         [Description("Material Constant")]
         public double Material_Constant
@@ -3635,7 +3917,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoleMfgLength = 480;
+        private double m_PoleMfgLength;
         [Category("Phys. Consts")]
         [Description("PoleMfgLength")]
         public double PoleMfgLength
@@ -3655,7 +3937,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Table_No = "ANSI8";
+        private string m_Table_No;
         [Category("Phys. Consts")]
         [Description("Table No")]
         public string Table_No
@@ -3678,7 +3960,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_Offset = 0;
+        private double m_Offset;
         [Category("Multi Pole")]
         [Description("Offset")]
         public double Offset
@@ -3698,7 +3980,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_1 = "Unset";
+        private string m_Aux_Data_1;
         [Category("User Data")]
         [Description("Aux Data 1")]
         public string Aux_Data_1
@@ -3718,7 +4000,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_2 = "Unset";
+        private string m_Aux_Data_2;
         [Category("User Data")]
         [Description("Aux Data 2")]
         public string Aux_Data_2
@@ -3738,7 +4020,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_3 = "Unset";
+        private string m_Aux_Data_3;
         [Category("User Data")]
         [Description("Aux Data 3")]
         public string Aux_Data_3
@@ -3758,7 +4040,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_4 = "Unset";
+        private string m_Aux_Data_4;
         [Category("User Data")]
         [Description("Aux Data 4")]
         public string Aux_Data_4
@@ -3778,7 +4060,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_5 = "Unset";
+        private string m_Aux_Data_5;
         [Category("User Data")]
         [Description("Aux Data 5")]
         public string Aux_Data_5
@@ -3798,7 +4080,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_6 = "Unset";
+        private string m_Aux_Data_6;
         [Category("User Data")]
         [Description("Aux Data 6")]
         public string Aux_Data_6
@@ -3818,7 +4100,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_7 = "Unset";
+        private string m_Aux_Data_7;
         [Category("User Data")]
         [Description("Aux Data 7")]
         public string Aux_Data_7
@@ -3838,7 +4120,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_8 = "Unset";
+        private string m_Aux_Data_8;
         [Category("User Data")]
         [Description("Aux Data 8")]
         public string Aux_Data_8
@@ -3859,7 +4141,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_UseMomentCapacityTable = false;
+        private bool m_UseMomentCapacityTable;
         [Category("Phys. Consts")]
         [Description("UseMomentCapacityTable")]
         public bool UseMomentCapacityTable
@@ -3881,10 +4163,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MomentCapacityTable = "Moment;0,50000;";
+        private ValTable m_MomentCapacityTable = new ValTable();
         [Category("Phys. Consts")]
         [Description("MomentCapacityTable")]
-        public string MomentCapacityTable
+        public ValTable MomentCapacityTable
         {
            get { return m_MomentCapacityTable; }
            set { m_MomentCapacityTable = value; }
@@ -3902,6 +4184,52 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "SteelPole";
       public override string XMLkey() { return gXMLkey; }
+
+      public SteelPole(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_Structure_Type = Structure_Type_val.Auto;
+               m_Class = "4";
+               m_LengthInInches = 480;
+               m_CatalogName = "User Defined";
+               m_Pole_Code = Pole_Code_val.GO_95;
+               m_Shape = Shape_val.Round;
+               m_Faces = 12;
+               m_Mount = Mount_val.Pedestal;
+               m_PedestalRadius = 16;
+               m_BuryDepthInInches = 72;
+               m_LineOfLead = 0;
+               m_LeanDirection = 0;
+               m_LeanAmount = 0;
+               m_RadiusAtTipInInches = 3.3422538049298;
+               m_RadiusAtBaseInInches = 9;
+               m_Modulus_of_Elasticity = 1600000;
+               m_WindDragCoef = 0;
+               m_Density = 0.0347222222222222;
+               m_Characteristic_Shear_Strength = 450;
+               m_Characteristic_Compression_Strength = 3500;
+               m_Effective_Length = -1;
+               m_Material_Constant = 1.24;
+               m_Offset = 0;
+               m_Aux_Data_1 = "Unset";
+               m_Aux_Data_2 = "Unset";
+               m_Aux_Data_3 = "Unset";
+               m_Aux_Data_4 = "Unset";
+               m_Aux_Data_5 = "Unset";
+               m_Aux_Data_6 = "Unset";
+               m_Aux_Data_7 = "Unset";
+               m_Aux_Data_8 = "Unset";
+               m_ThicknessTable = new ValTable("Thick;0,0.25;");
+               m_PedestalMomentCapacity = 90000;
+               m_PedestalBucklingCapacity = 9000;
+               m_DistToGrade = 0;
+               m_MomentCapacityTable = new ValTable("Moment;0,50000;");
+               m_BucklingCapacityTable = new ValTable("Buckling;0,5000;");
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -3930,7 +4258,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -3950,7 +4278,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -3988,7 +4316,7 @@ namespace PPL_Model_Wrapper
            [Description("Junction")]
            Junction     //Pole with wires crossing at or near the pole
         }
-        private Structure_Type_val m_Structure_Type = Structure_Type_val.Auto;
+        private Structure_Type_val m_Structure_Type;
         [Category("Standard")]
         [Description("Structure Type")]
         public Structure_Type_val Structure_Type
@@ -4051,7 +4379,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Class = "4";
+        private string m_Class;
         [Category("Standard")]
         [Description("Class")]
         public string Class
@@ -4074,7 +4402,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 480;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -4095,7 +4423,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_CatalogName = "User Defined";
+        private string m_CatalogName;
         [Category("Standard")]
         [Description("CatalogName")]
         public string CatalogName
@@ -4128,7 +4456,7 @@ namespace PPL_Model_Wrapper
            [Description("CSA C22.3 No. 1-10")]
            CSA_C22_3_No__1_10     //CSA C22.3 No. 1-10
         }
-        private Pole_Code_val m_Pole_Code = Pole_Code_val.GO_95;
+        private Pole_Code_val m_Pole_Code;
         [Category("Standard")]
         [Description("Pole Code")]
         public Pole_Code_val Pole_Code
@@ -4191,7 +4519,7 @@ namespace PPL_Model_Wrapper
            [Description("Polygonal")]
            Polygonal     //Polygonal
         }
-        private Shape_val m_Shape = Shape_val.Round;
+        private Shape_val m_Shape;
         [Category("Standard")]
         [Description("Shape")]
         public Shape_val Shape
@@ -4242,7 +4570,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_Faces = 12;
+        private int m_Faces;
         [Category("Standard")]
         [Description("Faces")]
         public int Faces
@@ -4272,7 +4600,7 @@ namespace PPL_Model_Wrapper
            [Description("Pedestal")]
            Pedestal     //Pedestal
         }
-        private Mount_val m_Mount = Mount_val.Pedestal;
+        private Mount_val m_Mount;
         [Category("Installation")]
         [Description("Mount")]
         public Mount_val Mount
@@ -4324,7 +4652,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalRadius = 16;
+        private double m_PedestalRadius;
         [Category("Installation")]
         [Description("PedestalRadius")]
         public double PedestalRadius
@@ -4347,7 +4675,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BuryDepthInInches = 72;
+        private double m_BuryDepthInInches;
         [Category("Standard")]
         [Description("BuryDepthInInches")]
         public double BuryDepthInInches
@@ -4370,7 +4698,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -4393,7 +4721,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanDirection = 0;
+        private double m_LeanDirection;
         [Category("Standard")]
         [Description("LeanDirection")]
         public double LeanDirection
@@ -4416,7 +4744,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanAmount = 0;
+        private double m_LeanAmount;
         [Category("Standard")]
         [Description("LeanAmount")]
         public double LeanAmount
@@ -4439,7 +4767,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtTipInInches = 3.3422538049298;
+        private double m_RadiusAtTipInInches;
         [Category("Circumference")]
         [Description("RadiusAtTipInInches")]
         public double RadiusAtTipInInches
@@ -4462,36 +4790,13 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtBaseInInches = 9;
+        private double m_RadiusAtBaseInInches;
         [Category("Circumference")]
         [Description("RadiusAtBaseInInches")]
         public double RadiusAtBaseInInches
         {
            get { return m_RadiusAtBaseInInches; }
            set { m_RadiusAtBaseInInches = value; }
-        }
-
-
-
-        //   Attr Name:   StrengthRemainingGL
-        //   Attr Group:Circumference
-        //   Alt Display Name:GL Remaining Strength (%)
-        //   Description:   % remaining strength at the groundline
-        //   Displayed Units:   store as PERCENT 0 TO 1 display as PERCENT 0 TO 100
-        //   User Level Required:   All user levels may access this attribute
-        //   Format Expression:   0.00
-        //   Attribute Type:   FLOAT
-        //   Default Value:   1
-        //   ReadOnly Value:   No
-        //   Visible in Data Entry Panel:   Yes
-        //   Include When Substituting:   Yes
-        private double m_StrengthRemainingGL = 1;
-        [Category("Circumference")]
-        [Description("StrengthRemainingGL")]
-        public double StrengthRemainingGL
-        {
-           get { return m_StrengthRemainingGL; }
-           set { m_StrengthRemainingGL = value; }
         }
 
 
@@ -4508,7 +4813,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Elasticity = 1600000;
+        private double m_Modulus_of_Elasticity;
         [Category("Phys. Consts")]
         [Description("Modulus of Elasticity")]
         public double Modulus_of_Elasticity
@@ -4530,7 +4835,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Phys. Consts")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -4553,7 +4858,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Density = 0.0347222222222222;
+        private double m_Density;
         [Category("Phys. Consts")]
         [Description("Density")]
         public double Density
@@ -4576,7 +4881,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Shear_Strength = 450;
+        private double m_Characteristic_Shear_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Shear Strength")]
         public double Characteristic_Shear_Strength
@@ -4599,7 +4904,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Compression_Strength = 3500;
+        private double m_Characteristic_Compression_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Compression Strength")]
         public double Characteristic_Compression_Strength
@@ -4622,7 +4927,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Effective_Length = -1;
+        private double m_Effective_Length;
         [Category("AS/NZS 7000")]
         [Description("Effective Length")]
         public double Effective_Length
@@ -4643,7 +4948,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Material_Constant = 1.24;
+        private double m_Material_Constant;
         [Category("AS/NZS 7000")]
         [Description("Material Constant")]
         public double Material_Constant
@@ -4666,7 +4971,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_Offset = 0;
+        private double m_Offset;
         [Category("Multi Pole")]
         [Description("Offset")]
         public double Offset
@@ -4686,7 +4991,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_1 = "Unset";
+        private string m_Aux_Data_1;
         [Category("User Data")]
         [Description("Aux Data 1")]
         public string Aux_Data_1
@@ -4706,7 +5011,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_2 = "Unset";
+        private string m_Aux_Data_2;
         [Category("User Data")]
         [Description("Aux Data 2")]
         public string Aux_Data_2
@@ -4726,7 +5031,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_3 = "Unset";
+        private string m_Aux_Data_3;
         [Category("User Data")]
         [Description("Aux Data 3")]
         public string Aux_Data_3
@@ -4746,7 +5051,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_4 = "Unset";
+        private string m_Aux_Data_4;
         [Category("User Data")]
         [Description("Aux Data 4")]
         public string Aux_Data_4
@@ -4766,7 +5071,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_5 = "Unset";
+        private string m_Aux_Data_5;
         [Category("User Data")]
         [Description("Aux Data 5")]
         public string Aux_Data_5
@@ -4786,7 +5091,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_6 = "Unset";
+        private string m_Aux_Data_6;
         [Category("User Data")]
         [Description("Aux Data 6")]
         public string Aux_Data_6
@@ -4806,7 +5111,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_7 = "Unset";
+        private string m_Aux_Data_7;
         [Category("User Data")]
         [Description("Aux Data 7")]
         public string Aux_Data_7
@@ -4826,7 +5131,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_8 = "Unset";
+        private string m_Aux_Data_8;
         [Category("User Data")]
         [Description("Aux Data 8")]
         public string Aux_Data_8
@@ -4847,10 +5152,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_ThicknessTable = "Thick;0,0.25;";
+        private ValTable m_ThicknessTable = new ValTable();
         [Category("Standard")]
         [Description("ThicknessTable")]
-        public string ThicknessTable
+        public ValTable ThicknessTable
         {
            get { return m_ThicknessTable; }
            set { m_ThicknessTable = value; }
@@ -4869,7 +5174,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalMomentCapacity = 90000;
+        private double m_PedestalMomentCapacity;
         [Category("Installation")]
         [Description("PedestalMomentCapacity")]
         public double PedestalMomentCapacity
@@ -4891,7 +5196,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalBucklingCapacity = 9000;
+        private double m_PedestalBucklingCapacity;
         [Category("Installation")]
         [Description("PedestalBucklingCapacity")]
         public double PedestalBucklingCapacity
@@ -4913,7 +5218,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DistToGrade = 0;
+        private double m_DistToGrade;
         [Category("Installation")]
         [Description("DistToGrade")]
         public double DistToGrade
@@ -4935,10 +5240,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MomentCapacityTable = "Moment;0,50000;";
+        private ValTable m_MomentCapacityTable = new ValTable();
         [Category("Capacity")]
         [Description("MomentCapacityTable")]
-        public string MomentCapacityTable
+        public ValTable MomentCapacityTable
         {
            get { return m_MomentCapacityTable; }
            set { m_MomentCapacityTable = value; }
@@ -4957,10 +5262,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_BucklingCapacityTable = "Buckling;0,5000;";
+        private ValTable m_BucklingCapacityTable = new ValTable();
         [Category("Capacity")]
         [Description("BucklingCapacityTable")]
-        public string BucklingCapacityTable
+        public ValTable BucklingCapacityTable
         {
            get { return m_BucklingCapacityTable; }
            set { m_BucklingCapacityTable = value; }
@@ -4978,6 +5283,52 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "ConcretePole";
       public override string XMLkey() { return gXMLkey; }
+
+      public ConcretePole(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_Structure_Type = Structure_Type_val.Auto;
+               m_Class = "4";
+               m_LengthInInches = 480;
+               m_CatalogName = "User Defined";
+               m_Pole_Code = Pole_Code_val.GO_95;
+               m_Shape = Shape_val.Round;
+               m_Faces = 12;
+               m_Mount = Mount_val.Pedestal;
+               m_PedestalRadius = 16;
+               m_BuryDepthInInches = 72;
+               m_LineOfLead = 0;
+               m_LeanDirection = 0;
+               m_LeanAmount = 0;
+               m_RadiusAtTipInInches = 3.3422538049298;
+               m_RadiusAtBaseInInches = 9;
+               m_Modulus_of_Elasticity = 1600000;
+               m_WindDragCoef = 0;
+               m_Density = 0.0347222222222222;
+               m_Characteristic_Shear_Strength = 450;
+               m_Characteristic_Compression_Strength = 3500;
+               m_Effective_Length = -1;
+               m_Material_Constant = 1.24;
+               m_Offset = 0;
+               m_Aux_Data_1 = "Unset";
+               m_Aux_Data_2 = "Unset";
+               m_Aux_Data_3 = "Unset";
+               m_Aux_Data_4 = "Unset";
+               m_Aux_Data_5 = "Unset";
+               m_Aux_Data_6 = "Unset";
+               m_Aux_Data_7 = "Unset";
+               m_Aux_Data_8 = "Unset";
+               m_ThicknessTable = new ValTable("Thick;0,0.25;");
+               m_PedestalMomentCapacity = 90000;
+               m_PedestalBucklingCapacity = 9000;
+               m_DistToGrade = 0;
+               m_MomentCapacityTable = new ValTable("Moment;0,50000;");
+               m_BucklingCapacityTable = new ValTable("Buckling;0,5000;");
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -5006,7 +5357,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -5026,7 +5377,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -5064,7 +5415,7 @@ namespace PPL_Model_Wrapper
            [Description("Junction")]
            Junction     //Pole with wires crossing at or near the pole
         }
-        private Structure_Type_val m_Structure_Type = Structure_Type_val.Auto;
+        private Structure_Type_val m_Structure_Type;
         [Category("Standard")]
         [Description("Structure Type")]
         public Structure_Type_val Structure_Type
@@ -5127,7 +5478,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Class = "4";
+        private string m_Class;
         [Category("Standard")]
         [Description("Class")]
         public string Class
@@ -5150,7 +5501,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 480;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -5171,7 +5522,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_CatalogName = "User Defined";
+        private string m_CatalogName;
         [Category("Standard")]
         [Description("CatalogName")]
         public string CatalogName
@@ -5201,7 +5552,7 @@ namespace PPL_Model_Wrapper
            [Description("GO 95")]
            GO_95     //GO 95
         }
-        private Pole_Code_val m_Pole_Code = Pole_Code_val.GO_95;
+        private Pole_Code_val m_Pole_Code;
         [Category("Standard")]
         [Description("Pole Code")]
         public Pole_Code_val Pole_Code
@@ -5260,7 +5611,7 @@ namespace PPL_Model_Wrapper
            [Description("Polygonal")]
            Polygonal     //Polygonal
         }
-        private Shape_val m_Shape = Shape_val.Round;
+        private Shape_val m_Shape;
         [Category("Standard")]
         [Description("Shape")]
         public Shape_val Shape
@@ -5311,7 +5662,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_Faces = 12;
+        private int m_Faces;
         [Category("Standard")]
         [Description("Faces")]
         public int Faces
@@ -5341,7 +5692,7 @@ namespace PPL_Model_Wrapper
            [Description("Pedestal")]
            Pedestal     //Pedestal
         }
-        private Mount_val m_Mount = Mount_val.Pedestal;
+        private Mount_val m_Mount;
         [Category("Installation")]
         [Description("Mount")]
         public Mount_val Mount
@@ -5393,7 +5744,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalRadius = 16;
+        private double m_PedestalRadius;
         [Category("Installation")]
         [Description("PedestalRadius")]
         public double PedestalRadius
@@ -5416,7 +5767,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BuryDepthInInches = 72;
+        private double m_BuryDepthInInches;
         [Category("Standard")]
         [Description("BuryDepthInInches")]
         public double BuryDepthInInches
@@ -5439,7 +5790,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -5462,7 +5813,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanDirection = 0;
+        private double m_LeanDirection;
         [Category("Standard")]
         [Description("LeanDirection")]
         public double LeanDirection
@@ -5485,7 +5836,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanAmount = 0;
+        private double m_LeanAmount;
         [Category("Standard")]
         [Description("LeanAmount")]
         public double LeanAmount
@@ -5508,7 +5859,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtTipInInches = 3.3422538049298;
+        private double m_RadiusAtTipInInches;
         [Category("Circumference")]
         [Description("RadiusAtTipInInches")]
         public double RadiusAtTipInInches
@@ -5531,36 +5882,13 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtBaseInInches = 9;
+        private double m_RadiusAtBaseInInches;
         [Category("Circumference")]
         [Description("RadiusAtBaseInInches")]
         public double RadiusAtBaseInInches
         {
            get { return m_RadiusAtBaseInInches; }
            set { m_RadiusAtBaseInInches = value; }
-        }
-
-
-
-        //   Attr Name:   StrengthRemainingGL
-        //   Attr Group:Circumference
-        //   Alt Display Name:GL Remaining Strength (%)
-        //   Description:   % remaining strength at the groundline
-        //   Displayed Units:   store as PERCENT 0 TO 1 display as PERCENT 0 TO 100
-        //   User Level Required:   All user levels may access this attribute
-        //   Format Expression:   0.00
-        //   Attribute Type:   FLOAT
-        //   Default Value:   1
-        //   ReadOnly Value:   No
-        //   Visible in Data Entry Panel:   Yes
-        //   Include When Substituting:   Yes
-        private double m_StrengthRemainingGL = 1;
-        [Category("Circumference")]
-        [Description("StrengthRemainingGL")]
-        public double StrengthRemainingGL
-        {
-           get { return m_StrengthRemainingGL; }
-           set { m_StrengthRemainingGL = value; }
         }
 
 
@@ -5577,7 +5905,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Elasticity = 1600000;
+        private double m_Modulus_of_Elasticity;
         [Category("Phys. Consts")]
         [Description("Modulus of Elasticity")]
         public double Modulus_of_Elasticity
@@ -5599,7 +5927,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Phys. Consts")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -5622,7 +5950,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Density = 0.0347222222222222;
+        private double m_Density;
         [Category("Phys. Consts")]
         [Description("Density")]
         public double Density
@@ -5645,7 +5973,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Shear_Strength = 450;
+        private double m_Characteristic_Shear_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Shear Strength")]
         public double Characteristic_Shear_Strength
@@ -5668,7 +5996,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Compression_Strength = 3500;
+        private double m_Characteristic_Compression_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Compression Strength")]
         public double Characteristic_Compression_Strength
@@ -5691,7 +6019,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Effective_Length = -1;
+        private double m_Effective_Length;
         [Category("AS/NZS 7000")]
         [Description("Effective Length")]
         public double Effective_Length
@@ -5712,7 +6040,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Material_Constant = 1.24;
+        private double m_Material_Constant;
         [Category("AS/NZS 7000")]
         [Description("Material Constant")]
         public double Material_Constant
@@ -5735,7 +6063,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_Offset = 0;
+        private double m_Offset;
         [Category("Multi Pole")]
         [Description("Offset")]
         public double Offset
@@ -5755,7 +6083,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_1 = "Unset";
+        private string m_Aux_Data_1;
         [Category("User Data")]
         [Description("Aux Data 1")]
         public string Aux_Data_1
@@ -5775,7 +6103,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_2 = "Unset";
+        private string m_Aux_Data_2;
         [Category("User Data")]
         [Description("Aux Data 2")]
         public string Aux_Data_2
@@ -5795,7 +6123,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_3 = "Unset";
+        private string m_Aux_Data_3;
         [Category("User Data")]
         [Description("Aux Data 3")]
         public string Aux_Data_3
@@ -5815,7 +6143,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_4 = "Unset";
+        private string m_Aux_Data_4;
         [Category("User Data")]
         [Description("Aux Data 4")]
         public string Aux_Data_4
@@ -5835,7 +6163,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_5 = "Unset";
+        private string m_Aux_Data_5;
         [Category("User Data")]
         [Description("Aux Data 5")]
         public string Aux_Data_5
@@ -5855,7 +6183,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_6 = "Unset";
+        private string m_Aux_Data_6;
         [Category("User Data")]
         [Description("Aux Data 6")]
         public string Aux_Data_6
@@ -5875,7 +6203,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_7 = "Unset";
+        private string m_Aux_Data_7;
         [Category("User Data")]
         [Description("Aux Data 7")]
         public string Aux_Data_7
@@ -5895,7 +6223,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_8 = "Unset";
+        private string m_Aux_Data_8;
         [Category("User Data")]
         [Description("Aux Data 8")]
         public string Aux_Data_8
@@ -5916,10 +6244,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_ThicknessTable = "Thick;0,0.25;";
+        private ValTable m_ThicknessTable = new ValTable();
         [Category("Standard")]
         [Description("ThicknessTable")]
-        public string ThicknessTable
+        public ValTable ThicknessTable
         {
            get { return m_ThicknessTable; }
            set { m_ThicknessTable = value; }
@@ -5938,7 +6266,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalMomentCapacity = 90000;
+        private double m_PedestalMomentCapacity;
         [Category("Installation")]
         [Description("PedestalMomentCapacity")]
         public double PedestalMomentCapacity
@@ -5960,7 +6288,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalBucklingCapacity = 9000;
+        private double m_PedestalBucklingCapacity;
         [Category("Installation")]
         [Description("PedestalBucklingCapacity")]
         public double PedestalBucklingCapacity
@@ -5982,7 +6310,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DistToGrade = 0;
+        private double m_DistToGrade;
         [Category("Installation")]
         [Description("DistToGrade")]
         public double DistToGrade
@@ -6004,10 +6332,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MomentCapacityTable = "Moment;0,50000;";
+        private ValTable m_MomentCapacityTable = new ValTable();
         [Category("Capacity")]
         [Description("MomentCapacityTable")]
-        public string MomentCapacityTable
+        public ValTable MomentCapacityTable
         {
            get { return m_MomentCapacityTable; }
            set { m_MomentCapacityTable = value; }
@@ -6026,10 +6354,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_BucklingCapacityTable = "Buckling;0,5000;";
+        private ValTable m_BucklingCapacityTable = new ValTable();
         [Category("Capacity")]
         [Description("BucklingCapacityTable")]
-        public string BucklingCapacityTable
+        public ValTable BucklingCapacityTable
         {
            get { return m_BucklingCapacityTable; }
            set { m_BucklingCapacityTable = value; }
@@ -6047,6 +6375,52 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "CompositePole";
       public override string XMLkey() { return gXMLkey; }
+
+      public CompositePole(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_Structure_Type = Structure_Type_val.Auto;
+               m_Class = "4";
+               m_LengthInInches = 480;
+               m_CatalogName = "User Defined";
+               m_Pole_Code = Pole_Code_val.GO_95;
+               m_Shape = Shape_val.Polygonal;
+               m_Faces = 4;
+               m_Mount = Mount_val.Pedestal;
+               m_PedestalRadius = 16;
+               m_BuryDepthInInches = 72;
+               m_LineOfLead = 0;
+               m_LeanDirection = 0;
+               m_LeanAmount = 0;
+               m_RadiusAtTipInInches = 3.3422538049298;
+               m_RadiusAtBaseInInches = 9;
+               m_Modulus_of_Elasticity = 1600000;
+               m_WindDragCoef = 0;
+               m_Density = 0.0347222222222222;
+               m_Characteristic_Shear_Strength = 450;
+               m_Characteristic_Compression_Strength = 3500;
+               m_Effective_Length = -1;
+               m_Material_Constant = 1.24;
+               m_Offset = 0;
+               m_Aux_Data_1 = "Unset";
+               m_Aux_Data_2 = "Unset";
+               m_Aux_Data_3 = "Unset";
+               m_Aux_Data_4 = "Unset";
+               m_Aux_Data_5 = "Unset";
+               m_Aux_Data_6 = "Unset";
+               m_Aux_Data_7 = "Unset";
+               m_Aux_Data_8 = "Unset";
+               m_ThicknessTable = new ValTable("Thick;0,0.25;");
+               m_PedestalMomentCapacity = 90000;
+               m_PedestalBucklingCapacity = 9000;
+               m_DistToGrade = 0;
+               m_MomentCapacityTable = new ValTable("Moment;0,50000;");
+               m_BucklingCapacityTable = new ValTable("Buckling;0,5000;");
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -6075,7 +6449,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -6095,7 +6469,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -6133,7 +6507,7 @@ namespace PPL_Model_Wrapper
            [Description("Junction")]
            Junction     //Pole with wires crossing at or near the pole
         }
-        private Structure_Type_val m_Structure_Type = Structure_Type_val.Auto;
+        private Structure_Type_val m_Structure_Type;
         [Category("Standard")]
         [Description("Structure Type")]
         public Structure_Type_val Structure_Type
@@ -6196,7 +6570,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Class = "4";
+        private string m_Class;
         [Category("Standard")]
         [Description("Class")]
         public string Class
@@ -6219,7 +6593,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 480;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -6240,7 +6614,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_CatalogName = "User Defined";
+        private string m_CatalogName;
         [Category("Standard")]
         [Description("CatalogName")]
         public string CatalogName
@@ -6270,7 +6644,7 @@ namespace PPL_Model_Wrapper
            [Description("GO 95")]
            GO_95     //GO 95
         }
-        private Pole_Code_val m_Pole_Code = Pole_Code_val.GO_95;
+        private Pole_Code_val m_Pole_Code;
         [Category("Standard")]
         [Description("Pole Code")]
         public Pole_Code_val Pole_Code
@@ -6329,7 +6703,7 @@ namespace PPL_Model_Wrapper
            [Description("Polygonal")]
            Polygonal     //Polygonal
         }
-        private Shape_val m_Shape = Shape_val.Polygonal;
+        private Shape_val m_Shape;
         [Category("Standard")]
         [Description("Shape")]
         public Shape_val Shape
@@ -6380,7 +6754,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_Faces = 4;
+        private int m_Faces;
         [Category("Standard")]
         [Description("Faces")]
         public int Faces
@@ -6410,7 +6784,7 @@ namespace PPL_Model_Wrapper
            [Description("Pedestal")]
            Pedestal     //Pedestal
         }
-        private Mount_val m_Mount = Mount_val.Pedestal;
+        private Mount_val m_Mount;
         [Category("Installation")]
         [Description("Mount")]
         public Mount_val Mount
@@ -6462,7 +6836,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalRadius = 16;
+        private double m_PedestalRadius;
         [Category("Installation")]
         [Description("PedestalRadius")]
         public double PedestalRadius
@@ -6485,7 +6859,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BuryDepthInInches = 72;
+        private double m_BuryDepthInInches;
         [Category("Standard")]
         [Description("BuryDepthInInches")]
         public double BuryDepthInInches
@@ -6508,7 +6882,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -6531,7 +6905,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanDirection = 0;
+        private double m_LeanDirection;
         [Category("Standard")]
         [Description("LeanDirection")]
         public double LeanDirection
@@ -6554,7 +6928,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanAmount = 0;
+        private double m_LeanAmount;
         [Category("Standard")]
         [Description("LeanAmount")]
         public double LeanAmount
@@ -6577,7 +6951,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtTipInInches = 3.3422538049298;
+        private double m_RadiusAtTipInInches;
         [Category("Circumference")]
         [Description("RadiusAtTipInInches")]
         public double RadiusAtTipInInches
@@ -6600,36 +6974,13 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RadiusAtBaseInInches = 9;
+        private double m_RadiusAtBaseInInches;
         [Category("Circumference")]
         [Description("RadiusAtBaseInInches")]
         public double RadiusAtBaseInInches
         {
            get { return m_RadiusAtBaseInInches; }
            set { m_RadiusAtBaseInInches = value; }
-        }
-
-
-
-        //   Attr Name:   StrengthRemainingGL
-        //   Attr Group:Circumference
-        //   Alt Display Name:GL Remaining Strength (%)
-        //   Description:   % remaining strength at the groundline
-        //   Displayed Units:   store as PERCENT 0 TO 1 display as PERCENT 0 TO 100
-        //   User Level Required:   All user levels may access this attribute
-        //   Format Expression:   0.00
-        //   Attribute Type:   FLOAT
-        //   Default Value:   1
-        //   ReadOnly Value:   No
-        //   Visible in Data Entry Panel:   Yes
-        //   Include When Substituting:   Yes
-        private double m_StrengthRemainingGL = 1;
-        [Category("Circumference")]
-        [Description("StrengthRemainingGL")]
-        public double StrengthRemainingGL
-        {
-           get { return m_StrengthRemainingGL; }
-           set { m_StrengthRemainingGL = value; }
         }
 
 
@@ -6646,7 +6997,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Elasticity = 1600000;
+        private double m_Modulus_of_Elasticity;
         [Category("Phys. Consts")]
         [Description("Modulus of Elasticity")]
         public double Modulus_of_Elasticity
@@ -6668,7 +7019,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Phys. Consts")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -6691,7 +7042,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Density = 0.0347222222222222;
+        private double m_Density;
         [Category("Phys. Consts")]
         [Description("Density")]
         public double Density
@@ -6714,7 +7065,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Shear_Strength = 450;
+        private double m_Characteristic_Shear_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Shear Strength")]
         public double Characteristic_Shear_Strength
@@ -6737,7 +7088,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Characteristic_Compression_Strength = 3500;
+        private double m_Characteristic_Compression_Strength;
         [Category("AS/NZS 7000")]
         [Description("Characteristic Compression Strength")]
         public double Characteristic_Compression_Strength
@@ -6760,7 +7111,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Effective_Length = -1;
+        private double m_Effective_Length;
         [Category("AS/NZS 7000")]
         [Description("Effective Length")]
         public double Effective_Length
@@ -6781,7 +7132,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Material_Constant = 1.24;
+        private double m_Material_Constant;
         [Category("AS/NZS 7000")]
         [Description("Material Constant")]
         public double Material_Constant
@@ -6804,7 +7155,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_Offset = 0;
+        private double m_Offset;
         [Category("Multi Pole")]
         [Description("Offset")]
         public double Offset
@@ -6824,7 +7175,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_1 = "Unset";
+        private string m_Aux_Data_1;
         [Category("User Data")]
         [Description("Aux Data 1")]
         public string Aux_Data_1
@@ -6844,7 +7195,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_2 = "Unset";
+        private string m_Aux_Data_2;
         [Category("User Data")]
         [Description("Aux Data 2")]
         public string Aux_Data_2
@@ -6864,7 +7215,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_3 = "Unset";
+        private string m_Aux_Data_3;
         [Category("User Data")]
         [Description("Aux Data 3")]
         public string Aux_Data_3
@@ -6884,7 +7235,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_4 = "Unset";
+        private string m_Aux_Data_4;
         [Category("User Data")]
         [Description("Aux Data 4")]
         public string Aux_Data_4
@@ -6904,7 +7255,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_5 = "Unset";
+        private string m_Aux_Data_5;
         [Category("User Data")]
         [Description("Aux Data 5")]
         public string Aux_Data_5
@@ -6924,7 +7275,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_6 = "Unset";
+        private string m_Aux_Data_6;
         [Category("User Data")]
         [Description("Aux Data 6")]
         public string Aux_Data_6
@@ -6944,7 +7295,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_7 = "Unset";
+        private string m_Aux_Data_7;
         [Category("User Data")]
         [Description("Aux Data 7")]
         public string Aux_Data_7
@@ -6964,7 +7315,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Aux_Data_8 = "Unset";
+        private string m_Aux_Data_8;
         [Category("User Data")]
         [Description("Aux Data 8")]
         public string Aux_Data_8
@@ -6985,10 +7336,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_ThicknessTable = "Thick;0,0.25;";
+        private ValTable m_ThicknessTable = new ValTable();
         [Category("Standard")]
         [Description("ThicknessTable")]
-        public string ThicknessTable
+        public ValTable ThicknessTable
         {
            get { return m_ThicknessTable; }
            set { m_ThicknessTable = value; }
@@ -7007,7 +7358,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalMomentCapacity = 90000;
+        private double m_PedestalMomentCapacity;
         [Category("Installation")]
         [Description("PedestalMomentCapacity")]
         public double PedestalMomentCapacity
@@ -7029,7 +7380,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PedestalBucklingCapacity = 9000;
+        private double m_PedestalBucklingCapacity;
         [Category("Installation")]
         [Description("PedestalBucklingCapacity")]
         public double PedestalBucklingCapacity
@@ -7051,7 +7402,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DistToGrade = 0;
+        private double m_DistToGrade;
         [Category("Installation")]
         [Description("DistToGrade")]
         public double DistToGrade
@@ -7073,10 +7424,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MomentCapacityTable = "Moment;0,50000;";
+        private ValTable m_MomentCapacityTable = new ValTable();
         [Category("Capacity")]
         [Description("MomentCapacityTable")]
-        public string MomentCapacityTable
+        public ValTable MomentCapacityTable
         {
            get { return m_MomentCapacityTable; }
            set { m_MomentCapacityTable = value; }
@@ -7095,10 +7446,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_BucklingCapacityTable = "Buckling;0,5000;";
+        private ValTable m_BucklingCapacityTable = new ValTable();
         [Category("Capacity")]
         [Description("BucklingCapacityTable")]
-        public string BucklingCapacityTable
+        public ValTable BucklingCapacityTable
         {
            get { return m_BucklingCapacityTable; }
            set { m_BucklingCapacityTable = value; }
@@ -7116,6 +7467,19 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "SegmentedPole";
       public override string XMLkey() { return gXMLkey; }
+
+      public SegmentedPole(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_Structure_Type = Structure_Type_val.Auto;
+               m_LineOfLead = 0;
+               m_LeanDirection = 0;
+               m_LeanAmount = 0;
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -7144,7 +7508,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -7164,7 +7528,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -7202,7 +7566,7 @@ namespace PPL_Model_Wrapper
            [Description("Junction")]
            Junction     //Pole with wires crossing at or near the pole
         }
-        private Structure_Type_val m_Structure_Type = Structure_Type_val.Auto;
+        private Structure_Type_val m_Structure_Type;
         [Category("Standard")]
         [Description("Structure Type")]
         public Structure_Type_val Structure_Type
@@ -7267,7 +7631,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -7290,7 +7654,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanDirection = 0;
+        private double m_LeanDirection;
         [Category("Standard")]
         [Description("LeanDirection")]
         public double LeanDirection
@@ -7313,7 +7677,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeanAmount = 0;
+        private double m_LeanAmount;
         [Category("Standard")]
         [Description("LeanAmount")]
         public double LeanAmount
@@ -7335,6 +7699,28 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Anchor";
       public override string XMLkey() { return gXMLkey; }
 
+      public Anchor(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Anchor";
+               m_Owner = "<Undefined>";
+               m_CoordinateZ = 0;
+               m_CoordinateX = 381;
+               m_CoordinateA = 1.5707963267949;
+               m_DeltaHeight = 0;
+               m_OffsetAngle = 0;
+               m_RodDiameterInInches = 0.75;
+               m_RodLengthAboveGLInInches = 30;
+               m_RodDescription = "Joslyn Copperbonded 1in x 10ft Twineye";
+               m_RodStrength = 45000;
+               m_MaxGuys = 2;
+               m_MergeAnchors = false;
+               m_SoilClass = SoilClass_val.Class_4;
+               m_HoldingStrength = 20000;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is GuyBrace) return true;
@@ -7353,7 +7739,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Anchor";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -7373,7 +7759,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -7396,7 +7782,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 0;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -7419,7 +7805,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateX = 381;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -7442,7 +7828,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 1.5707963267949;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -7465,7 +7851,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DeltaHeight = 0;
+        private double m_DeltaHeight;
         [Category("Standard")]
         [Description("DeltaHeight")]
         public double DeltaHeight
@@ -7488,7 +7874,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_OffsetAngle = 0;
+        private double m_OffsetAngle;
         [Category("Standard")]
         [Description("OffsetAngle")]
         public double OffsetAngle
@@ -7511,7 +7897,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RodDiameterInInches = 0.75;
+        private double m_RodDiameterInInches;
         [Category("Standard")]
         [Description("RodDiameterInInches")]
         public double RodDiameterInInches
@@ -7534,7 +7920,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RodLengthAboveGLInInches = 30;
+        private double m_RodLengthAboveGLInInches;
         [Category("Standard")]
         [Description("RodLengthAboveGLInInches")]
         public double RodLengthAboveGLInInches
@@ -7555,7 +7941,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_RodDescription = "Joslyn Copperbonded 1in x 10ft Twineye";
+        private string m_RodDescription;
         [Category("Standard")]
         [Description("RodDescription")]
         public string RodDescription
@@ -7578,7 +7964,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RodStrength = 45000;
+        private double m_RodStrength;
         [Category("Standard")]
         [Description("RodStrength")]
         public double RodStrength
@@ -7599,7 +7985,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_MaxGuys = 2;
+        private int m_MaxGuys;
         [Category("Standard")]
         [Description("MaxGuys")]
         public int MaxGuys
@@ -7620,7 +8006,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_MergeAnchors = false;
+        private bool m_MergeAnchors;
         [Category("Standard")]
         [Description("MergeAnchors")]
         public bool MergeAnchors
@@ -7671,7 +8057,7 @@ namespace PPL_Model_Wrapper
            [Description("Class 8")]
            Class_8     //Peat; organic silts; inundated silts, fly ash
         }
-        private SoilClass_val m_SoilClass = SoilClass_val.Class_4;
+        private SoilClass_val m_SoilClass;
         [Category("Standard")]
         [Description("SoilClass")]
         public SoilClass_val SoilClass
@@ -7752,7 +8138,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HoldingStrength = 20000;
+        private double m_HoldingStrength;
         [Category("Standard")]
         [Description("HoldingStrength")]
         public double HoldingStrength
@@ -7773,6 +8159,47 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "Crossarm";
       public override string XMLkey() { return gXMLkey; }
+
+      public Crossarm(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_CoordinateX = 0;
+               m_Description = "Crossarm";
+               m_Owner = "<Undefined>";
+               m_CoordinateZ = 462;
+               m_CoordinateA = 0;
+               m_Type = Type_val.Normal;
+               m_Count = 1;
+               m_Braced = Braced_val.None;
+               m_BraceOffset = 24;
+               m_BraceDrop = 24;
+               m_LengthInInches = 96;
+               m_HeightInInches = 4.5;
+               m_DepthInInches = 3.5;
+               m_Tilt = 0;
+               m_VerticalOffset = 0;
+               m_HorizontalOffset = 0;
+               m_LateralOffset = 0;
+               m_Weight = 50;
+               m_Modulus_of_Rupture = 8000;
+               m_Modulus_of_Elasticity = 1600000;
+               m_WindDragCoef = 0;
+               m_Analysis_Mode = Analysis_Mode_val.Automatic;
+               m_AllowableMomentVertical = 500;
+               m_AllowableMomentLongitudinal = 500;
+               m_AllowableLoadTransverse = 0;
+               m_AllowableLoadLongitudinal = 0;
+               m_OverrideStrength = false;
+               m_StrengthFactor = 0.5;
+               m_Analysis_Method = Analysis_Method_val.Superposition;
+               m_Offset = 0;
+               m_Material = Material_val.Wood;
+               m_Species = "Southern Pine";
+               m_ArmMaterial = "<Default>";
+               m_BraceMaterial = "<Default>";
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -7797,7 +8224,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -7817,7 +8244,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Crossarm";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -7837,7 +8264,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -7860,7 +8287,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 462;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -7883,7 +8310,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -7925,7 +8352,7 @@ namespace PPL_Model_Wrapper
            [Description("Standoff")]
            Standoff     //Standoff
         }
-        private Type_val m_Type = Type_val.Normal;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -7992,7 +8419,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_Count = 1;
+        private int m_Count;
         [Category("Standard")]
         [Description("Count")]
         public int Count
@@ -8025,7 +8452,7 @@ namespace PPL_Model_Wrapper
            [Description("None")]
            None     //None
         }
-        private Braced_val m_Braced = Braced_val.None;
+        private Braced_val m_Braced;
         [Category("Brace")]
         [Description("Braced")]
         public Braced_val Braced
@@ -8081,7 +8508,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BraceOffset = 24;
+        private double m_BraceOffset;
         [Category("Brace")]
         [Description("BraceOffset")]
         public double BraceOffset
@@ -8103,7 +8530,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BraceDrop = 24;
+        private double m_BraceDrop;
         [Category("Brace")]
         [Description("BraceDrop")]
         public double BraceDrop
@@ -8126,7 +8553,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 96;
+        private double m_LengthInInches;
         [Category("Dimensions")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -8149,7 +8576,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HeightInInches = 4.5;
+        private double m_HeightInInches;
         [Category("Dimensions")]
         [Description("HeightInInches")]
         public double HeightInInches
@@ -8172,7 +8599,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DepthInInches = 3.5;
+        private double m_DepthInInches;
         [Category("Dimensions")]
         [Description("DepthInInches")]
         public double DepthInInches
@@ -8195,7 +8622,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Tilt = 0;
+        private double m_Tilt;
         [Category("Physical")]
         [Description("Tilt")]
         public double Tilt
@@ -8217,7 +8644,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_VerticalOffset = 0;
+        private double m_VerticalOffset;
         [Category("Physical")]
         [Description("VerticalOffset")]
         public double VerticalOffset
@@ -8239,7 +8666,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HorizontalOffset = 0;
+        private double m_HorizontalOffset;
         [Category("Physical")]
         [Description("HorizontalOffset")]
         public double HorizontalOffset
@@ -8261,7 +8688,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LateralOffset = 0;
+        private double m_LateralOffset;
         [Category("Physical")]
         [Description("LateralOffset")]
         public double LateralOffset
@@ -8283,7 +8710,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 50;
+        private double m_Weight;
         [Category("Physical")]
         [Description("Weight")]
         public double Weight
@@ -8306,7 +8733,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Rupture = 8000;
+        private double m_Modulus_of_Rupture;
         [Category("Physical")]
         [Description("Modulus of Rupture")]
         public double Modulus_of_Rupture
@@ -8329,7 +8756,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Modulus_of_Elasticity = 1600000;
+        private double m_Modulus_of_Elasticity;
         [Category("Physical")]
         [Description("Modulus of Elasticity")]
         public double Modulus_of_Elasticity
@@ -8351,7 +8778,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Physical")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -8381,7 +8808,7 @@ namespace PPL_Model_Wrapper
            [Description("Manual")]
            Manual     //Manual
         }
-        private Analysis_Mode_val m_Analysis_Mode = Analysis_Mode_val.Automatic;
+        private Analysis_Mode_val m_Analysis_Mode;
         [Category("Analysis")]
         [Description("Analysis Mode")]
         public Analysis_Mode_val Analysis_Mode
@@ -8434,7 +8861,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_AllowableMomentVertical = 500;
+        private double m_AllowableMomentVertical;
         [Category("Analysis")]
         [Description("AllowableMomentVertical")]
         public double AllowableMomentVertical
@@ -8457,7 +8884,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_AllowableMomentLongitudinal = 500;
+        private double m_AllowableMomentLongitudinal;
         [Category("Analysis")]
         [Description("AllowableMomentLongitudinal")]
         public double AllowableMomentLongitudinal
@@ -8480,7 +8907,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_AllowableLoadTransverse = 0;
+        private double m_AllowableLoadTransverse;
         [Category("Analysis")]
         [Description("AllowableLoadTransverse")]
         public double AllowableLoadTransverse
@@ -8503,7 +8930,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_AllowableLoadLongitudinal = 0;
+        private double m_AllowableLoadLongitudinal;
         [Category("Analysis")]
         [Description("AllowableLoadLongitudinal")]
         public double AllowableLoadLongitudinal
@@ -8524,7 +8951,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideStrength = false;
+        private bool m_OverrideStrength;
         [Category("Analysis")]
         [Description("OverrideStrength")]
         public bool OverrideStrength
@@ -8546,7 +8973,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrengthFactor = 0.5;
+        private double m_StrengthFactor;
         [Category("Analysis")]
         [Description("StrengthFactor")]
         public double StrengthFactor
@@ -8578,7 +9005,7 @@ namespace PPL_Model_Wrapper
            [Description("Worst Axis")]
            Worst_Axis     //Worst Axis
         }
-        private Analysis_Method_val m_Analysis_Method = Analysis_Method_val.Superposition;
+        private Analysis_Method_val m_Analysis_Method;
         [Category("Analysis")]
         [Description("Analysis Method")]
         public Analysis_Method_val Analysis_Method
@@ -8635,7 +9062,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_Offset = 0;
+        private double m_Offset;
         [Category("Multi Pole")]
         [Description("Offset")]
         public double Offset
@@ -8670,7 +9097,7 @@ namespace PPL_Model_Wrapper
            [Description("Other")]
            Other     //Other
         }
-        private Material_val m_Material = Material_val.Wood;
+        private Material_val m_Material;
         [Category("Material")]
         [Description("Material")]
         public Material_val Material
@@ -8728,7 +9155,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Species = "Southern Pine";
+        private string m_Species;
         [Category("Material")]
         [Description("Species")]
         public string Species
@@ -8749,7 +9176,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_ArmMaterial = "<Default>";
+        private string m_ArmMaterial;
         [Category("Material")]
         [Description("ArmMaterial")]
         public string ArmMaterial
@@ -8770,7 +9197,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_BraceMaterial = "<Default>";
+        private string m_BraceMaterial;
         [Category("Material")]
         [Description("BraceMaterial")]
         public string BraceMaterial
@@ -8791,6 +9218,30 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "Insulator";
       public override string XMLkey() { return gXMLkey; }
+
+      public Insulator(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Insulator";
+               m_Owner = "<Undefined>";
+               m_Type = Type_val.Pin;
+               m_CoordinateZ = 300;
+               m_CoordinateA = 0;
+               m_Side = Side_val.Inline;
+               m_CoordinateX = 0;
+               m_LengthInInches = 8;
+               m_DavitAngle = 1.18682389135614;
+               m_Pitch = 0;
+               m_Crab = 0;
+               m_WidthInInches = 3;
+               m_Weight = 8.99;
+               m_Sheds = Sheds_val._Default_;
+               m_WindDragCoef = 0;
+               m_EndFitting = EndFitting_val.Clamped;
+               m_StalkMaterial = "<Default>";
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -8813,7 +9264,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Insulator";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -8833,7 +9284,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -8883,7 +9334,7 @@ namespace PPL_Model_Wrapper
            [Description("Bolt")]
            Bolt     //Bolt
         }
-        private Type_val m_Type = Type_val.Pin;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -8964,7 +9415,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 300;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -8987,7 +9438,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -9013,6 +9464,7 @@ namespace PPL_Model_Wrapper
         //        Front  (Front)
         //        Back  (Back)
         //        Both  (Both)
+        //        Split  (Split)
         public enum Side_val
         {
            [Description("Street")]
@@ -9026,9 +9478,11 @@ namespace PPL_Model_Wrapper
            [Description("Back")]
            Back,    //Back
            [Description("Both")]
-           Both     //Both
+           Both,    //Both
+           [Description("Split")]
+           Split     //Split
         }
-        private Side_val m_Side = Side_val.Inline;
+        private Side_val m_Side;
         [Category("Standard")]
         [Description("Side")]
         public Side_val Side
@@ -9055,6 +9509,8 @@ namespace PPL_Model_Wrapper
                    return Side_val.Back;    //Back
                 case "Both":
                    return Side_val.Both;    //Both
+                case "Split":
+                   return Side_val.Split;    //Split
                 default:
                    break;
            }
@@ -9077,6 +9533,8 @@ namespace PPL_Model_Wrapper
                    return "Back";    //Back
                 case Side_val.Both:
                    return "Both";    //Both
+                case Side_val.Split:
+                   return "Split";    //Split
                 default:
                    break;
            }
@@ -9097,7 +9555,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -9120,7 +9578,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 8;
+        private double m_LengthInInches;
         [Category("Properties")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -9143,7 +9601,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DavitAngle = 1.18682389135614;
+        private double m_DavitAngle;
         [Category("Standard")]
         [Description("DavitAngle")]
         public double DavitAngle
@@ -9166,7 +9624,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Pitch = 0;
+        private double m_Pitch;
         [Category("Properties")]
         [Description("Pitch")]
         public double Pitch
@@ -9189,7 +9647,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Crab = 0;
+        private double m_Crab;
         [Category("Properties")]
         [Description("Crab")]
         public double Crab
@@ -9212,7 +9670,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WidthInInches = 3;
+        private double m_WidthInInches;
         [Category("Properties")]
         [Description("WidthInInches")]
         public double WidthInInches
@@ -9235,7 +9693,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 8.99;
+        private double m_Weight;
         [Category("Properties")]
         [Description("Weight")]
         public double Weight
@@ -9286,7 +9744,7 @@ namespace PPL_Model_Wrapper
            [Description("8")]
            Sheds_8     //8
         }
-        private Sheds_val m_Sheds = Sheds_val._Default_;
+        private Sheds_val m_Sheds;
         [Category("Properties")]
         [Description("Sheds")]
         public Sheds_val Sheds
@@ -9366,7 +9824,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Properties")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -9396,7 +9854,7 @@ namespace PPL_Model_Wrapper
            [Description("Free")]
            Free     //Free
         }
-        private EndFitting_val m_EndFitting = EndFitting_val.Clamped;
+        private EndFitting_val m_EndFitting;
         [Category("Properties")]
         [Description("EndFitting")]
         public EndFitting_val EndFitting
@@ -9447,7 +9905,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_StalkMaterial = "<Default>";
+        private string m_StalkMaterial;
         [Category("Material")]
         [Description("StalkMaterial")]
         public string StalkMaterial
@@ -9469,6 +9927,53 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Span";
       public override string XMLkey() { return gXMLkey; }
 
+      public Span(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_CoordinateX = 0;
+               m_CoordinateZ = 0;
+               m_SpanType = SpanType_val.Primary;
+               m_Owner = "<Undefined>";
+               m_Type = "Generic Span";
+               m_CoordinateA = 0;
+               m_SpanDistanceInInches = 600;
+               m_SpanEndHeightDelta = 0;
+               m_MidspanDeflection = 0;
+               m_Tension_Type = Tension_Type_val.Static;
+               m_Tension = 0;
+               m_TensionTable = new ValTable("Table;0,500;");
+               m_SlackTension = 10;
+               m_RatedStrength = 5000;
+               m_ConductorDiameter = 0.5;
+               m_OverrideTemp = false;
+               m_Temperature = 65;
+               m_TempMin = 32;
+               m_TempMax = 212;
+               m_PoundsPerInch = 0.0076;
+               m_ModulusOfElasticity = 11200000;
+               m_PercentSolid = 0.75;
+               m_ThermalCoefficient = 1.06E-05;
+               m_CreepCoefficient = 0;
+               m_IceAccumulationFactor = 0.75;
+               m_WindTensionFactor = -1;
+               m_WindDragCoef = 0;
+               m_VerticalOffset = 0;
+               m_HorizontalOffset = 0;
+               m_StopAtTap = false;
+               m_HasInlineBox = false;
+               m_BoxOffset = 15;
+               m_BoxLength = 20;
+               m_BoxDiameter = 8;
+               m_BoxWeight = 5;
+               m_HasDripLoop = false;
+               m_DripLoopOffset = 2;
+               m_DripLoopLength = 20;
+               m_DripLoopHeight = 10;
+               m_Modifier = Modifier_val.None;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Tap) return true;
@@ -9489,7 +9994,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -9509,7 +10014,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 0;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -9562,7 +10067,7 @@ namespace PPL_Model_Wrapper
            [Description("Unknown")]
            Unknown     //Unknown
         }
-        private SpanType_val m_SpanType = SpanType_val.Primary;
+        private SpanType_val m_SpanType;
         [Category("Standard")]
         [Description("SpanType")]
         public SpanType_val SpanType
@@ -9644,7 +10149,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -9665,7 +10170,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Type = "Generic Span";
+        private string m_Type;
         [Category("Standard")]
         [Description("Type")]
         public string Type
@@ -9688,7 +10193,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -9711,7 +10216,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_SpanDistanceInInches = 600;
+        private double m_SpanDistanceInInches;
         [Category("Standard")]
         [Description("SpanDistanceInInches")]
         public double SpanDistanceInInches
@@ -9734,7 +10239,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_SpanEndHeightDelta = 0;
+        private double m_SpanEndHeightDelta;
         [Category("Standard")]
         [Description("SpanEndHeightDelta")]
         public double SpanEndHeightDelta
@@ -9757,7 +10262,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_MidspanDeflection = 0;
+        private double m_MidspanDeflection;
         [Category("Tension Sag")]
         [Description("MidspanDeflection")]
         public double MidspanDeflection
@@ -9795,7 +10300,7 @@ namespace PPL_Model_Wrapper
            [Description("Tension to Sag")]
            Tension_to_Sag     //The tension is based on initial stringing tension and LoadCase
         }
-        private Tension_Type_val m_Tension_Type = Tension_Type_val.Static;
+        private Tension_Type_val m_Tension_Type;
         [Category("Tension Sag")]
         [Description("Tension Type")]
         public Tension_Type_val Tension_Type
@@ -9860,7 +10365,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Tension = 0;
+        private double m_Tension;
         [Category("Tension Sag")]
         [Description("Tension")]
         public double Tension
@@ -9882,10 +10387,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_TensionTable = "Table;0,500;";
+        private ValTable m_TensionTable = new ValTable();
         [Category("Tension Sag")]
         [Description("TensionTable")]
-        public string TensionTable
+        public ValTable TensionTable
         {
            get { return m_TensionTable; }
            set { m_TensionTable = value; }
@@ -9905,7 +10410,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SlackTension = 10;
+        private double m_SlackTension;
         [Category("Tension Sag")]
         [Description("SlackTension")]
         public double SlackTension
@@ -9928,7 +10433,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RatedStrength = 5000;
+        private double m_RatedStrength;
         [Category("Tension Sag")]
         [Description("RatedStrength")]
         public double RatedStrength
@@ -9951,7 +10456,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ConductorDiameter = 0.5;
+        private double m_ConductorDiameter;
         [Category("Standard")]
         [Description("ConductorDiameter")]
         public double ConductorDiameter
@@ -9972,7 +10477,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideTemp = false;
+        private bool m_OverrideTemp;
         [Category("Temperature")]
         [Description("OverrideTemp")]
         public bool OverrideTemp
@@ -9995,7 +10500,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Temperature = 65;
+        private double m_Temperature;
         [Category("Temperature")]
         [Description("Temperature")]
         public double Temperature
@@ -10018,7 +10523,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TempMin = 32;
+        private double m_TempMin;
         [Category("Temperature")]
         [Description("TempMin")]
         public double TempMin
@@ -10041,7 +10546,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TempMax = 212;
+        private double m_TempMax;
         [Category("Temperature")]
         [Description("TempMax")]
         public double TempMax
@@ -10064,7 +10569,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoundsPerInch = 0.0076;
+        private double m_PoundsPerInch;
         [Category("Phys Const")]
         [Description("PoundsPerInch")]
         public double PoundsPerInch
@@ -10087,7 +10592,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ModulusOfElasticity = 11200000;
+        private double m_ModulusOfElasticity;
         [Category("Phys Const")]
         [Description("ModulusOfElasticity")]
         public double ModulusOfElasticity
@@ -10109,7 +10614,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PercentSolid = 0.75;
+        private double m_PercentSolid;
         [Category("Phys Const")]
         [Description("PercentSolid")]
         public double PercentSolid
@@ -10132,7 +10637,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ThermalCoefficient = 1.06E-05;
+        private double m_ThermalCoefficient;
         [Category("Phys Const")]
         [Description("ThermalCoefficient")]
         public double ThermalCoefficient
@@ -10155,7 +10660,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_CreepCoefficient = 0;
+        private double m_CreepCoefficient;
         [Category("Phys Const")]
         [Description("CreepCoefficient")]
         public double CreepCoefficient
@@ -10177,7 +10682,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_IceAccumulationFactor = 0.75;
+        private double m_IceAccumulationFactor;
         [Category("Tension Sag")]
         [Description("IceAccumulationFactor")]
         public double IceAccumulationFactor
@@ -10199,7 +10704,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindTensionFactor = -1;
+        private double m_WindTensionFactor;
         [Category("Tension Sag")]
         [Description("WindTensionFactor")]
         public double WindTensionFactor
@@ -10221,7 +10726,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Tension Sag")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -10243,7 +10748,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_VerticalOffset = 0;
+        private double m_VerticalOffset;
         [Category("Phys Const")]
         [Description("VerticalOffset")]
         public double VerticalOffset
@@ -10265,7 +10770,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_HorizontalOffset = 0;
+        private double m_HorizontalOffset;
         [Category("Phys Const")]
         [Description("HorizontalOffset")]
         public double HorizontalOffset
@@ -10286,7 +10791,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private bool m_StopAtTap = false;
+        private bool m_StopAtTap;
         [Category("Phys Const")]
         [Description("StopAtTap")]
         public bool StopAtTap
@@ -10307,7 +10812,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private bool m_HasInlineBox = false;
+        private bool m_HasInlineBox;
         [Category("Junction")]
         [Description("HasInlineBox")]
         public bool HasInlineBox
@@ -10330,7 +10835,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BoxOffset = 15;
+        private double m_BoxOffset;
         [Category("Junction")]
         [Description("BoxOffset")]
         public double BoxOffset
@@ -10353,7 +10858,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BoxLength = 20;
+        private double m_BoxLength;
         [Category("Junction")]
         [Description("BoxLength")]
         public double BoxLength
@@ -10376,7 +10881,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BoxDiameter = 8;
+        private double m_BoxDiameter;
         [Category("Junction")]
         [Description("BoxDiameter")]
         public double BoxDiameter
@@ -10399,7 +10904,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_BoxWeight = 5;
+        private double m_BoxWeight;
         [Category("Junction")]
         [Description("BoxWeight")]
         public double BoxWeight
@@ -10420,7 +10925,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private bool m_HasDripLoop = false;
+        private bool m_HasDripLoop;
         [Category("DripLoop")]
         [Description("HasDripLoop")]
         public bool HasDripLoop
@@ -10443,7 +10948,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DripLoopOffset = 2;
+        private double m_DripLoopOffset;
         [Category("DripLoop")]
         [Description("DripLoopOffset")]
         public double DripLoopOffset
@@ -10466,7 +10971,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DripLoopLength = 20;
+        private double m_DripLoopLength;
         [Category("DripLoop")]
         [Description("DripLoopLength")]
         public double DripLoopLength
@@ -10489,7 +10994,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DripLoopHeight = 10;
+        private double m_DripLoopHeight;
         [Category("DripLoop")]
         [Description("DripLoopHeight")]
         public double DripLoopHeight
@@ -10536,7 +11041,7 @@ namespace PPL_Model_Wrapper
            [Description("(See Note)")]
            _See_Note_     //(See Note)
         }
-        private Modifier_val m_Modifier = Modifier_val.None;
+        private Modifier_val m_Modifier;
         [Category("Standard")]
         [Description("Modifier")]
         public Modifier_val Modifier
@@ -10612,6 +11117,55 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "SpanBundle";
       public override string XMLkey() { return gXMLkey; }
 
+      public SpanBundle(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_CoordinateX = 0;
+               m_CoordinateZ = 0;
+               m_Owner = "<Undefined>";
+               m_Type = Type_val.Overlashed;
+               m_Construction = Construction_val.Overlashed;
+               m_BundleIceMode = BundleIceMode_val.Individual;
+               m_BundleWindMode = BundleWindMode_val.Individual;
+               m_CoordinateA = 0;
+               m_SpanDistanceInInches = 600;
+               m_SpanEndHeightDelta = 0;
+               m_MidspanDeflection = 0;
+               m_Tension_Type = Tension_Type_val.Static;
+               m_Tension = 0;
+               m_TensionTable = new ValTable("Table;0,500;");
+               m_SlackTension = 10;
+               m_RatedStrength = 5000;
+               m_ConductorDiameter = 0.5;
+               m_OverrideTemp = false;
+               m_Temperature = 65;
+               m_TempMin = 32;
+               m_TempMax = 212;
+               m_PoundsPerInch = 0.0076;
+               m_ModulusOfElasticity = 11200000;
+               m_PercentSolid = 0.75;
+               m_ThermalCoefficient = 1.06E-05;
+               m_CreepCoefficient = 0;
+               m_IceAccumulationFactor = 0.75;
+               m_WindTensionFactor = -1;
+               m_WindDragCoef = 0;
+               m_VerticalOffset = 0;
+               m_HorizontalOffset = 0;
+               m_StopAtTap = false;
+               m_HasInlineBox = false;
+               m_BoxOffset = 15;
+               m_BoxLength = 20;
+               m_BoxDiameter = 8;
+               m_BoxWeight = 5;
+               m_HasDripLoop = false;
+               m_DripLoopOffset = 2;
+               m_DripLoopLength = 20;
+               m_DripLoopHeight = 10;
+               m_Modifier = Modifier_val.None;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Span) return true;
@@ -10631,7 +11185,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -10651,7 +11205,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 0;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -10671,7 +11225,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -10707,7 +11261,7 @@ namespace PPL_Model_Wrapper
            [Description("Twist/Braid")]
            Twist_Braid     //Twist/Braid
         }
-        private Type_val m_Type = Type_val.Overlashed;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -10787,7 +11341,7 @@ namespace PPL_Model_Wrapper
            [Description("Other")]
            Other     //Other
         }
-        private Construction_val m_Construction = Construction_val.Overlashed;
+        private Construction_val m_Construction;
         [Category("Standard")]
         [Description("Construction")]
         public Construction_val Construction
@@ -10869,7 +11423,7 @@ namespace PPL_Model_Wrapper
            [Description("Concave Hull")]
            Concave_Hull     //Concave Hull
         }
-        private BundleIceMode_val m_BundleIceMode = BundleIceMode_val.Individual;
+        private BundleIceMode_val m_BundleIceMode;
         [Category("Bundle Ice/Wind")]
         [Description("BundleIceMode")]
         public BundleIceMode_val BundleIceMode
@@ -10943,7 +11497,7 @@ namespace PPL_Model_Wrapper
            [Description("Concave Hull")]
            Concave_Hull     //Concave Hull
         }
-        private BundleWindMode_val m_BundleWindMode = BundleWindMode_val.Individual;
+        private BundleWindMode_val m_BundleWindMode;
         [Category("Bundle Ice/Wind")]
         [Description("BundleWindMode")]
         public BundleWindMode_val BundleWindMode
@@ -11004,7 +11558,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -11027,7 +11581,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_SpanDistanceInInches = 600;
+        private double m_SpanDistanceInInches;
         [Category("Standard")]
         [Description("SpanDistanceInInches")]
         public double SpanDistanceInInches
@@ -11050,7 +11604,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_SpanEndHeightDelta = 0;
+        private double m_SpanEndHeightDelta;
         [Category("Standard")]
         [Description("SpanEndHeightDelta")]
         public double SpanEndHeightDelta
@@ -11073,7 +11627,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_MidspanDeflection = 0;
+        private double m_MidspanDeflection;
         [Category("Tension Sag")]
         [Description("MidspanDeflection")]
         public double MidspanDeflection
@@ -11111,7 +11665,7 @@ namespace PPL_Model_Wrapper
            [Description("Tension to Sag")]
            Tension_to_Sag     //The tension is based on initial stringing tension and LoadCase
         }
-        private Tension_Type_val m_Tension_Type = Tension_Type_val.Static;
+        private Tension_Type_val m_Tension_Type;
         [Category("Tension Sag")]
         [Description("Tension Type")]
         public Tension_Type_val Tension_Type
@@ -11176,7 +11730,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Tension = 0;
+        private double m_Tension;
         [Category("Tension Sag")]
         [Description("Tension")]
         public double Tension
@@ -11198,10 +11752,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_TensionTable = "Table;0,500;";
+        private ValTable m_TensionTable = new ValTable();
         [Category("Tension Sag")]
         [Description("TensionTable")]
-        public string TensionTable
+        public ValTable TensionTable
         {
            get { return m_TensionTable; }
            set { m_TensionTable = value; }
@@ -11221,7 +11775,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SlackTension = 10;
+        private double m_SlackTension;
         [Category("Tension Sag")]
         [Description("SlackTension")]
         public double SlackTension
@@ -11244,7 +11798,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RatedStrength = 5000;
+        private double m_RatedStrength;
         [Category("Tension Sag")]
         [Description("RatedStrength")]
         public double RatedStrength
@@ -11267,7 +11821,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ConductorDiameter = 0.5;
+        private double m_ConductorDiameter;
         [Category("Standard")]
         [Description("ConductorDiameter")]
         public double ConductorDiameter
@@ -11288,7 +11842,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideTemp = false;
+        private bool m_OverrideTemp;
         [Category("Temperature")]
         [Description("OverrideTemp")]
         public bool OverrideTemp
@@ -11311,7 +11865,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Temperature = 65;
+        private double m_Temperature;
         [Category("Temperature")]
         [Description("Temperature")]
         public double Temperature
@@ -11334,7 +11888,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TempMin = 32;
+        private double m_TempMin;
         [Category("Temperature")]
         [Description("TempMin")]
         public double TempMin
@@ -11357,7 +11911,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TempMax = 212;
+        private double m_TempMax;
         [Category("Temperature")]
         [Description("TempMax")]
         public double TempMax
@@ -11380,7 +11934,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoundsPerInch = 0.0076;
+        private double m_PoundsPerInch;
         [Category("Phys Const")]
         [Description("PoundsPerInch")]
         public double PoundsPerInch
@@ -11403,7 +11957,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ModulusOfElasticity = 11200000;
+        private double m_ModulusOfElasticity;
         [Category("Phys Const")]
         [Description("ModulusOfElasticity")]
         public double ModulusOfElasticity
@@ -11425,7 +11979,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PercentSolid = 0.75;
+        private double m_PercentSolid;
         [Category("Phys Const")]
         [Description("PercentSolid")]
         public double PercentSolid
@@ -11448,7 +12002,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ThermalCoefficient = 1.06E-05;
+        private double m_ThermalCoefficient;
         [Category("Phys Const")]
         [Description("ThermalCoefficient")]
         public double ThermalCoefficient
@@ -11471,7 +12025,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_CreepCoefficient = 0;
+        private double m_CreepCoefficient;
         [Category("Phys Const")]
         [Description("CreepCoefficient")]
         public double CreepCoefficient
@@ -11493,7 +12047,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_IceAccumulationFactor = 0.75;
+        private double m_IceAccumulationFactor;
         [Category("Tension Sag")]
         [Description("IceAccumulationFactor")]
         public double IceAccumulationFactor
@@ -11515,7 +12069,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindTensionFactor = -1;
+        private double m_WindTensionFactor;
         [Category("Tension Sag")]
         [Description("WindTensionFactor")]
         public double WindTensionFactor
@@ -11537,7 +12091,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Tension Sag")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -11559,7 +12113,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_VerticalOffset = 0;
+        private double m_VerticalOffset;
         [Category("Phys Const")]
         [Description("VerticalOffset")]
         public double VerticalOffset
@@ -11581,7 +12135,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_HorizontalOffset = 0;
+        private double m_HorizontalOffset;
         [Category("Phys Const")]
         [Description("HorizontalOffset")]
         public double HorizontalOffset
@@ -11602,7 +12156,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private bool m_StopAtTap = false;
+        private bool m_StopAtTap;
         [Category("Phys Const")]
         [Description("StopAtTap")]
         public bool StopAtTap
@@ -11623,7 +12177,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private bool m_HasInlineBox = false;
+        private bool m_HasInlineBox;
         [Category("Standard")]
         [Description("HasInlineBox")]
         public bool HasInlineBox
@@ -11646,7 +12200,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_BoxOffset = 15;
+        private double m_BoxOffset;
         [Category("Standard")]
         [Description("BoxOffset")]
         public double BoxOffset
@@ -11669,7 +12223,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_BoxLength = 20;
+        private double m_BoxLength;
         [Category("Standard")]
         [Description("BoxLength")]
         public double BoxLength
@@ -11692,7 +12246,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_BoxDiameter = 8;
+        private double m_BoxDiameter;
         [Category("Standard")]
         [Description("BoxDiameter")]
         public double BoxDiameter
@@ -11715,7 +12269,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_BoxWeight = 5;
+        private double m_BoxWeight;
         [Category("Standard")]
         [Description("BoxWeight")]
         public double BoxWeight
@@ -11736,7 +12290,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private bool m_HasDripLoop = false;
+        private bool m_HasDripLoop;
         [Category("DripLoop")]
         [Description("HasDripLoop")]
         public bool HasDripLoop
@@ -11759,7 +12313,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DripLoopOffset = 2;
+        private double m_DripLoopOffset;
         [Category("DripLoop")]
         [Description("DripLoopOffset")]
         public double DripLoopOffset
@@ -11782,7 +12336,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DripLoopLength = 20;
+        private double m_DripLoopLength;
         [Category("DripLoop")]
         [Description("DripLoopLength")]
         public double DripLoopLength
@@ -11805,7 +12359,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DripLoopHeight = 10;
+        private double m_DripLoopHeight;
         [Category("DripLoop")]
         [Description("DripLoopHeight")]
         public double DripLoopHeight
@@ -11852,7 +12406,7 @@ namespace PPL_Model_Wrapper
            [Description("(See Note)")]
            _See_Note_     //(See Note)
         }
-        private Modifier_val m_Modifier = Modifier_val.None;
+        private Modifier_val m_Modifier;
         [Category("Standard")]
         [Description("Modifier")]
         public Modifier_val Modifier
@@ -11928,6 +12482,17 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Tap";
       public override string XMLkey() { return gXMLkey; }
 
+      public Tap(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Flying Tap";
+               m_Owner = "<Undefined>";
+               m_CoordinateA = 0;
+               m_OffsetInches = 60;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Span) return true;
@@ -11947,7 +12512,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Flying Tap";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -11967,7 +12532,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -11990,7 +12555,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -12013,7 +12578,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_OffsetInches = 60;
+        private double m_OffsetInches;
         [Category("Standard")]
         [Description("OffsetInches")]
         public double OffsetInches
@@ -12035,6 +12600,29 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "PowerEquipment";
       public override string XMLkey() { return gXMLkey; }
 
+      public PowerEquipment(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_CoordinateX = 10;
+               m_Description = "1PH- 25KVA";
+               m_Owner = "<Undefined>";
+               m_CoordinateZ = 420;
+               m_CoordinateA = 0;
+               m_Pole_Gap = 6;
+               m_Type = Type_val.Transformer;
+               m_Mount = Mount_val.Pole;
+               m_Qty = 1;
+               m_Array_Angle = 1.5707963267949;
+               m_Rack_Spacing = 0;
+               m_DiameterInInches = 22;
+               m_HeightInInches = 39;
+               m_DepthInInches = 39;
+               m_Weight = 365;
+               m_WindDragCoef = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -12055,7 +12643,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateX = 10;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -12075,7 +12663,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "1PH- 25KVA";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -12095,7 +12683,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -12118,7 +12706,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 420;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -12141,7 +12729,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -12164,7 +12752,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Pole_Gap = 6;
+        private double m_Pole_Gap;
         [Category("Standard")]
         [Description("Pole Gap")]
         public double Pole_Gap
@@ -12205,7 +12793,7 @@ namespace PPL_Model_Wrapper
            [Description("Box")]
            Box     //Misc Box
         }
-        private Type_val m_Type = Type_val.Transformer;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -12280,7 +12868,7 @@ namespace PPL_Model_Wrapper
            [Description("Rack")]
            Rack     //Equipment are mounted on a rack which is mounted to the pole
         }
-        private Mount_val m_Mount = Mount_val.Pole;
+        private Mount_val m_Mount;
         [Category("Standard")]
         [Description("Mount")]
         public Mount_val Mount
@@ -12331,7 +12919,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private int m_Qty = 1;
+        private int m_Qty;
         [Category("Standard")]
         [Description("Qty")]
         public int Qty
@@ -12354,7 +12942,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Array_Angle = 1.5707963267949;
+        private double m_Array_Angle;
         [Category("Standard")]
         [Description("Array Angle")]
         public double Array_Angle
@@ -12377,7 +12965,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Rack_Spacing = 0;
+        private double m_Rack_Spacing;
         [Category("Standard")]
         [Description("Rack Spacing")]
         public double Rack_Spacing
@@ -12400,7 +12988,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DiameterInInches = 22;
+        private double m_DiameterInInches;
         [Category("Standard")]
         [Description("DiameterInInches")]
         public double DiameterInInches
@@ -12423,7 +13011,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HeightInInches = 39;
+        private double m_HeightInInches;
         [Category("Standard")]
         [Description("HeightInInches")]
         public double HeightInInches
@@ -12446,7 +13034,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DepthInInches = 39;
+        private double m_DepthInInches;
         [Category("Standard")]
         [Description("DepthInInches")]
         public double DepthInInches
@@ -12469,7 +13057,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 365;
+        private double m_Weight;
         [Category("Standard")]
         [Description("Weight")]
         public double Weight
@@ -12491,7 +13079,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Standard")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -12513,6 +13101,26 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Streetlight";
       public override string XMLkey() { return gXMLkey; }
 
+      public Streetlight(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_CoordinateX = 0;
+               m_Description = "Streetlight";
+               m_Owner = "<Undefined>";
+               m_Type = Type_val.General;
+               m_CoordinateZ = 300;
+               m_CoordinateA = 0;
+               m_LengthInInches = 96;
+               m_ArmDiameterInInches = 3;
+               m_ArmRiseInInches = 25;
+               m_CanDiameterInInches = 22;
+               m_CanHeightInInches = 9;
+               m_Weight = 40;
+               m_WindDragCoef = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -12530,7 +13138,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -12550,7 +13158,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Streetlight";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -12570,7 +13178,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -12608,7 +13216,7 @@ namespace PPL_Model_Wrapper
            [Description("Traffic Signal")]
            Traffic_Signal     //Traffic Signal
         }
-        private Type_val m_Type = Type_val.General;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -12673,7 +13281,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 300;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -12696,7 +13304,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -12719,7 +13327,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 96;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -12742,7 +13350,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ArmDiameterInInches = 3;
+        private double m_ArmDiameterInInches;
         [Category("Standard")]
         [Description("ArmDiameterInInches")]
         public double ArmDiameterInInches
@@ -12765,7 +13373,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ArmRiseInInches = 25;
+        private double m_ArmRiseInInches;
         [Category("Standard")]
         [Description("ArmRiseInInches")]
         public double ArmRiseInInches
@@ -12788,7 +13396,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_CanDiameterInInches = 22;
+        private double m_CanDiameterInInches;
         [Category("Standard")]
         [Description("CanDiameterInInches")]
         public double CanDiameterInInches
@@ -12811,7 +13419,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_CanHeightInInches = 9;
+        private double m_CanHeightInInches;
         [Category("Standard")]
         [Description("CanHeightInInches")]
         public double CanHeightInInches
@@ -12834,7 +13442,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 40;
+        private double m_Weight;
         [Category("Standard")]
         [Description("Weight")]
         public double Weight
@@ -12856,7 +13464,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Standard")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -12878,6 +13486,39 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "GuyBrace";
       public override string XMLkey() { return gXMLkey; }
 
+      public GuyBrace(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "";
+               m_Owner = "<Undefined>";
+               m_Type = Type_val.Down;
+               m_CoordinateZ = 453;
+               m_StrutHeightInInches = 405;
+               m_StrutLengthInInches = 48;
+               m_StrutDiameter = 1.25;
+               m_StrutWeightPerIn = 0.189167;
+               m_StrutCapacity = 2500;
+               m_StrutFixity = StrutFixity_val.Pinned;
+               m_MergeStruts = false;
+               m_DeltaHeightInInches = 0;
+               m_Diameter = 0.5;
+               m_PercentSolid = 1;
+               m_PreTension = 700;
+               m_VerticalOffset = 0;
+               m_HorizontalOffset = 0;
+               m_LateralOffset = 0;
+               m_Tension_Mode = Tension_Mode_val.Calculated;
+               m_Tension = 1500;
+               m_RTS_Strength = 26900;
+               m_PoundsPerInch = 0.03408;
+               m_ModulusOfElasticity = 26000000;
+               m_WindDragCoef = 0;
+               m_GuyMaterial = "<Default>";
+               m_StrutMaterial = "<Default>";
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Clearance) return true;
@@ -12897,7 +13538,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -12917,7 +13558,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -12955,7 +13596,7 @@ namespace PPL_Model_Wrapper
            [Description("Pushbrace")]
            Pushbrace     //Pushbrace
         }
-        private Type_val m_Type = Type_val.Down;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -13020,7 +13661,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 453;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -13043,7 +13684,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrutHeightInInches = 405;
+        private double m_StrutHeightInInches;
         [Category("Sidewalk")]
         [Description("StrutHeightInInches")]
         public double StrutHeightInInches
@@ -13066,7 +13707,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrutLengthInInches = 48;
+        private double m_StrutLengthInInches;
         [Category("Sidewalk")]
         [Description("StrutLengthInInches")]
         public double StrutLengthInInches
@@ -13089,7 +13730,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrutDiameter = 1.25;
+        private double m_StrutDiameter;
         [Category("Sidewalk")]
         [Description("StrutDiameter")]
         public double StrutDiameter
@@ -13112,7 +13753,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrutWeightPerIn = 0.189167;
+        private double m_StrutWeightPerIn;
         [Category("Sidewalk")]
         [Description("StrutWeightPerIn")]
         public double StrutWeightPerIn
@@ -13135,7 +13776,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_StrutCapacity = 2500;
+        private double m_StrutCapacity;
         [Category("Sidewalk")]
         [Description("StrutCapacity")]
         public double StrutCapacity
@@ -13165,7 +13806,7 @@ namespace PPL_Model_Wrapper
            [Description("Pinned")]
            Pinned     //Strut Pinned
         }
-        private StrutFixity_val m_StrutFixity = StrutFixity_val.Pinned;
+        private StrutFixity_val m_StrutFixity;
         [Category("Sidewalk")]
         [Description("StrutFixity")]
         public StrutFixity_val StrutFixity
@@ -13216,7 +13857,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_MergeStruts = false;
+        private bool m_MergeStruts;
         [Category("Sidewalk")]
         [Description("MergeStruts")]
         public bool MergeStruts
@@ -13239,7 +13880,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_DeltaHeightInInches = 0;
+        private double m_DeltaHeightInInches;
         [Category("Standard")]
         [Description("DeltaHeightInInches")]
         public double DeltaHeightInInches
@@ -13262,7 +13903,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Diameter = 0.5;
+        private double m_Diameter;
         [Category("Standard")]
         [Description("Diameter")]
         public double Diameter
@@ -13284,7 +13925,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PercentSolid = 1;
+        private double m_PercentSolid;
         [Category("Standard")]
         [Description("PercentSolid")]
         public double PercentSolid
@@ -13307,7 +13948,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PreTension = 700;
+        private double m_PreTension;
         [Category("Standard")]
         [Description("PreTension")]
         public double PreTension
@@ -13329,7 +13970,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_VerticalOffset = 0;
+        private double m_VerticalOffset;
         [Category("Control")]
         [Description("VerticalOffset")]
         public double VerticalOffset
@@ -13351,7 +13992,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_HorizontalOffset = 0;
+        private double m_HorizontalOffset;
         [Category("Control")]
         [Description("HorizontalOffset")]
         public double HorizontalOffset
@@ -13374,7 +14015,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LateralOffset = 0;
+        private double m_LateralOffset;
         [Category("Control")]
         [Description("LateralOffset")]
         public double LateralOffset
@@ -13403,7 +14044,7 @@ namespace PPL_Model_Wrapper
            [Description("Manual")]
            Manual     //Manual
         }
-        private Tension_Mode_val m_Tension_Mode = Tension_Mode_val.Calculated;
+        private Tension_Mode_val m_Tension_Mode;
         [Category("Control")]
         [Description("Tension Mode")]
         public Tension_Mode_val Tension_Mode
@@ -13456,7 +14097,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Tension = 1500;
+        private double m_Tension;
         [Category("Control")]
         [Description("Tension")]
         public double Tension
@@ -13479,7 +14120,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RTS_Strength = 26900;
+        private double m_RTS_Strength;
         [Category("Standard")]
         [Description("RTS Strength")]
         public double RTS_Strength
@@ -13502,7 +14143,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoundsPerInch = 0.03408;
+        private double m_PoundsPerInch;
         [Category("Standard")]
         [Description("PoundsPerInch")]
         public double PoundsPerInch
@@ -13525,7 +14166,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ModulusOfElasticity = 26000000;
+        private double m_ModulusOfElasticity;
         [Category("Standard")]
         [Description("ModulusOfElasticity")]
         public double ModulusOfElasticity
@@ -13547,7 +14188,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Standard")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -13568,7 +14209,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_GuyMaterial = "<Default>";
+        private string m_GuyMaterial;
         [Category("Material Override")]
         [Description("GuyMaterial")]
         public string GuyMaterial
@@ -13589,7 +14230,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_StrutMaterial = "<Default>";
+        private string m_StrutMaterial;
         [Category("Material Override")]
         [Description("StrutMaterial")]
         public string StrutMaterial
@@ -13611,6 +14252,24 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Riser";
       public override string XMLkey() { return gXMLkey; }
 
+      public Riser(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Riser";
+               m_Owner = "<Undefined>";
+               m_CoordinateA = 1.5707963267949;
+               m_DiameterInInches = 3.5;
+               m_OffsetInInches = 0;
+               m_LengthAboveGLInInches = 300;
+               m_PoundsPerInch = 0.0833333;
+               m_Apply_Wind = false;
+               m_WindDragCoef = 0;
+               m_Wind_Shadowing = false;
+               m_Self_Supporting = false;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -13628,7 +14287,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Riser";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -13648,7 +14307,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -13671,7 +14330,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 1.5707963267949;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -13694,7 +14353,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DiameterInInches = 3.5;
+        private double m_DiameterInInches;
         [Category("Standard")]
         [Description("DiameterInInches")]
         public double DiameterInInches
@@ -13717,7 +14376,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_OffsetInInches = 0;
+        private double m_OffsetInInches;
         [Category("Standard")]
         [Description("OffsetInInches")]
         public double OffsetInInches
@@ -13740,7 +14399,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthAboveGLInInches = 300;
+        private double m_LengthAboveGLInInches;
         [Category("Standard")]
         [Description("LengthAboveGLInInches")]
         public double LengthAboveGLInInches
@@ -13763,7 +14422,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoundsPerInch = 0.0833333;
+        private double m_PoundsPerInch;
         [Category("Load Analysis")]
         [Description("PoundsPerInch")]
         public double PoundsPerInch
@@ -13783,7 +14442,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_Apply_Wind = false;
+        private bool m_Apply_Wind;
         [Category("Load Analysis")]
         [Description("Apply Wind")]
         public bool Apply_Wind
@@ -13805,7 +14464,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Load Analysis")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -13825,7 +14484,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_Wind_Shadowing = false;
+        private bool m_Wind_Shadowing;
         [Category("Load Analysis")]
         [Description("Wind Shadowing")]
         public bool Wind_Shadowing
@@ -13845,7 +14504,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_Self_Supporting = false;
+        private bool m_Self_Supporting;
         [Category("Load Analysis")]
         [Description("Self Supporting")]
         public bool Self_Supporting
@@ -13867,6 +14526,32 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "GenericEquipment";
       public override string XMLkey() { return gXMLkey; }
 
+      public GenericEquipment(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_CoordinateX = 10;
+               m_Description = "Generic Equipment";
+               m_Owner = "<Undefined>";
+               m_CoordinateZ = 420;
+               m_CoordinateZ_Rel = 0;
+               m_CoordinateA = 0;
+               m_Parent_Gap = 6;
+               m_Shape = Shape_val.Box;
+               m_DiameterOrWidthInInches = 12;
+               m_DepthInInches = 12;
+               m_HeightInInches = 12;
+               m_Pitch = 0;
+               m_Roll = 0;
+               m_Yaw = 0;
+               m_Weight = 10;
+               m_WindDragCoef = 0;
+               m_Color = "#FF4682B4";
+               m_ShowLabel = false;
+               m_TextColor = "#FFFFFF00";
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is GenericEquipment) return true;
@@ -13886,7 +14571,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   No
         //   Include When Substituting:   No
-        private double m_CoordinateX = 10;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -13906,7 +14591,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Generic Equipment";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -13926,7 +14611,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -13949,7 +14634,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 420;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -13972,7 +14657,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ_Rel = 0;
+        private double m_CoordinateZ_Rel;
         [Category("Standard")]
         [Description("CoordinateZ_Rel")]
         public double CoordinateZ_Rel
@@ -13995,7 +14680,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -14018,7 +14703,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Parent_Gap = 6;
+        private double m_Parent_Gap;
         [Category("Standard")]
         [Description("Parent Gap")]
         public double Parent_Gap
@@ -14047,7 +14732,7 @@ namespace PPL_Model_Wrapper
            [Description("Cylinder")]
            Cylinder     //Cylinder
         }
-        private Shape_val m_Shape = Shape_val.Box;
+        private Shape_val m_Shape;
         [Category("Specifications")]
         [Description("Shape")]
         public Shape_val Shape
@@ -14100,7 +14785,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DiameterOrWidthInInches = 12;
+        private double m_DiameterOrWidthInInches;
         [Category("Specifications")]
         [Description("DiameterOrWidthInInches")]
         public double DiameterOrWidthInInches
@@ -14123,7 +14808,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DepthInInches = 12;
+        private double m_DepthInInches;
         [Category("Specifications")]
         [Description("DepthInInches")]
         public double DepthInInches
@@ -14146,7 +14831,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HeightInInches = 12;
+        private double m_HeightInInches;
         [Category("Specifications")]
         [Description("HeightInInches")]
         public double HeightInInches
@@ -14169,7 +14854,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Pitch = 0;
+        private double m_Pitch;
         [Category("Standard")]
         [Description("Pitch")]
         public double Pitch
@@ -14192,7 +14877,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Roll = 0;
+        private double m_Roll;
         [Category("Standard")]
         [Description("Roll")]
         public double Roll
@@ -14215,7 +14900,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Yaw = 0;
+        private double m_Yaw;
         [Category("Standard")]
         [Description("Yaw")]
         public double Yaw
@@ -14238,7 +14923,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 10;
+        private double m_Weight;
         [Category("Specifications")]
         [Description("Weight")]
         public double Weight
@@ -14260,7 +14945,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Specifications")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -14281,7 +14966,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Color = "#FF4682B4";
+        private string m_Color;
         [Category("Specifications")]
         [Description("Color")]
         public string Color
@@ -14302,7 +14987,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_ShowLabel = false;
+        private bool m_ShowLabel;
         [Category("Specifications")]
         [Description("ShowLabel")]
         public bool ShowLabel
@@ -14323,7 +15008,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_TextColor = "#FFFFFF00";
+        private string m_TextColor;
         [Category("Specifications")]
         [Description("TextColor")]
         public string TextColor
@@ -14344,6 +15029,20 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "PoleRestoration";
       public override string XMLkey() { return gXMLkey; }
+
+      public PoleRestoration(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Type = Type_val.C2;
+               m_Description = "Osmose";
+               m_Owner = "<Undefined>";
+               m_LengthInInches = 120;
+               m_MomentCapacityTable = new ValTable("Moment;0,10000;");
+               m_CoordinateZ = 160;
+               m_CoordinateA = 0;
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -14386,7 +15085,7 @@ namespace PPL_Model_Wrapper
            [Description("Wrap")]
            Wrap     //Other Pole Wrap
         }
-        private Type_val m_Type = Type_val.C2;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -14456,7 +15155,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Osmose";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -14476,7 +15175,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -14499,7 +15198,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LengthInInches = 120;
+        private double m_LengthInInches;
         [Category("Standard")]
         [Description("LengthInInches")]
         public double LengthInInches
@@ -14521,10 +15220,10 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_MomentCapacityTable = "Moment;0,10000;";
+        private ValTable m_MomentCapacityTable = new ValTable();
         [Category("Standard")]
         [Description("MomentCapacityTable")]
-        public string MomentCapacityTable
+        public ValTable MomentCapacityTable
         {
            get { return m_MomentCapacityTable; }
            set { m_MomentCapacityTable = value; }
@@ -14544,7 +15243,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 160;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -14567,7 +15266,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -14589,6 +15288,19 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Clearance";
       public override string XMLkey() { return gXMLkey; }
 
+      public Clearance(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Clearance";
+               m_Group = Group_val.Primary_Span;
+               m_Mode = Mode_val.Automatic;
+               m_SagMinimum = 0;
+               m_SagNominal = 0;
+               m_SagMaximum = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -14606,7 +15318,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Clearance";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -14639,7 +15351,7 @@ namespace PPL_Model_Wrapper
            [Description("Telco")]
            Telco     //Telco
         }
-        private Group_val m_Group = Group_val.Primary_Span;
+        private Group_val m_Group;
         [Category("Standard")]
         [Description("Group")]
         public Group_val Group
@@ -14706,7 +15418,7 @@ namespace PPL_Model_Wrapper
            [Description("External")]
            External     //External
         }
-        private Mode_val m_Mode = Mode_val.Automatic;
+        private Mode_val m_Mode;
         [Category("Standard")]
         [Description("Mode")]
         public Mode_val Mode
@@ -14763,7 +15475,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SagMinimum = 0;
+        private double m_SagMinimum;
         [Category("Standard")]
         [Description("SagMinimum")]
         public double SagMinimum
@@ -14786,7 +15498,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SagNominal = 0;
+        private double m_SagNominal;
         [Category("Standard")]
         [Description("SagNominal")]
         public double SagNominal
@@ -14809,7 +15521,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SagMaximum = 0;
+        private double m_SagMaximum;
         [Category("Standard")]
         [Description("SagMaximum")]
         public double SagMaximum
@@ -14831,6 +15543,28 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "SpanAddition";
       public override string XMLkey() { return gXMLkey; }
 
+      public SpanAddition(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Span Addition";
+               m_Owner = "<Undefined>";
+               m_Type = Type_val.Aviation_Ball;
+               m_OffsetInches = 120;
+               m_Size = 20;
+               m_Weight = 7;
+               m_WindDragCoef = 0;
+               m_LoopOrientation = LoopOrientation_val.Vertical;
+               m_LoopPosition = LoopPosition_val.Minus;
+               m_LeadOne = false;
+               m_LeadOnePosition = LeadOnePosition_val.Minus;
+               m_LeadOneOffset = 80;
+               m_LeadTwo = false;
+               m_LeadTwoPosition = LeadTwoPosition_val.Plus;
+               m_LeadTwoOffset = 80;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -14848,7 +15582,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Span Addition";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -14868,7 +15602,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -14913,7 +15647,7 @@ namespace PPL_Model_Wrapper
            [Description("Other")]
            Other     //Other
         }
-        private Type_val m_Type = Type_val.Aviation_Ball;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -14986,7 +15720,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_OffsetInches = 120;
+        private double m_OffsetInches;
         [Category("Standard")]
         [Description("OffsetInches")]
         public double OffsetInches
@@ -15009,7 +15743,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Size = 20;
+        private double m_Size;
         [Category("Standard")]
         [Description("Size")]
         public double Size
@@ -15032,7 +15766,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 7;
+        private double m_Weight;
         [Category("Standard")]
         [Description("Weight")]
         public double Weight
@@ -15054,7 +15788,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindDragCoef = 0;
+        private double m_WindDragCoef;
         [Category("Standard")]
         [Description("WindDragCoef")]
         public double WindDragCoef
@@ -15084,7 +15818,7 @@ namespace PPL_Model_Wrapper
            [Description("Horizontal")]
            Horizontal     //Horizontal
         }
-        private LoopOrientation_val m_LoopOrientation = LoopOrientation_val.Vertical;
+        private LoopOrientation_val m_LoopOrientation;
         [Category("Loop")]
         [Description("LoopOrientation")]
         public LoopOrientation_val LoopOrientation
@@ -15147,7 +15881,7 @@ namespace PPL_Model_Wrapper
            [Description("Minus")]
            Minus     //Minus
         }
-        private LoopPosition_val m_LoopPosition = LoopPosition_val.Minus;
+        private LoopPosition_val m_LoopPosition;
         [Category("Loop")]
         [Description("LoopPosition")]
         public LoopPosition_val LoopPosition
@@ -15202,7 +15936,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_LeadOne = false;
+        private bool m_LeadOne;
         [Category("Loop")]
         [Description("LeadOne")]
         public bool LeadOne
@@ -15235,7 +15969,7 @@ namespace PPL_Model_Wrapper
            [Description("Minus")]
            Minus     //Minus
         }
-        private LeadOnePosition_val m_LeadOnePosition = LeadOnePosition_val.Minus;
+        private LeadOnePosition_val m_LeadOnePosition;
         [Category("Loop")]
         [Description("LeadOnePosition")]
         public LeadOnePosition_val LeadOnePosition
@@ -15292,7 +16026,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeadOneOffset = 80;
+        private double m_LeadOneOffset;
         [Category("Loop")]
         [Description("LeadOneOffset")]
         public double LeadOneOffset
@@ -15313,7 +16047,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_LeadTwo = false;
+        private bool m_LeadTwo;
         [Category("Loop")]
         [Description("LeadTwo")]
         public bool LeadTwo
@@ -15346,7 +16080,7 @@ namespace PPL_Model_Wrapper
            [Description("Minus")]
            Minus     //Minus
         }
-        private LeadTwoPosition_val m_LeadTwoPosition = LeadTwoPosition_val.Plus;
+        private LeadTwoPosition_val m_LeadTwoPosition;
         [Category("Loop")]
         [Description("LeadTwoPosition")]
         public LeadTwoPosition_val LeadTwoPosition
@@ -15403,7 +16137,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LeadTwoOffset = 80;
+        private double m_LeadTwoOffset;
         [Category("Loop")]
         [Description("LeadTwoOffset")]
         public double LeadTwoOffset
@@ -15424,6 +16158,24 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "WoodPoleDamageOrDecay";
       public override string XMLkey() { return gXMLkey; }
+
+      public WoodPoleDamageOrDecay(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Type = Type_val.Void;
+               m_Description = "";
+               m_Owner = "<Undefined>";
+               m_WidthInInches = 1;
+               m_HeightInInches = 1;
+               m_DepthInInches = 1;
+               m_ShellThicknessInInches = 4;
+               m_ReducedCircumference = 1;
+               m_EntryWidthInInches = 1;
+               m_CoordinateZ = 120;
+               m_CoordinateA = 0;
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -15475,7 +16227,7 @@ namespace PPL_Model_Wrapper
            [Description("Woodpecker Nest")]
            Woodpecker_Nest     //Woodpecker Nest
         }
-        private Type_val m_Type = Type_val.Void;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -15557,7 +16309,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -15577,7 +16329,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -15600,7 +16352,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WidthInInches = 1;
+        private double m_WidthInInches;
         [Category("Standard")]
         [Description("WidthInInches")]
         public double WidthInInches
@@ -15623,7 +16375,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HeightInInches = 1;
+        private double m_HeightInInches;
         [Category("Standard")]
         [Description("HeightInInches")]
         public double HeightInInches
@@ -15646,7 +16398,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DepthInInches = 1;
+        private double m_DepthInInches;
         [Category("Standard")]
         [Description("DepthInInches")]
         public double DepthInInches
@@ -15669,7 +16421,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShellThicknessInInches = 4;
+        private double m_ShellThicknessInInches;
         [Category("Standard")]
         [Description("ShellThicknessInInches")]
         public double ShellThicknessInInches
@@ -15692,7 +16444,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ReducedCircumference = 1;
+        private double m_ReducedCircumference;
         [Category("Standard")]
         [Description("ReducedCircumference")]
         public double ReducedCircumference
@@ -15715,7 +16467,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_EntryWidthInInches = 1;
+        private double m_EntryWidthInInches;
         [Category("Standard")]
         [Description("EntryWidthInInches")]
         public double EntryWidthInInches
@@ -15738,7 +16490,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 120;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -15761,7 +16513,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -15783,6 +16535,20 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "CapacityAdjustment";
       public override string XMLkey() { return gXMLkey; }
 
+      public CapacityAdjustment(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "";
+               m_Owner = "<Undefined>";
+               m_HeightInInches = 1;
+               m_CoordinateZ = 120;
+               m_CoordinateA = 0;
+               m_MomentCapacity = 50000;
+               m_BucklingCapacity = 5000;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -15800,7 +16566,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -15820,7 +16586,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -15843,7 +16609,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_HeightInInches = 1;
+        private double m_HeightInInches;
         [Category("Standard")]
         [Description("HeightInInches")]
         public double HeightInInches
@@ -15866,7 +16632,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 120;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -15889,7 +16655,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -15911,7 +16677,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentCapacity = 50000;
+        private double m_MomentCapacity;
         [Category("Standard")]
         [Description("MomentCapacity")]
         public double MomentCapacity
@@ -15933,7 +16699,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BucklingCapacity = 5000;
+        private double m_BucklingCapacity;
         [Category("Standard")]
         [Description("BucklingCapacity")]
         public double BucklingCapacity
@@ -15955,9 +16721,23 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "MultiPoleStructure";
       public override string XMLkey() { return gXMLkey; }
 
+      public MultiPoleStructure(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_LineOfLead = 0;
+               m_ReportingMode = ReportingMode_val.Active_Leg;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is WoodPole) return true;
+         if(pChildCandidate is SteelPole) return true;
+         if(pChildCandidate is ConcretePole) return true;
+         if(pChildCandidate is CompositePole) return true;
          if(pChildCandidate is Crossarm) return true;
          if(pChildCandidate is LoadCase) return true;
          if(pChildCandidate is LatticeSection) return true;
@@ -15976,7 +16756,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -15996,7 +16776,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -16019,7 +16799,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -16049,7 +16829,7 @@ namespace PPL_Model_Wrapper
            [Description("Worst Leg")]
            Worst_Leg     //Worst Leg
         }
-        private ReportingMode_val m_ReportingMode = ReportingMode_val.Active_Leg;
+        private ReportingMode_val m_ReportingMode;
         [Category("Standard")]
         [Description("ReportingMode")]
         public ReportingMode_val ReportingMode
@@ -16101,6 +16881,22 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "LatticeStructure";
       public override string XMLkey() { return gXMLkey; }
 
+      public LatticeStructure(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Pole_Number = "Unset";
+               m_Owner = "Pole";
+               m_LineOfLead = 0;
+               m_NodeRenderDiam = 12;
+               m_BeamRenderDiam = 6;
+               m_RenderLoads = false;
+               m_GravitationalAccellerationX = 0;
+               m_GravitationalAccellerationY = 0;
+               m_GravitationalAccellerationZ = 2.68116666666667;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is LatticeSection) return true;
@@ -16120,7 +16916,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Pole_Number = "Unset";
+        private string m_Pole_Number;
         [Category("Standard")]
         [Description("Pole Number")]
         public string Pole_Number
@@ -16140,7 +16936,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "Pole";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -16163,7 +16959,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_LineOfLead = 0;
+        private double m_LineOfLead;
         [Category("Standard")]
         [Description("LineOfLead")]
         public double LineOfLead
@@ -16186,7 +16982,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_NodeRenderDiam = 12;
+        private double m_NodeRenderDiam;
         [Category("Standard")]
         [Description("NodeRenderDiam")]
         public double NodeRenderDiam
@@ -16200,7 +16996,7 @@ namespace PPL_Model_Wrapper
         //   Attr Name:   BeamRenderDiam
         //   Attr Group:Standard
         //   Alt Display Name:Beam Render (in)
-        //   Description:   Node render diameter
+        //   Description:   Beam render diameter
         //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
         //   User Level Required:   Limited users can NOT access this attribute
         //   Format Expression:   0.00
@@ -16209,13 +17005,34 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BeamRenderDiam = 6;
+        private double m_BeamRenderDiam;
         [Category("Standard")]
         [Description("BeamRenderDiam")]
         public double BeamRenderDiam
         {
            get { return m_BeamRenderDiam; }
            set { m_BeamRenderDiam = value; }
+        }
+
+
+
+        //   Attr Name:   RenderLoads
+        //   Attr Group:Standard
+        //   Alt Display Name:Render Loads
+        //   Description:   Render loads
+        //   User Level Required:   Limited users can NOT access this attribute
+        //   Attribute Type:   BOOLEAN
+        //   Default Value:   Yes
+        //   ReadOnly Value:   No
+        //   Visible in Data Entry Panel:   Yes
+        //   Include When Substituting:   Yes
+        private bool m_RenderLoads;
+        [Category("Standard")]
+        [Description("RenderLoads")]
+        public bool RenderLoads
+        {
+           get { return m_RenderLoads; }
+           set { m_RenderLoads = value; }
         }
 
 
@@ -16232,7 +17049,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_GravitationalAccellerationX = 0;
+        private double m_GravitationalAccellerationX;
         [Category("Gravity")]
         [Description("GravitationalAccellerationX")]
         public double GravitationalAccellerationX
@@ -16255,7 +17072,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_GravitationalAccellerationY = 0;
+        private double m_GravitationalAccellerationY;
         [Category("Gravity")]
         [Description("GravitationalAccellerationY")]
         public double GravitationalAccellerationY
@@ -16278,7 +17095,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_GravitationalAccellerationZ = 2.68116666666667;
+        private double m_GravitationalAccellerationZ;
         [Category("Gravity")]
         [Description("GravitationalAccellerationZ")]
         public double GravitationalAccellerationZ
@@ -16299,6 +17116,23 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "LatticeSection";
       public override string XMLkey() { return gXMLkey; }
+
+      public LatticeSection(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Section";
+               m_Name = "";
+               m_CoordinateZ = 0;
+               m_Width = 0;
+               m_Depth = 0;
+               m_Height = 0;
+               m_OverrideRendering = false;
+               m_NodeRenderDiam = 20;
+               m_BeamRenderDiam = 12;
+               m_RenderLoads = false;
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -16321,7 +17155,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Section";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -16341,7 +17175,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -16364,7 +17198,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 0;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -16387,7 +17221,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Width = 0;
+        private double m_Width;
         [Category("Standard")]
         [Description("Width")]
         public double Width
@@ -16410,7 +17244,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Depth = 0;
+        private double m_Depth;
         [Category("Standard")]
         [Description("Depth")]
         public double Depth
@@ -16433,7 +17267,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Height = 0;
+        private double m_Height;
         [Category("Standard")]
         [Description("Height")]
         public double Height
@@ -16454,7 +17288,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideRendering = false;
+        private bool m_OverrideRendering;
         [Category("Rendering")]
         [Description("OverrideRendering")]
         public bool OverrideRendering
@@ -16477,7 +17311,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_NodeRenderDiam = 20;
+        private double m_NodeRenderDiam;
         [Category("Rendering")]
         [Description("NodeRenderDiam")]
         public double NodeRenderDiam
@@ -16491,7 +17325,7 @@ namespace PPL_Model_Wrapper
         //   Attr Name:   BeamRenderDiam
         //   Attr Group:Rendering
         //   Alt Display Name:Beam Render (in)
-        //   Description:   Node render diameter
+        //   Description:   Beam render diameter
         //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
         //   User Level Required:   Limited users can NOT access this attribute
         //   Format Expression:   0.00
@@ -16500,13 +17334,34 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BeamRenderDiam = 12;
+        private double m_BeamRenderDiam;
         [Category("Rendering")]
         [Description("BeamRenderDiam")]
         public double BeamRenderDiam
         {
            get { return m_BeamRenderDiam; }
            set { m_BeamRenderDiam = value; }
+        }
+
+
+
+        //   Attr Name:   RenderLoads
+        //   Attr Group:Rendering
+        //   Alt Display Name:Render Loads
+        //   Description:   Render loads
+        //   User Level Required:   Limited users can NOT access this attribute
+        //   Attribute Type:   BOOLEAN
+        //   Default Value:   Yes
+        //   ReadOnly Value:   No
+        //   Visible in Data Entry Panel:   Yes
+        //   Include When Substituting:   Yes
+        private bool m_RenderLoads;
+        [Category("Rendering")]
+        [Description("RenderLoads")]
+        public bool RenderLoads
+        {
+           get { return m_RenderLoads; }
+           set { m_RenderLoads = value; }
         }
 
    }
@@ -16521,6 +17376,22 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "LatticeGroup";
       public override string XMLkey() { return gXMLkey; }
+
+      public LatticeGroup(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Group";
+               m_Name = "<tbd>";
+               m_Width = 0;
+               m_Depth = 0;
+               m_Height = 0;
+               m_OverrideRendering = false;
+               m_NodeRenderDiam = 20;
+               m_BeamRenderDiam = 12;
+               m_RenderLoads = false;
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -16542,7 +17413,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Group";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -16562,7 +17433,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "<tbd>";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -16585,7 +17456,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Width = 0;
+        private double m_Width;
         [Category("Standard")]
         [Description("Width")]
         public double Width
@@ -16608,7 +17479,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Depth = 0;
+        private double m_Depth;
         [Category("Standard")]
         [Description("Depth")]
         public double Depth
@@ -16631,7 +17502,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Height = 0;
+        private double m_Height;
         [Category("Standard")]
         [Description("Height")]
         public double Height
@@ -16652,7 +17523,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideRendering = false;
+        private bool m_OverrideRendering;
         [Category("Rendering")]
         [Description("OverrideRendering")]
         public bool OverrideRendering
@@ -16675,7 +17546,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_NodeRenderDiam = 20;
+        private double m_NodeRenderDiam;
         [Category("Rendering")]
         [Description("NodeRenderDiam")]
         public double NodeRenderDiam
@@ -16689,7 +17560,7 @@ namespace PPL_Model_Wrapper
         //   Attr Name:   BeamRenderDiam
         //   Attr Group:Rendering
         //   Alt Display Name:Beam Render (in)
-        //   Description:   Node render diameter
+        //   Description:   Beam render diameter
         //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
         //   User Level Required:   Limited users can NOT access this attribute
         //   Format Expression:   0.00
@@ -16698,13 +17569,34 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BeamRenderDiam = 12;
+        private double m_BeamRenderDiam;
         [Category("Rendering")]
         [Description("BeamRenderDiam")]
         public double BeamRenderDiam
         {
            get { return m_BeamRenderDiam; }
            set { m_BeamRenderDiam = value; }
+        }
+
+
+
+        //   Attr Name:   RenderLoads
+        //   Attr Group:Rendering
+        //   Alt Display Name:Render Loads
+        //   Description:   Render loads
+        //   User Level Required:   Limited users can NOT access this attribute
+        //   Attribute Type:   BOOLEAN
+        //   Default Value:   Yes
+        //   ReadOnly Value:   No
+        //   Visible in Data Entry Panel:   Yes
+        //   Include When Substituting:   Yes
+        private bool m_RenderLoads;
+        [Category("Rendering")]
+        [Description("RenderLoads")]
+        public bool RenderLoads
+        {
+           get { return m_RenderLoads; }
+           set { m_RenderLoads = value; }
         }
 
    }
@@ -16719,6 +17611,37 @@ namespace PPL_Model_Wrapper
 
       public static string gXMLkey = "Material";
       public override string XMLkey() { return gXMLkey; }
+
+      public Material(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Material";
+               m_Name = "<tbd>";
+               m_PoissonsRatio = 0.49;
+               m_YoungsModulus = 20000000;
+               m_Density = 0.0347222222222222;
+               m_ThermalCoefficient = 1.06E-05;
+               m_ShearAreaY = 8;
+               m_ShearAreaZ = 8;
+               m_ShearModulus = 8000000;
+               m_ShearStrengthY = 45000;
+               m_ShearStrengthZ = 45000;
+               m_BucklingStrength = 45000;
+               m_TensionStrength = 45000;
+               m_MomentCapacityY = 2000;
+               m_MomentCapacityZ = 2000;
+               m_MomentCapacityX = 2000;
+               m_Area = 11;
+               m_DimensionY = 6;
+               m_DimensionZ = 6;
+               m_IcePerimiter = 6;
+               m_WindArea = 11;
+               m_Iyy = 400;
+               m_Izz = 400;
+               m_Jxx = 200;
+          }
+      }
 
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
@@ -16737,7 +17660,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Material";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -16757,7 +17680,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "<tbd>";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -16779,7 +17702,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_PoissonsRatio = 0.49;
+        private double m_PoissonsRatio;
         [Category("Constants")]
         [Description("PoissonsRatio")]
         public double PoissonsRatio
@@ -16802,7 +17725,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_YoungsModulus = 20000000;
+        private double m_YoungsModulus;
         [Category("Constants")]
         [Description("YoungsModulus")]
         public double YoungsModulus
@@ -16825,7 +17748,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Density = 0.0347222222222222;
+        private double m_Density;
         [Category("Constants")]
         [Description("Density")]
         public double Density
@@ -16848,7 +17771,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ThermalCoefficient = 1.06E-05;
+        private double m_ThermalCoefficient;
         [Category("Constants")]
         [Description("ThermalCoefficient")]
         public double ThermalCoefficient
@@ -16871,7 +17794,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShearAreaY = 8;
+        private double m_ShearAreaY;
         [Category("Shear")]
         [Description("ShearAreaY")]
         public double ShearAreaY
@@ -16894,7 +17817,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShearAreaZ = 8;
+        private double m_ShearAreaZ;
         [Category("Shear")]
         [Description("ShearAreaZ")]
         public double ShearAreaZ
@@ -16917,7 +17840,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShearModulus = 8000000;
+        private double m_ShearModulus;
         [Category("Shear")]
         [Description("ShearModulus")]
         public double ShearModulus
@@ -16940,7 +17863,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShearStrengthY = 45000;
+        private double m_ShearStrengthY;
         [Category("Shear")]
         [Description("ShearStrengthY")]
         public double ShearStrengthY
@@ -16963,7 +17886,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShearStrengthZ = 45000;
+        private double m_ShearStrengthZ;
         [Category("Shear")]
         [Description("ShearStrengthZ")]
         public double ShearStrengthZ
@@ -16986,7 +17909,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BucklingStrength = 45000;
+        private double m_BucklingStrength;
         [Category("Capacity")]
         [Description("BucklingStrength")]
         public double BucklingStrength
@@ -17009,7 +17932,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_TensionStrength = 45000;
+        private double m_TensionStrength;
         [Category("Capacity")]
         [Description("TensionStrength")]
         public double TensionStrength
@@ -17032,7 +17955,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentCapacityY = 2000;
+        private double m_MomentCapacityY;
         [Category("Capacity")]
         [Description("MomentCapacityY")]
         public double MomentCapacityY
@@ -17055,7 +17978,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentCapacityZ = 2000;
+        private double m_MomentCapacityZ;
         [Category("Capacity")]
         [Description("MomentCapacityZ")]
         public double MomentCapacityZ
@@ -17078,7 +18001,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentCapacityX = 2000;
+        private double m_MomentCapacityX;
         [Category("Capacity")]
         [Description("MomentCapacityX")]
         public double MomentCapacityX
@@ -17101,7 +18024,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Area = 11;
+        private double m_Area;
         [Category("Dimensions")]
         [Description("Area")]
         public double Area
@@ -17124,7 +18047,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DimensionY = 6;
+        private double m_DimensionY;
         [Category("Dimensions")]
         [Description("DimensionY")]
         public double DimensionY
@@ -17147,7 +18070,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_DimensionZ = 6;
+        private double m_DimensionZ;
         [Category("Dimensions")]
         [Description("DimensionZ")]
         public double DimensionZ
@@ -17170,7 +18093,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_IcePerimiter = 6;
+        private double m_IcePerimiter;
         [Category("Dimensions")]
         [Description("IcePerimiter")]
         public double IcePerimiter
@@ -17193,7 +18116,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WindArea = 11;
+        private double m_WindArea;
         [Category("Dimensions")]
         [Description("WindArea")]
         public double WindArea
@@ -17216,7 +18139,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Iyy = 400;
+        private double m_Iyy;
         [Category("Moments")]
         [Description("Iyy")]
         public double Iyy
@@ -17239,7 +18162,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Izz = 400;
+        private double m_Izz;
         [Category("Moments")]
         [Description("Izz")]
         public double Izz
@@ -17262,7 +18185,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   Yes
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Jxx = 200;
+        private double m_Jxx;
         [Category("Moments")]
         [Description("Jxx")]
         public double Jxx
@@ -17284,6 +18207,24 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Node";
       public override string XMLkey() { return gXMLkey; }
 
+      public Node(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Node";
+               m_Name = "<tbd>";
+               m_CoordinateX = 0;
+               m_CoordinateY = 0;
+               m_CoordinateZ = 0;
+               m_NodeRadius = 0;
+               m_ShearStrength = 45000;
+               m_MergeNode = false;
+               m_MergeTollerance = 2;
+               m_OverrideRendering = false;
+               m_NodeRenderDiam = 20;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is NodeConstraint) return true;
@@ -17304,7 +18245,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Node";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -17324,7 +18265,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "<tbd>";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -17347,7 +18288,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -17370,7 +18311,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateY = 0;
+        private double m_CoordinateY;
         [Category("Standard")]
         [Description("CoordinateY")]
         public double CoordinateY
@@ -17393,7 +18334,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 0;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -17416,7 +18357,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_NodeRadius = 0;
+        private double m_NodeRadius;
         [Category("Parameters")]
         [Description("NodeRadius")]
         public double NodeRadius
@@ -17439,7 +18380,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_ShearStrength = 45000;
+        private double m_ShearStrength;
         [Category("Parameters")]
         [Description("ShearStrength")]
         public double ShearStrength
@@ -17460,7 +18401,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_MergeNode = false;
+        private bool m_MergeNode;
         [Category("Merge Nodes")]
         [Description("MergeNode")]
         public bool MergeNode
@@ -17483,7 +18424,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MergeTollerance = 2;
+        private double m_MergeTollerance;
         [Category("Merge Nodes")]
         [Description("MergeTollerance")]
         public double MergeTollerance
@@ -17504,7 +18445,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideRendering = false;
+        private bool m_OverrideRendering;
         [Category("Rendering")]
         [Description("OverrideRendering")]
         public bool OverrideRendering
@@ -17527,7 +18468,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_NodeRenderDiam = 20;
+        private double m_NodeRenderDiam;
         [Category("Rendering")]
         [Description("NodeRenderDiam")]
         public double NodeRenderDiam
@@ -17549,6 +18490,22 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "NodeJunction";
       public override string XMLkey() { return gXMLkey; }
 
+      public NodeJunction(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Junction";
+               m_Owner = "<Undefined>";
+               m_Node = "<node>";
+               m_CoordinateZ = 300;
+               m_CoordinateA = 0;
+               m_Side = Side_val.Inline;
+               m_CoordinateX = 0;
+               m_WidthInInches = 3;
+               m_Weight = 1;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -17566,7 +18523,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Junction";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -17586,7 +18543,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Owner = "<Undefined>";
+        private string m_Owner;
         [Category("Standard")]
         [Description("Owner")]
         public string Owner
@@ -17606,7 +18563,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private string m_Node = "<node>";
+        private string m_Node;
         [Category("Standard")]
         [Description("Node")]
         public string Node
@@ -17629,7 +18586,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateZ = 300;
+        private double m_CoordinateZ;
         [Category("Standard")]
         [Description("CoordinateZ")]
         public double CoordinateZ
@@ -17652,7 +18609,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateA = 0;
+        private double m_CoordinateA;
         [Category("Standard")]
         [Description("CoordinateA")]
         public double CoordinateA
@@ -17697,7 +18654,7 @@ namespace PPL_Model_Wrapper
            [Description("Both")]
            Both     //Both
         }
-        private Side_val m_Side = Side_val.Inline;
+        private Side_val m_Side;
         [Category("Standard")]
         [Description("Side")]
         public Side_val Side
@@ -17770,7 +18727,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   No
-        private double m_CoordinateX = 0;
+        private double m_CoordinateX;
         [Category("Standard")]
         [Description("CoordinateX")]
         public double CoordinateX
@@ -17784,7 +18741,7 @@ namespace PPL_Model_Wrapper
         //   Attr Name:   WidthInInches
         //   Attr Group:Standard
         //   Alt Display Name:Unit Width (in)
-        //   Description:   The effective width for wind area of the insulator structure
+        //   Description:   The effective width for wind area of the junction bolt
         //   Displayed Units:   store as INCHES display as INCHES or CENTIMETERS
         //   User Level Required:   All user levels may access this attribute
         //   Format Expression:   0.00
@@ -17793,7 +18750,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_WidthInInches = 3;
+        private double m_WidthInInches;
         [Category("Standard")]
         [Description("WidthInInches")]
         public double WidthInInches
@@ -17816,7 +18773,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Weight = 1;
+        private double m_Weight;
         [Category("Standard")]
         [Description("Weight")]
         public double Weight
@@ -17838,6 +18795,24 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "NodeConstraint";
       public override string XMLkey() { return gXMLkey; }
 
+      public NodeConstraint(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Constraint";
+               m_Name = "";
+               m_LateralConstraints = LateralConstraints_val.X_Y_Z;
+               m_RotationConstraints = RotationConstraints_val.XX_YY_ZZ;
+               m_RotationHinges = RotationHinges_val.None;
+               m_SettleHeaveX = 0;
+               m_SettleHeaveY = 0;
+               m_SettleHeaveZ = 0;
+               m_RackingXX = 0;
+               m_RackingYY = 0;
+               m_RackingZZ = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -17855,7 +18830,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Constraint";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -17875,7 +18850,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -17923,7 +18898,7 @@ namespace PPL_Model_Wrapper
            [Description("Y,Z")]
            Y_Z     //Y,Z
         }
-        private LateralConstraints_val m_LateralConstraints = LateralConstraints_val.X_Y_Z;
+        private LateralConstraints_val m_LateralConstraints;
         [Category("Standard")]
         [Description("LateralConstraints")]
         public LateralConstraints_val LateralConstraints
@@ -18025,7 +19000,7 @@ namespace PPL_Model_Wrapper
            [Description("YY,ZZ")]
            YY_ZZ     //YY,ZZ
         }
-        private RotationConstraints_val m_RotationConstraints = RotationConstraints_val.XX_YY_ZZ;
+        private RotationConstraints_val m_RotationConstraints;
         [Category("Standard")]
         [Description("RotationConstraints")]
         public RotationConstraints_val RotationConstraints
@@ -18127,7 +19102,7 @@ namespace PPL_Model_Wrapper
            [Description("YY,ZZ")]
            YY_ZZ     //YY,ZZ
         }
-        private RotationHinges_val m_RotationHinges = RotationHinges_val.None;
+        private RotationHinges_val m_RotationHinges;
         [Category("Standard")]
         [Description("RotationHinges")]
         public RotationHinges_val RotationHinges
@@ -18204,7 +19179,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SettleHeaveX = 0;
+        private double m_SettleHeaveX;
         [Category("Standard")]
         [Description("SettleHeaveX")]
         public double SettleHeaveX
@@ -18227,7 +19202,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SettleHeaveY = 0;
+        private double m_SettleHeaveY;
         [Category("Standard")]
         [Description("SettleHeaveY")]
         public double SettleHeaveY
@@ -18250,7 +19225,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_SettleHeaveZ = 0;
+        private double m_SettleHeaveZ;
         [Category("Standard")]
         [Description("SettleHeaveZ")]
         public double SettleHeaveZ
@@ -18273,7 +19248,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RackingXX = 0;
+        private double m_RackingXX;
         [Category("Standard")]
         [Description("RackingXX")]
         public double RackingXX
@@ -18296,7 +19271,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RackingYY = 0;
+        private double m_RackingYY;
         [Category("Standard")]
         [Description("RackingYY")]
         public double RackingYY
@@ -18319,7 +19294,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_RackingZZ = 0;
+        private double m_RackingZZ;
         [Category("Standard")]
         [Description("RackingZZ")]
         public double RackingZZ
@@ -18341,6 +19316,21 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "NodeLoad";
       public override string XMLkey() { return gXMLkey; }
 
+      public NodeLoad(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Applied Load";
+               m_Name = "";
+               m_LoadX = 0;
+               m_LoadY = 0;
+               m_LoadZ = 0;
+               m_MomentX = 0;
+               m_MomentY = 0;
+               m_MomentZ = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -18358,7 +19348,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Applied Load";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -18378,7 +19368,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -18401,7 +19391,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LoadX = 0;
+        private double m_LoadX;
         [Category("Standard")]
         [Description("LoadX")]
         public double LoadX
@@ -18424,7 +19414,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LoadY = 0;
+        private double m_LoadY;
         [Category("Standard")]
         [Description("LoadY")]
         public double LoadY
@@ -18447,7 +19437,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LoadZ = 0;
+        private double m_LoadZ;
         [Category("Standard")]
         [Description("LoadZ")]
         public double LoadZ
@@ -18470,7 +19460,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentX = 0;
+        private double m_MomentX;
         [Category("Standard")]
         [Description("MomentX")]
         public double MomentX
@@ -18493,7 +19483,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentY = 0;
+        private double m_MomentY;
         [Category("Standard")]
         [Description("MomentY")]
         public double MomentY
@@ -18516,7 +19506,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_MomentZ = 0;
+        private double m_MomentZ;
         [Category("Standard")]
         [Description("MomentZ")]
         public double MomentZ
@@ -18538,6 +19528,21 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "Beam";
       public override string XMLkey() { return gXMLkey; }
 
+      public Beam(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Beam Element";
+               m_Name = "<tbd>";
+               m_Node1 = "<node 1>";
+               m_Node2 = "<node 1>";
+               m_Material = "<material>";
+               m_Mode = Mode_val.Standard;
+               m_OverrideRendering = false;
+               m_BeamRenderDiam = 12;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is BeamLoad) return true;
@@ -18556,7 +19561,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Beam Element";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -18576,7 +19581,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "<tbd>";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -18597,7 +19602,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Node1 = "<node 1>";
+        private string m_Node1;
         [Category("Standard")]
         [Description("Node1")]
         public string Node1
@@ -18618,7 +19623,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Node2 = "<node 1>";
+        private string m_Node2;
         [Category("Standard")]
         [Description("Node2")]
         public string Node2
@@ -18638,7 +19643,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Material = "<material>";
+        private string m_Material;
         [Category("Standard")]
         [Description("Material")]
         public string Material
@@ -18670,7 +19675,7 @@ namespace PPL_Model_Wrapper
            [Description("Tension Only")]
            Tension_Only     //Tension Only
         }
-        private Mode_val m_Mode = Mode_val.Standard;
+        private Mode_val m_Mode;
         [Category("Standard")]
         [Description("Mode")]
         public Mode_val Mode
@@ -18725,7 +19730,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private bool m_OverrideRendering = false;
+        private bool m_OverrideRendering;
         [Category("Rendering")]
         [Description("OverrideRendering")]
         public bool OverrideRendering
@@ -18748,7 +19753,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_BeamRenderDiam = 12;
+        private double m_BeamRenderDiam;
         [Category("Rendering")]
         [Description("BeamRenderDiam")]
         public double BeamRenderDiam
@@ -18770,6 +19775,20 @@ namespace PPL_Model_Wrapper
       public static string gXMLkey = "BeamLoad";
       public override string XMLkey() { return gXMLkey; }
 
+      public BeamLoad(bool pInitialize = false)
+      {
+          if(pInitialize)
+          {
+               m_Description = "Applied Load";
+               m_Name = "";
+               m_Type = Type_val.Uniform;
+               m_LoadX = 0;
+               m_LoadY = 0;
+               m_LoadZ = 0;
+               m_Offset = 0;
+          }
+      }
+
       public override bool IsLegalChild(ElementBase pChildCandidate)
       {
          if(pChildCandidate is Notes) return true;
@@ -18787,7 +19806,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Description = "Applied Load";
+        private string m_Description;
         [Category("Standard")]
         [Description("Description")]
         public string Description
@@ -18807,7 +19826,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private string m_Name = "";
+        private string m_Name;
         [Category("Standard")]
         [Description("Name")]
         public string Name
@@ -18836,7 +19855,7 @@ namespace PPL_Model_Wrapper
            [Description("Point")]
            Point     //Point
         }
-        private Type_val m_Type = Type_val.Uniform;
+        private Type_val m_Type;
         [Category("Standard")]
         [Description("Type")]
         public Type_val Type
@@ -18889,7 +19908,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LoadX = 0;
+        private double m_LoadX;
         [Category("Standard")]
         [Description("LoadX")]
         public double LoadX
@@ -18912,7 +19931,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LoadY = 0;
+        private double m_LoadY;
         [Category("Standard")]
         [Description("LoadY")]
         public double LoadY
@@ -18935,7 +19954,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_LoadZ = 0;
+        private double m_LoadZ;
         [Category("Standard")]
         [Description("LoadZ")]
         public double LoadZ
@@ -18958,7 +19977,7 @@ namespace PPL_Model_Wrapper
         //   ReadOnly Value:   No
         //   Visible in Data Entry Panel:   Yes
         //   Include When Substituting:   Yes
-        private double m_Offset = 0;
+        private double m_Offset;
         [Category("Standard")]
         [Description("Offset")]
         public double Offset
@@ -18968,6 +19987,52 @@ namespace PPL_Model_Wrapper
         }
 
    }
+
+    public class ElementClassFactory
+    {
+         public static ElementBase Build(String pKey)
+         {
+             if(pKey == "Scene") return new Scene(true);
+             if(pKey == "LoadCase") return new LoadCase(true);
+             if(pKey == "Notes") return new Notes(true);
+             if(pKey == "PoleInfoPoint") return new PoleInfoPoint(true);
+             if(pKey == "PoleSegment") return new PoleSegment(true);
+             if(pKey == "WoodPole") return new WoodPole(true);
+             if(pKey == "SteelPole") return new SteelPole(true);
+             if(pKey == "ConcretePole") return new ConcretePole(true);
+             if(pKey == "CompositePole") return new CompositePole(true);
+             if(pKey == "SegmentedPole") return new SegmentedPole(true);
+             if(pKey == "Anchor") return new Anchor(true);
+             if(pKey == "Crossarm") return new Crossarm(true);
+             if(pKey == "Insulator") return new Insulator(true);
+             if(pKey == "Span") return new Span(true);
+             if(pKey == "SpanBundle") return new SpanBundle(true);
+             if(pKey == "Tap") return new Tap(true);
+             if(pKey == "PowerEquipment") return new PowerEquipment(true);
+             if(pKey == "Streetlight") return new Streetlight(true);
+             if(pKey == "GuyBrace") return new GuyBrace(true);
+             if(pKey == "Riser") return new Riser(true);
+             if(pKey == "GenericEquipment") return new GenericEquipment(true);
+             if(pKey == "PoleRestoration") return new PoleRestoration(true);
+             if(pKey == "Clearance") return new Clearance(true);
+             if(pKey == "SpanAddition") return new SpanAddition(true);
+             if(pKey == "WoodPoleDamageOrDecay") return new WoodPoleDamageOrDecay(true);
+             if(pKey == "CapacityAdjustment") return new CapacityAdjustment(true);
+             if(pKey == "MultiPoleStructure") return new MultiPoleStructure(true);
+             if(pKey == "LatticeStructure") return new LatticeStructure(true);
+             if(pKey == "LatticeSection") return new LatticeSection(true);
+             if(pKey == "LatticeGroup") return new LatticeGroup(true);
+             if(pKey == "Material") return new Material(true);
+             if(pKey == "Node") return new Node(true);
+             if(pKey == "NodeJunction") return new NodeJunction(true);
+             if(pKey == "NodeConstraint") return new NodeConstraint(true);
+             if(pKey == "NodeLoad") return new NodeLoad(true);
+             if(pKey == "Beam") return new Beam(true);
+             if(pKey == "BeamLoad") return new BeamLoad(true);
+             return null;
+         }
+    }
+
     public class EnumValsList
     {
         public static string EnumToString(string pKey)
@@ -18975,49 +20040,51 @@ namespace PPL_Model_Wrapper
            switch(pKey)
            {
            case "NESC": return "NESC";
+           case "Linear": return "Linear";
+           case "Fixed": return "Fixed";
+           case "Advanced": return "Advanced";
+           case "WindType_2007": return "2007";
+           case "B": return "B";
+           case "Unknown": return "Unknown";
+           case "At_Installation": return "At Installation";
+           case "N_A": return "N/A";
+           case "Tip": return "Tip";
+           case "Rule_250B": return "Rule 250B";
+           case "Standard": return "Standard";
+           case "Load": return "Load";
            case "GO_95": return "GO 95";
            case "ASCE": return "ASCE";
            case "CSA": return "CSA";
            case "AS_NZS_7000": return "AS/NZS 7000";
-           case "N_A": return "N/A";
-           case "Linear": return "Linear";
            case "Deflection_1_Iteration_P_Delta": return "1 Iteration P-Δ";
            case "Deflection_2nd_Order_P_Delta": return "2nd Order P-Δ";
-           case "Fixed": return "Fixed";
            case "Pinned": return "Pinned";
            case "Legacy": return "Legacy";
-           case "Advanced": return "Advanced";
+           case "F3DD": return "F3DD";
+           case "BFEA": return "BFEA";
            case "One": return "One";
            case "Two": return "Two";
            case "Three": return "Three";
            case "WindType_1997": return "1997";
            case "WindType_2002": return "2002";
-           case "WindType_2007": return "2007";
            case "WindType_2012": return "2012";
            case "A": return "A";
            case "F": return "F";
-           case "B": return "B";
            case "C": return "C";
            case "Construction_Grade_1": return "1";
            case "Construction_Grade_2": return "2";
            case "Construction_Grade_3": return "3";
-           case "Unknown": return "Unknown";
            case "None": return "None";
            case "At_Crossing": return "At Crossing";
-           case "At_Installation": return "At Installation";
            case "At_Replacement": return "At Replacement";
            case "D": return "D";
-           case "Tip": return "Tip";
            case "Actual": return "Actual";
-           case "Rule_250B": return "Rule 250B";
            case "Rule_250B_Alternate": return "Rule 250B Alternate";
            case "Rule_250C": return "Rule 250C";
            case "Rule_250D": return "Rule 250D";
-           case "Standard": return "Standard";
            case "Percent_BCH": return "Percent BCH";
            case "Tip_Deflection": return "Tip Deflection";
            case "Wind": return "Wind";
-           case "Load": return "Load";
            case "Relative": return "Relative";
            case "Round": return "Round";
            case "Polygonal": return "Polygonal";
@@ -19026,26 +20093,29 @@ namespace PPL_Model_Wrapper
            case "Cubed": return "Cubed";
            case "Fourth_Power": return "Fourth Power";
            case "Auto": return "Auto";
+           case "By_Specs": return "By Specs";
            case "Tangent": return "Tangent";
            case "Angle": return "Angle";
            case "Deadend": return "Deadend";
            case "Junction": return "Junction";
-           case "By_Specs": return "By Specs";
            case "Measured": return "Measured";
+           case "Pedestal": return "Pedestal";
            case "NESC_C2_2007": return "NESC C2-2007";
            case "CSA_C22_3_No__1_10": return "CSA C22.3 No. 1-10";
            case "Embedded": return "Embedded";
-           case "Pedestal": return "Pedestal";
+           case "Class_4": return "Class 4";
            case "Class_0": return "Class 0";
            case "Class_1": return "Class 1";
            case "Class_2": return "Class 2";
            case "Class_3": return "Class 3";
-           case "Class_4": return "Class 4";
            case "Class_5": return "Class 5";
            case "Class_6": return "Class 6";
            case "Class_7": return "Class 7";
            case "Class_8": return "Class 8";
            case "Normal": return "Normal";
+           case "Automatic": return "Automatic";
+           case "Superposition": return "Superposition";
+           case "Wood": return "Wood";
            case "Offset": return "Offset";
            case "Pole_Extension": return "Pole Extension";
            case "Full_Gull": return "Full Gull";
@@ -19053,16 +20123,16 @@ namespace PPL_Model_Wrapper
            case "Standoff": return "Standoff";
            case "Double": return "Double";
            case "Single": return "Single";
-           case "Automatic": return "Automatic";
            case "Manual": return "Manual";
-           case "Superposition": return "Superposition";
            case "Interaction": return "Interaction";
            case "Worst_Axis": return "Worst Axis";
-           case "Wood": return "Wood";
            case "Steel": return "Steel";
            case "Composite": return "Composite";
            case "Other": return "Other";
            case "Pin": return "Pin";
+           case "Inline": return "Inline";
+           case "_Default_": return "<Default>";
+           case "Clamped": return "Clamped";
            case "Post": return "Post";
            case "Davit": return "Davit";
            case "Spool": return "Spool";
@@ -19072,11 +20142,10 @@ namespace PPL_Model_Wrapper
            case "Bolt": return "Bolt";
            case "Street": return "Street";
            case "Field": return "Field";
-           case "Inline": return "Inline";
            case "Front": return "Front";
            case "Back": return "Back";
            case "Both": return "Both";
-           case "_Default_": return "<Default>";
+           case "Split": return "Split";
            case "Sheds_1": return "1";
            case "Sheds_2": return "2";
            case "Sheds_3": return "3";
@@ -19085,9 +20154,9 @@ namespace PPL_Model_Wrapper
            case "Sheds_6": return "6";
            case "Sheds_7": return "7";
            case "Sheds_8": return "8";
-           case "Clamped": return "Clamped";
            case "Free": return "Free";
            case "Primary": return "Primary";
+           case "Static": return "Static";
            case "Secondary": return "Secondary";
            case "Service": return "Service";
            case "Neutral": return "Neutral";
@@ -19095,7 +20164,6 @@ namespace PPL_Model_Wrapper
            case "CATV": return "CATV";
            case "Fiber": return "Fiber";
            case "Sub_Transmission": return "Sub-Transmission";
-           case "Static": return "Static";
            case "Slack": return "Slack";
            case "Table": return "Table";
            case "Sag_to_Tension": return "Sag to Tension";
@@ -19107,21 +20175,21 @@ namespace PPL_Model_Wrapper
            case "Flexpipe": return "Flexpipe";
            case "Irregular": return "Irregular";
            case "_See_Note_": return "(See Note)";
+           case "Individual": return "Individual";
            case "Spacers": return "Spacers";
            case "Bonded": return "Bonded";
            case "Twist_Braid": return "Twist/Braid";
            case "Wrapped": return "Wrapped";
-           case "Individual": return "Individual";
            case "Min_Circle": return "Min Circle";
            case "Convex_Hull": return "Convex Hull";
            case "Concave_Hull": return "Concave Hull";
            case "Transformer": return "Transformer";
+           case "Pole": return "Pole";
            case "Regulator": return "Regulator";
            case "Capacitor": return "Capacitor";
            case "Switch": return "Switch";
            case "Fuse": return "Fuse";
            case "Box": return "Box";
-           case "Pole": return "Pole";
            case "Rack": return "Rack";
            case "General": return "General";
            case "Decorative": return "Decorative";
@@ -19129,11 +20197,11 @@ namespace PPL_Model_Wrapper
            case "Flood_Light": return "Flood Light";
            case "Traffic_Signal": return "Traffic Signal";
            case "Down": return "Down";
+           case "Calculated": return "Calculated";
            case "Span_Head": return "Span/Head";
            case "Sidewalk": return "Sidewalk";
            case "Crossarm": return "Crossarm";
            case "Pushbrace": return "Pushbrace";
-           case "Calculated": return "Calculated";
            case "Cylinder": return "Cylinder";
            case "C2": return "C2";
            case "ET": return "ET";
@@ -19143,23 +20211,23 @@ namespace PPL_Model_Wrapper
            case "Wrap": return "Wrap";
            case "Primary_Span": return "Primary Span";
            case "External": return "External";
+           case "Aviation_Ball": return "Aviation Ball";
+           case "Vertical": return "Vertical";
+           case "Minus": return "Minus";
+           case "Plus": return "Plus";
            case "Cut_Out": return "Cut-Out";
            case "Splice": return "Splice";
            case "Damper": return "Damper";
-           case "Aviation_Ball": return "Aviation Ball";
            case "Perch_Stopper": return "Perch Stopper";
            case "Maintenance_Loop": return "Maintenance Loop";
-           case "Vertical": return "Vertical";
            case "Horizontal": return "Horizontal";
-           case "Plus": return "Plus";
            case "Center": return "Center";
-           case "Minus": return "Minus";
+           case "Void": return "Void";
            case "Vehicle_Scrape": return "Vehicle Scrape";
            case "Saw_Cut": return "Saw Cut";
            case "Mower_Cut": return "Mower Cut";
            case "Exposed_Pocket": return "Exposed Pocket";
            case "Enclosed_Pocket": return "Enclosed Pocket";
-           case "Void": return "Void";
            case "Heart_Rot": return "Heart Rot";
            case "Shell_Reduction": return "Shell Reduction";
            case "Woodpecker_Hole": return "Woodpecker Hole";
@@ -19167,13 +20235,13 @@ namespace PPL_Model_Wrapper
            case "Active_Leg": return "Active Leg";
            case "Worst_Leg": return "Worst Leg";
            case "X_Y_Z": return "X,Y,Z";
+           case "XX_YY_ZZ": return "XX,YY,ZZ";
            case "X": return "X";
            case "Y": return "Y";
            case "Z": return "Z";
            case "X_Y": return "X,Y";
            case "X_Z": return "X,Z";
            case "Y_Z": return "Y,Z";
-           case "XX_YY_ZZ": return "XX,YY,ZZ";
            case "XX": return "XX";
            case "YY": return "YY";
            case "ZZ": return "ZZ";
