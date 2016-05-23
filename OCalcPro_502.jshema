@@ -1,0 +1,2425 @@
+
+
+"Scene" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "SelectedLoadCase":<integer>  //SelectedLoadCase
+   "PPLVersion":<integer>  //PPLVersion
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+
+"Notes_Normal" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the note
+   "Type":<string>  //Note type
+   "Owner":<string>  //Owner
+   "Author":<string>  //Author of the note
+   "Date":<date>  //Creation date of the note
+   "Contents":<string>  //RTF Contents
+   "Grid":<string>  //SpreadSheet Contents
+   "SplitPercent":<number>  //Split bar position
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Notes_High_Priority" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the note
+   "Type":<string>  //Note type
+   "Owner":<string>  //Owner
+   "Author":<string>  //Author of the note
+   "Date":<date>  //Creation date of the note
+   "Contents":<string>  //RTF Contents
+   "Grid":<string>  //SpreadSheet Contents
+   "SplitPercent":<number>  //Split bar position
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Notes_TBD_Initial" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the note
+   "Type":<string>  //Note type
+   "Owner":<string>  //Owner
+   "Author":<string>  //Author of the note
+   "Date":<date>  //Creation date of the note
+   "Contents":<string>  //RTF Contents
+   "Grid":<string>  //SpreadSheet Contents
+   "SplitPercent":<number>  //Split bar position
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Notes_TBD_Complete" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the note
+   "Type":<string>  //Note type
+   "Owner":<string>  //Owner
+   "Author":<string>  //Author of the note
+   "Date":<date>  //Creation date of the note
+   "Contents":<string>  //RTF Contents
+   "Grid":<string>  //SpreadSheet Contents
+   "SplitPercent":<number>  //Split bar position
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Notes_TBD_Accepted" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the note
+   "Type":<string>  //Note type
+   "Owner":<string>  //Owner
+   "Author":<string>  //Author of the note
+   "Date":<date>  //Creation date of the note
+   "Contents":<string>  //RTF Contents
+   "Grid":<string>  //SpreadSheet Contents
+   "SplitPercent":<number>  //Split bar position
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"LinkedURI" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the link
+   "Owner":<string>  //Owner
+   "URI":<URI>  //Universal Resource Identifier
+   "Viewer":<string>  //Viewer to use
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"PoleInfoPoint" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"PoleSegment_Simple" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the segment
+   "Name":<string>  //Name of the segment
+   "CoordinateZ":<number>  //Height
+   "Type":<string>  //Segment type
+   "Color":<color>  //The color of the segment
+   "LengthInInches":<number>  //Length
+   "LapLengthInInches":<number>  //Lap Length
+   "LapMode":<string>  //Lap Mode
+   "RadiusAtTipInInches":<number>  //Radius at tip
+   "RadiusAtBaseInInches":<number>  //Radius at base
+   "Weight":<number>  //Segment weight in pounds
+   "Shape":<string>  //Cross section shape
+   "Faces":<number>  //Number of polygon faces
+   "ThicknessTable":<array>  //The material thickness
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the material
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "BucklingCapacityTable":<array>  //The buckling capacity table
+   "MaterialTip":<string>  //Material Tip
+   "MaterialBase":<string>  //Material Base
+   "Blend by":<string>  //Blending Function
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleSegment_Advanced" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the segment
+   "Name":<string>  //Name of the segment
+   "CoordinateZ":<number>  //Height
+   "Type":<string>  //Segment type
+   "Color":<color>  //The color of the segment
+   "LengthInInches":<number>  //Length
+   "LapLengthInInches":<number>  //Lap Length
+   "LapMode":<string>  //Lap Mode
+   "RadiusAtTipInInches":<number>  //Radius at tip
+   "RadiusAtBaseInInches":<number>  //Radius at base
+   "Weight":<number>  //Segment weight in pounds
+   "Shape":<string>  //Cross section shape
+   "Faces":<number>  //Number of polygon faces
+   "ThicknessTable":<array>  //The material thickness
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the material
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "BucklingCapacityTable":<array>  //The buckling capacity table
+   "MaterialTip":<string>  //Material Tip
+   "MaterialBase":<string>  //Material Base
+   "Blend by":<string>  //Blending Function
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"WoodPole" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Pole identification
+   "Owner":<string>  //Owner
+   "Structure Type":<string>  //Pole structure type specification
+   "Class":<string>  //Pole class specification
+   "LengthInInches":<number>  //Pole length in inches
+   "Species":<string>  //Wood species of the pole
+   "Species Code":<string>  //Code Standard
+   "BuryDepthInInches":<number>  //Bury depth in inches
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "LeanDirection":<number>  //Pole lean direction in radians
+   "LeanAmount":<number>  //Pole amount direction in radians
+   "RadiusAtTipInInches":<number>  //
+   "GLCircumMethod":<string>  //Groundline method.
+   "Circum6ft":<number>  //The pole circumference at the 6 foot point
+   "MeasuredRadiusGL":<number>  //Measured radius at the groundline
+   "ApplyEffectiveRadiusGL":<boolean>  //Apply Effective radius at the groundline
+   "EffectiveRadiusGL":<number>  //Effective radius at the groundline
+   "StrengthRemainingGL":<number>  //% remaining strength at the groundline
+   "SoilClass":<string>  //The class of soil at the site of the anchor
+   "OverturnMoment":<number>  //Overturn Moment
+   "Modulus of Rupture":<number>  //Modulus of rupture for the given species
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the material
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Density":<number>  //Density for the given species in lbs per cubic inch
+   "Characteristic Shear Strength":<number>  //Characteristic Shear Strength
+   "Characteristic Compression Strength":<number>  //Characteristic Compression Strength
+   "Effective Length":<number>  //Effective Length
+   "Material Constant":<number>  //Material Constant
+   "PoleMfgLength":<number>  //Pole manufactured length in inches
+   "Table No":<string>  //Table Designation
+   "Offset":<number>  //Pole offset in feet
+   "Aux Data 1":<string>  //
+   "Aux Data 2":<string>  //
+   "Aux Data 3":<string>  //
+   "Aux Data 4":<string>  //
+   "Aux Data 5":<string>  //
+   "Aux Data 6":<string>  //
+   "Aux Data 7":<string>  //
+   "Aux Data 8":<string>  //
+   "BucklingConstant":<number>  //Column buckling constant
+   "UseMomentCapacityTable":<boolean>  //Use the moment capacity table
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"SteelPole" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Pole identification
+   "Owner":<string>  //Owner
+   "Structure Type":<string>  //Pole structure type specification
+   "Class":<string>  //Pole class specification
+   "LengthInInches":<number>  //Pole length in inches
+   "CatalogName":<string>  //Wood species of the pole
+   "Pole Code":<string>  //Pole Code
+   "Shape":<string>  //Cross section shape
+   "Faces":<number>  //Number of polygon faces
+   "Mount":<string>  //Mount type
+   "PedestalRadius":<number>  //Radius of pedestal mount 
+   "BuryDepthInInches":<number>  //Bury depth in inches
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "LeanDirection":<number>  //Pole lean direction in radians
+   "LeanAmount":<number>  //Pole amount direction in radians
+   "RadiusAtTipInInches":<number>  //
+   "RadiusAtBaseInInches":<number>  //Radius At Base
+   "SoilClass":<string>  //The class of soil at the site of the anchor
+   "OverturnMoment":<number>  //Overturn Moment
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the material
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Density":<number>  //Density for the given species in lbs per cubic inch
+   "Characteristic Shear Strength":<number>  //Characteristic Shear Strength
+   "Characteristic Compression Strength":<number>  //Characteristic Compression Strength
+   "Effective Length":<number>  //Effective Length
+   "Material Constant":<number>  //Material Constant
+   "Offset":<number>  //Pole offset in feet
+   "Aux Data 1":<string>  //
+   "Aux Data 2":<string>  //
+   "Aux Data 3":<string>  //
+   "Aux Data 4":<string>  //
+   "Aux Data 5":<string>  //
+   "Aux Data 6":<string>  //
+   "Aux Data 7":<string>  //
+   "Aux Data 8":<string>  //
+   "ThicknessTable":<array>  //The material thickness
+   "PedestalMomentCapacity":<number>  //The pedestal moment capacity
+   "PedestalBucklingCapacity":<number>  //The pedestal buckling capacity
+   "DistToGrade":<number>  //Distance to grade of pedastal mount 
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "BucklingCapacityTable":<array>  //The buckling capacity table
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"ConcretePole" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Pole identification
+   "Owner":<string>  //Owner
+   "Structure Type":<string>  //Pole structure type specification
+   "Class":<string>  //Pole class specification
+   "LengthInInches":<number>  //Pole length in inches
+   "CatalogName":<string>  //Wood species of the pole
+   "Pole Code":<string>  //Pole Code
+   "Shape":<string>  //Cross section shape
+   "Faces":<number>  //Number of polygon faces
+   "Mount":<string>  //Mount type
+   "PedestalRadius":<number>  //Radius of pedestal mount 
+   "BuryDepthInInches":<number>  //Bury depth in inches
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "LeanDirection":<number>  //Pole lean direction in radians
+   "LeanAmount":<number>  //Pole amount direction in radians
+   "RadiusAtTipInInches":<number>  //
+   "RadiusAtBaseInInches":<number>  //Radius At Base
+   "SoilClass":<string>  //The class of soil at the site of the anchor
+   "OverturnMoment":<number>  //Overturn Moment
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the material
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Density":<number>  //Density for the given species in lbs per cubic inch
+   "Characteristic Shear Strength":<number>  //Characteristic Shear Strength
+   "Characteristic Compression Strength":<number>  //Characteristic Compression Strength
+   "Effective Length":<number>  //Effective Length
+   "Material Constant":<number>  //Material Constant
+   "Offset":<number>  //Pole offset in feet
+   "Aux Data 1":<string>  //
+   "Aux Data 2":<string>  //
+   "Aux Data 3":<string>  //
+   "Aux Data 4":<string>  //
+   "Aux Data 5":<string>  //
+   "Aux Data 6":<string>  //
+   "Aux Data 7":<string>  //
+   "Aux Data 8":<string>  //
+   "ThicknessTable":<array>  //The material thickness
+   "PedestalMomentCapacity":<number>  //The pedestal moment capacity
+   "PedestalBucklingCapacity":<number>  //The pedestal buckling capacity
+   "DistToGrade":<number>  //Distance to grade of pedastal mount 
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "BucklingCapacityTable":<array>  //The buckling capacity table
+   "Torque":<number>  //Maximum allowable torque
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"CompositePole" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Pole identification
+   "Owner":<string>  //Owner
+   "Structure Type":<string>  //Pole structure type specification
+   "Class":<string>  //Pole class specification
+   "LengthInInches":<number>  //Pole length in inches
+   "CatalogName":<string>  //Wood species of the pole
+   "Pole Code":<string>  //Pole Code
+   "Shape":<string>  //Cross section shape
+   "Faces":<number>  //Number of polygon faces
+   "Mount":<string>  //Mount type
+   "PedestalRadius":<number>  //Radius of pedestal mount 
+   "BuryDepthInInches":<number>  //Bury depth in inches
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "LeanDirection":<number>  //Pole lean direction in radians
+   "LeanAmount":<number>  //Pole amount direction in radians
+   "RadiusAtTipInInches":<number>  //
+   "RadiusAtBaseInInches":<number>  //Radius At Base
+   "SoilClass":<string>  //The class of soil at the site of the anchor
+   "OverturnMoment":<number>  //Overturn Moment
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the material
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Density":<number>  //Density for the given species in lbs per cubic inch
+   "Characteristic Shear Strength":<number>  //Characteristic Shear Strength
+   "Characteristic Compression Strength":<number>  //Characteristic Compression Strength
+   "Effective Length":<number>  //Effective Length
+   "Material Constant":<number>  //Material Constant
+   "Offset":<number>  //Pole offset in feet
+   "Aux Data 1":<string>  //
+   "Aux Data 2":<string>  //
+   "Aux Data 3":<string>  //
+   "Aux Data 4":<string>  //
+   "Aux Data 5":<string>  //
+   "Aux Data 6":<string>  //
+   "Aux Data 7":<string>  //
+   "Aux Data 8":<string>  //
+   "ThicknessTable":<array>  //The material thickness
+   "PedestalMomentCapacity":<number>  //The pedestal moment capacity
+   "PedestalBucklingCapacity":<number>  //The pedestal buckling capacity
+   "DistToGrade":<number>  //Distance to grade of pedastal mount 
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "BucklingCapacityTable":<array>  //The buckling capacity table
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"SegmentedPole" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Pole identification
+   "Owner":<string>  //Owner
+   "Structure Type":<string>  //Pole structure type specification
+   "OverlapCombineCap":<boolean>  //OverlapCombineCap
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "LeanDirection":<number>  //Pole lean direction in radians
+   "LeanAmount":<number>  //Pole amount direction in radians
+   "OverturnMoment":<number>  //Overturn Moment
+   "Aux Data 1":<string>  //
+   "Aux Data 2":<string>  //
+   "Aux Data 3":<string>  //
+   "Aux Data 4":<string>  //
+   "Aux Data 5":<string>  //
+   "Aux Data 6":<string>  //
+   "Aux Data 7":<string>  //
+   "Aux Data 8":<string>  //
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Anchor" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the anchor
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The vertical distance from the butt of the pole to the anchor point
+   "CoordinateX":<number>  //The horizontal lead length from the pole to the anchor point
+   "CoordinateA":<number>  //Lead Angle
+   "DeltaHeight":<number>  //Delta Height
+   "OffsetAngle":<number>  //Offset Angle
+   "RodDiameterInInches":<number>  //The diameter of the rod associated with this anchor
+   "RodLengthAboveGLInInches":<number>  //The length of the rod associated with this anchor above GL
+   "RodDescription":<string>  //Description of the rod used at the site of the anchor
+   "RodStrength":<number>  //The strength of the rod in pounds
+   "MergeAnchors":<boolean>  //Merge with anchors at same position,
+   "SoilClass":<string>  //The class of soil at the site of the anchor
+   "HoldingStrength":<number>  //The holding strength of anchor in pounds for the selected soil class
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Crossarm_Normal" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Distance from the center of the pole to the center of the crossarm
+   "Description":<string>  //Description of crossarm
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the parent pole to the center of the crossarm
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "Type":<string>  //Crossarm type (centered or offset)
+   "Count":<number>  //Crossarm count (1 or 2)
+   "Braced":<string>  //Indicates if the crossarm is braced
+   "BraceAll":<boolean>  //Brace all arms
+   "BraceOffset":<number>  //Horizontal distance to brace point
+   "BraceDrop":<number>  //Vertical distance to brace point
+   "LengthInInches":<number>  //The length from the crossarm from tip to tip
+   "HeightInInches":<number>  //The distance from the top of the crossarm to the bottom
+   "DepthInInches":<number>  //The distance (depth) from the face of the crossarm to the surface of the pole in inches
+   "Tilt":<number>  //The crossarm tilt in radians.
+   "VerticalOffset":<number>  //Vertical Offset
+   "HorizontalOffset":<number>  //Horizontal Offset
+   "LateralOffset":<number>  //Lateral Offset
+   "Weight":<number>  //Crossarm weight in pounds
+   "Modulus of Rupture":<number>  //Modulus of rupture
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the crossarm
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Analysis Mode":<string>  //Analysis Mode
+   "AllowableMomentVertical":<number>  //AllowableMomentVertical
+   "AllowableMomentLongitudinal":<number>  //AllowableMomentLongitudinal
+   "AllowableLoadTransverse":<number>  //AllowableLoadTransverse
+   "AllowableLoadLongitudinal":<number>  //AllowableLoadLongitudinal
+   "OverrideStrength":<boolean>  //Override Nominal Strength Factor
+   "StrengthFactor":<number>  //Crosarm Strength Factor value
+   "Analysis Method":<string>  //Analysis Method
+   "Offset":<number>  //Multi Pole offset in feet
+   "Material":<string>  //Material
+   "Species":<string>  //Wood species of the crossarm
+   "ArmMaterial":<string>  //Arm Material
+   "BraceMaterial":<string>  //Brace Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Crossarm_Offset" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Distance from the center of the pole to the center of the crossarm
+   "Description":<string>  //Description of crossarm
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the parent pole to the center of the crossarm
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "Type":<string>  //Crossarm type (centered or offset)
+   "Count":<number>  //Crossarm count (1 or 2)
+   "Braced":<string>  //Indicates if the crossarm is braced
+   "BraceAll":<boolean>  //Brace all arms
+   "BraceOffset":<number>  //Horizontal distance to brace point
+   "BraceDrop":<number>  //Vertical distance to brace point
+   "LengthInInches":<number>  //The length from the crossarm from tip to tip
+   "HeightInInches":<number>  //The distance from the top of the crossarm to the bottom
+   "DepthInInches":<number>  //The distance (depth) from the face of the crossarm to the surface of the pole in inches
+   "Tilt":<number>  //The crossarm tilt in radians.
+   "VerticalOffset":<number>  //Vertical Offset
+   "HorizontalOffset":<number>  //Horizontal Offset
+   "LateralOffset":<number>  //Lateral Offset
+   "Weight":<number>  //Crossarm weight in pounds
+   "Modulus of Rupture":<number>  //Modulus of rupture
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the crossarm
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Analysis Mode":<string>  //Analysis Mode
+   "AllowableMomentVertical":<number>  //AllowableMomentVertical
+   "AllowableMomentLongitudinal":<number>  //AllowableMomentLongitudinal
+   "AllowableLoadTransverse":<number>  //AllowableLoadTransverse
+   "AllowableLoadLongitudinal":<number>  //AllowableLoadLongitudinal
+   "OverrideStrength":<boolean>  //Override Nominal Strength Factor
+   "StrengthFactor":<number>  //Crosarm Strength Factor value
+   "Analysis Method":<string>  //Analysis Method
+   "Offset":<number>  //Multi Pole offset in feet
+   "Material":<string>  //Material
+   "Species":<string>  //Wood species of the crossarm
+   "ArmMaterial":<string>  //Arm Material
+   "BraceMaterial":<string>  //Brace Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Crossarm_Pole_Extension" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Distance from the center of the pole to the center of the crossarm
+   "Description":<string>  //Description of crossarm
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the parent pole to the center of the crossarm
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "Type":<string>  //Crossarm type (centered or offset)
+   "Count":<number>  //Crossarm count (1 or 2)
+   "Braced":<string>  //Indicates if the crossarm is braced
+   "BraceAll":<boolean>  //Brace all arms
+   "BraceOffset":<number>  //Horizontal distance to brace point
+   "BraceDrop":<number>  //Vertical distance to brace point
+   "LengthInInches":<number>  //The length from the crossarm from tip to tip
+   "HeightInInches":<number>  //The distance from the top of the crossarm to the bottom
+   "DepthInInches":<number>  //The distance (depth) from the face of the crossarm to the surface of the pole in inches
+   "Tilt":<number>  //The crossarm tilt in radians.
+   "VerticalOffset":<number>  //Vertical Offset
+   "HorizontalOffset":<number>  //Horizontal Offset
+   "LateralOffset":<number>  //Lateral Offset
+   "Weight":<number>  //Crossarm weight in pounds
+   "Modulus of Rupture":<number>  //Modulus of rupture
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the crossarm
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Analysis Mode":<string>  //Analysis Mode
+   "AllowableMomentVertical":<number>  //AllowableMomentVertical
+   "AllowableMomentLongitudinal":<number>  //AllowableMomentLongitudinal
+   "AllowableLoadTransverse":<number>  //AllowableLoadTransverse
+   "AllowableLoadLongitudinal":<number>  //AllowableLoadLongitudinal
+   "OverrideStrength":<boolean>  //Override Nominal Strength Factor
+   "StrengthFactor":<number>  //Crosarm Strength Factor value
+   "Analysis Method":<string>  //Analysis Method
+   "Offset":<number>  //Multi Pole offset in feet
+   "Material":<string>  //Material
+   "Species":<string>  //Wood species of the crossarm
+   "ArmMaterial":<string>  //Arm Material
+   "BraceMaterial":<string>  //Brace Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Crossarm_Full_Gull" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Distance from the center of the pole to the center of the crossarm
+   "Description":<string>  //Description of crossarm
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the parent pole to the center of the crossarm
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "Type":<string>  //Crossarm type (centered or offset)
+   "Count":<number>  //Crossarm count (1 or 2)
+   "Braced":<string>  //Indicates if the crossarm is braced
+   "BraceAll":<boolean>  //Brace all arms
+   "BraceOffset":<number>  //Horizontal distance to brace point
+   "BraceDrop":<number>  //Vertical distance to brace point
+   "LengthInInches":<number>  //The length from the crossarm from tip to tip
+   "HeightInInches":<number>  //The distance from the top of the crossarm to the bottom
+   "DepthInInches":<number>  //The distance (depth) from the face of the crossarm to the surface of the pole in inches
+   "Tilt":<number>  //The crossarm tilt in radians.
+   "VerticalOffset":<number>  //Vertical Offset
+   "HorizontalOffset":<number>  //Horizontal Offset
+   "LateralOffset":<number>  //Lateral Offset
+   "Weight":<number>  //Crossarm weight in pounds
+   "Modulus of Rupture":<number>  //Modulus of rupture
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the crossarm
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Analysis Mode":<string>  //Analysis Mode
+   "AllowableMomentVertical":<number>  //AllowableMomentVertical
+   "AllowableMomentLongitudinal":<number>  //AllowableMomentLongitudinal
+   "AllowableLoadTransverse":<number>  //AllowableLoadTransverse
+   "AllowableLoadLongitudinal":<number>  //AllowableLoadLongitudinal
+   "OverrideStrength":<boolean>  //Override Nominal Strength Factor
+   "StrengthFactor":<number>  //Crosarm Strength Factor value
+   "Analysis Method":<string>  //Analysis Method
+   "Offset":<number>  //Multi Pole offset in feet
+   "Material":<string>  //Material
+   "Species":<string>  //Wood species of the crossarm
+   "ArmMaterial":<string>  //Arm Material
+   "BraceMaterial":<string>  //Brace Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Crossarm_Half_Gull" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Distance from the center of the pole to the center of the crossarm
+   "Description":<string>  //Description of crossarm
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the parent pole to the center of the crossarm
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "Type":<string>  //Crossarm type (centered or offset)
+   "Count":<number>  //Crossarm count (1 or 2)
+   "Braced":<string>  //Indicates if the crossarm is braced
+   "BraceAll":<boolean>  //Brace all arms
+   "BraceOffset":<number>  //Horizontal distance to brace point
+   "BraceDrop":<number>  //Vertical distance to brace point
+   "LengthInInches":<number>  //The length from the crossarm from tip to tip
+   "HeightInInches":<number>  //The distance from the top of the crossarm to the bottom
+   "DepthInInches":<number>  //The distance (depth) from the face of the crossarm to the surface of the pole in inches
+   "Tilt":<number>  //The crossarm tilt in radians.
+   "VerticalOffset":<number>  //Vertical Offset
+   "HorizontalOffset":<number>  //Horizontal Offset
+   "LateralOffset":<number>  //Lateral Offset
+   "Weight":<number>  //Crossarm weight in pounds
+   "Modulus of Rupture":<number>  //Modulus of rupture
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the crossarm
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Analysis Mode":<string>  //Analysis Mode
+   "AllowableMomentVertical":<number>  //AllowableMomentVertical
+   "AllowableMomentLongitudinal":<number>  //AllowableMomentLongitudinal
+   "AllowableLoadTransverse":<number>  //AllowableLoadTransverse
+   "AllowableLoadLongitudinal":<number>  //AllowableLoadLongitudinal
+   "OverrideStrength":<boolean>  //Override Nominal Strength Factor
+   "StrengthFactor":<number>  //Crosarm Strength Factor value
+   "Analysis Method":<string>  //Analysis Method
+   "Offset":<number>  //Multi Pole offset in feet
+   "Material":<string>  //Material
+   "Species":<string>  //Wood species of the crossarm
+   "ArmMaterial":<string>  //Arm Material
+   "BraceMaterial":<string>  //Brace Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Crossarm_Standoff" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Distance from the center of the pole to the center of the crossarm
+   "Description":<string>  //Description of crossarm
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //Distance from the butt of the parent pole to the center of the crossarm
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "Type":<string>  //Crossarm type (centered or offset)
+   "Count":<number>  //Crossarm count (1 or 2)
+   "Braced":<string>  //Indicates if the crossarm is braced
+   "BraceAll":<boolean>  //Brace all arms
+   "BraceOffset":<number>  //Horizontal distance to brace point
+   "BraceDrop":<number>  //Vertical distance to brace point
+   "LengthInInches":<number>  //The length from the crossarm from tip to tip
+   "HeightInInches":<number>  //The distance from the top of the crossarm to the bottom
+   "DepthInInches":<number>  //The distance (depth) from the face of the crossarm to the surface of the pole in inches
+   "Tilt":<number>  //The crossarm tilt in radians.
+   "VerticalOffset":<number>  //Vertical Offset
+   "HorizontalOffset":<number>  //Horizontal Offset
+   "LateralOffset":<number>  //Lateral Offset
+   "Weight":<number>  //Crossarm weight in pounds
+   "Modulus of Rupture":<number>  //Modulus of rupture
+   "Modulus of Elasticity":<number>  //Modulus of elasticty for the crossarm
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "Analysis Mode":<string>  //Analysis Mode
+   "AllowableMomentVertical":<number>  //AllowableMomentVertical
+   "AllowableMomentLongitudinal":<number>  //AllowableMomentLongitudinal
+   "AllowableLoadTransverse":<number>  //AllowableLoadTransverse
+   "AllowableLoadLongitudinal":<number>  //AllowableLoadLongitudinal
+   "OverrideStrength":<boolean>  //Override Nominal Strength Factor
+   "StrengthFactor":<number>  //Crosarm Strength Factor value
+   "Analysis Method":<string>  //Analysis Method
+   "Offset":<number>  //Multi Pole offset in feet
+   "Material":<string>  //Material
+   "Species":<string>  //Wood species of the crossarm
+   "ArmMaterial":<string>  //Arm Material
+   "BraceMaterial":<string>  //Brace Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Insulator_Pin" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Post" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Davit" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Spool" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Underhung" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Suspension" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Deadend" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_J-Hook" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Bolt" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Insulator_Extension" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Type":<string>  //The span connector type.  This may be a style of insulator, j-hook, or other hardware used to attach spans to the pole.
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The span connector pole side (for insulators on a pole only).
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "LengthInInches":<number>  //The total length of the insulator structure
+   "DavitAngle":<number>  //Davit angle in radians.
+   "Pitch":<number>  //Pitch in radians.
+   "Crab":<number>  //Crab angle in radians.
+   "WidthInInches":<number>  //The effective width for wind area of the insulator structure
+   "Weight":<number>  //Weight of the insulator / span holder in pounds
+   "Sheds":<string>  //Number of sheds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "EndFitting":<string>  //Line End Fitting
+   "StalkMaterial":<string>  //Stalk Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Span" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The X coordinate relative to parent.  SnapToParent will set the value
+   "CoordinateZ":<number>  //The Z coordinate relative to parent.  SnapToParent will set the value
+   "SpanType":<string>  //What type of span is this (CATV, Telco, Primary, Secondary / Service)
+   "Owner":<string>  //Owner
+   "Type":<string>  //The name, type, material, code, or other designation assigned to this span type by the owner
+   "CoordinateA":<number>  //The relative angle between this span its proximal connection at it's parent insulator or other holding structure
+   "SpanDistanceInInches":<number>  //The horizontal component of the distance between the proximal and distal ends of the span
+   "SpanEndHeightDelta":<number>  //The vertical component of the distance between the proximal and distal ends of the span
+   "MidspanDeflection":<number>  //The vertical deflection between the proximal end of the span an the maximum deflection point of the catenary curve
+   "Tension Type":<string>  //Is the tension value calculated or static
+   "Tension":<number>  //The tension value used only when "Tension Type" is "Static"
+   "TensionTable":<array>  //The tension values table used only when "Tension Type" is "Table"
+   "SlackTension":<number>  //The tension value used only when "Tension Type" is "Slack"
+   "RatedStrength":<number>  //The rated strength in pounds.
+   "ConductorDiameter":<number>  //The conductor diameter in inches including the insulation.
+   "OverrideTemp":<boolean>  //Override Nominal Temperature
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "PoundsPerInch":<number>  //The weight per unit of running length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PercentSolid":<number>  //Percent Solid
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "CreepCoefficient":<number>  //CreepCoefficient
+   "IceAccumulationFactor":<number>  //Ice Accumulation Factor for Tension Calculations
+   "WindTensionFactor":<number>  //Wind Factor for Tension Calculations
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "StopAtTap":<boolean>  //Stop at Tap
+   "HasInlineBox":<boolean>  //Flag set to indicate whther or not a span has an inline junction box on it
+   "BoxOffset":<number>  //The distance down a line where a junction box is located
+   "BoxLength":<number>  //Junction box length in inches
+   "BoxDiameter":<number>  //Junction box diameter in inches
+   "BoxWeight":<number>  //Junction box weight in pounds
+   "HasDripLoop":<boolean>  //Flag set to indicate whther or not a span has a drip loop on it
+   "DripLoopOffset":<number>  //The distance down a line where a drip loop is located
+   "DripLoopLength":<number>  //Drip loop length in inches
+   "DripLoopHeight":<number>  //Drip loop height in inches
+   "Modifier":<string>  //Special type modifier.
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"SpanBundle" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The X coordinate relative to parent.  SnapToParent will set the value
+   "CoordinateZ":<number>  //The Z coordinate relative to parent.  SnapToParent will set the value
+   "Owner":<string>  //Owner
+   "Type":<string>  //The name, type, material, code, or other designation assigned to this span type by the owner
+   "Construction":<string>  //Bundle Construction
+   "BundleIceMode":<string>  //Geometry for ice accumulation
+   "BundleWindMode":<string>  //Geometry for wind area
+   "CoordinateA":<number>  //The relative angle between this span its proximal connection at it's parent insulator or other holding structure
+   "SpanDistanceInInches":<number>  //The horizontal component of the distance between the proximal and distal ends of the span
+   "SpanEndHeightDelta":<number>  //The vertical component of the distance between the proximal and distal ends of the span
+   "MidspanDeflection":<number>  //The vertical deflection between the proximal end of the span an the maximum deflection point of the catenary curve
+   "Tension Type":<string>  //Is the tension value calculated or static
+   "Tension":<number>  //The tension value used only when "Tension Type" is "Static"
+   "TensionTable":<array>  //The tension values table used only when "Tension Type" is "Table"
+   "SlackTension":<number>  //The tension value used only when "Tension Type" is "Slack"
+   "RatedStrength":<number>  //The rated strength in pounds.
+   "ConductorDiameter":<number>  //The conductor diameter in inches including the insulation.
+   "OverrideTemp":<boolean>  //Override Nominal Temperature
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "PoundsPerInch":<number>  //The weight per unit of running length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PercentSolid":<number>  //Percent Solid
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "CreepCoefficient":<number>  //CreepCoefficient
+   "IceAccumulationFactor":<number>  //Ice Accumulation Factor for Tension Calculations
+   "WindTensionFactor":<number>  //Wind Factor for Tension Calculations
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "StopAtTap":<boolean>  //Stop at Tap
+   "HasInlineBox":<boolean>  //Flag set to indicate whther or not a span has an inline junction box on it
+   "BoxOffset":<number>  //The distance down a line where a junction box is located
+   "BoxLength":<number>  //Junction box length in inches
+   "BoxDiameter":<number>  //Junction box diameter in inches
+   "BoxWeight":<number>  //Junction box weight in pounds
+   "HasDripLoop":<boolean>  //Flag set to indicate whther or not a span has a drip loop on it
+   "DripLoopOffset":<number>  //The distance down a line where a drip loop is located
+   "DripLoopLength":<number>  //Drip loop length in inches
+   "DripLoopHeight":<number>  //Drip loop height in inches
+   "Modifier":<string>  //Special type modifier.
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Tap" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the tap
+   "Owner":<string>  //Owner
+   "CoordinateA":<number>  //Angle
+   "OffsetInches":<number>  //Offset from start of pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Transformer" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Internal attribute which holds the radius of the pole at the given height.
+   "Description":<string>  //Description or Transformer Catalog name
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the butt of the pole to the center of the transformer can
+   "CoordinateA":<number>  //Angle of bank relative to the parent structure (typically pole)
+   "Pole Gap":<number>  //Distance between pole and can in inches
+   "Type":<string>  //Equipment Type
+   "Mount":<string>  //The type of mount used to install the equipment
+   "Qty":<number>  //Number of units
+   "Array Angle":<number>  //Angle between cans
+   "Rack Spacing":<number>  //The distance between items on a rack
+   "DiameterInInches":<number>  //The Diameter of the transformer can in inches
+   "HeightInInches":<number>  //The Height of the transformer can in inches
+   "DepthInInches":<number>  //The Depth of the transformer can in inches
+   "Weight":<number>  //The weight of each individual transformer can in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Regulator" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Internal attribute which holds the radius of the pole at the given height.
+   "Description":<string>  //Description or Transformer Catalog name
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the butt of the pole to the center of the transformer can
+   "CoordinateA":<number>  //Angle of bank relative to the parent structure (typically pole)
+   "Pole Gap":<number>  //Distance between pole and can in inches
+   "Type":<string>  //Equipment Type
+   "Mount":<string>  //The type of mount used to install the equipment
+   "Qty":<number>  //Number of units
+   "Array Angle":<number>  //Angle between cans
+   "Rack Spacing":<number>  //The distance between items on a rack
+   "DiameterInInches":<number>  //The Diameter of the transformer can in inches
+   "HeightInInches":<number>  //The Height of the transformer can in inches
+   "DepthInInches":<number>  //The Depth of the transformer can in inches
+   "Weight":<number>  //The weight of each individual transformer can in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Capacitor" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Internal attribute which holds the radius of the pole at the given height.
+   "Description":<string>  //Description or Transformer Catalog name
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the butt of the pole to the center of the transformer can
+   "CoordinateA":<number>  //Angle of bank relative to the parent structure (typically pole)
+   "Pole Gap":<number>  //Distance between pole and can in inches
+   "Type":<string>  //Equipment Type
+   "Mount":<string>  //The type of mount used to install the equipment
+   "Qty":<number>  //Number of units
+   "Array Angle":<number>  //Angle between cans
+   "Rack Spacing":<number>  //The distance between items on a rack
+   "DiameterInInches":<number>  //The Diameter of the transformer can in inches
+   "HeightInInches":<number>  //The Height of the transformer can in inches
+   "DepthInInches":<number>  //The Depth of the transformer can in inches
+   "Weight":<number>  //The weight of each individual transformer can in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Switch" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Internal attribute which holds the radius of the pole at the given height.
+   "Description":<string>  //Description or Transformer Catalog name
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the butt of the pole to the center of the transformer can
+   "CoordinateA":<number>  //Angle of bank relative to the parent structure (typically pole)
+   "Pole Gap":<number>  //Distance between pole and can in inches
+   "Type":<string>  //Equipment Type
+   "Mount":<string>  //The type of mount used to install the equipment
+   "Qty":<number>  //Number of units
+   "Array Angle":<number>  //Angle between cans
+   "Rack Spacing":<number>  //The distance between items on a rack
+   "DiameterInInches":<number>  //The Diameter of the transformer can in inches
+   "HeightInInches":<number>  //The Height of the transformer can in inches
+   "DepthInInches":<number>  //The Depth of the transformer can in inches
+   "Weight":<number>  //The weight of each individual transformer can in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Fuse" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Internal attribute which holds the radius of the pole at the given height.
+   "Description":<string>  //Description or Transformer Catalog name
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the butt of the pole to the center of the transformer can
+   "CoordinateA":<number>  //Angle of bank relative to the parent structure (typically pole)
+   "Pole Gap":<number>  //Distance between pole and can in inches
+   "Type":<string>  //Equipment Type
+   "Mount":<string>  //The type of mount used to install the equipment
+   "Qty":<number>  //Number of units
+   "Array Angle":<number>  //Angle between cans
+   "Rack Spacing":<number>  //The distance between items on a rack
+   "DiameterInInches":<number>  //The Diameter of the transformer can in inches
+   "HeightInInches":<number>  //The Height of the transformer can in inches
+   "DepthInInches":<number>  //The Depth of the transformer can in inches
+   "Weight":<number>  //The weight of each individual transformer can in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Box" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //Internal attribute which holds the radius of the pole at the given height.
+   "Description":<string>  //Description or Transformer Catalog name
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the butt of the pole to the center of the transformer can
+   "CoordinateA":<number>  //Angle of bank relative to the parent structure (typically pole)
+   "Pole Gap":<number>  //Distance between pole and can in inches
+   "Type":<string>  //Equipment Type
+   "Mount":<string>  //The type of mount used to install the equipment
+   "Qty":<number>  //Number of units
+   "Array Angle":<number>  //Angle between cans
+   "Rack Spacing":<number>  //The distance between items on a rack
+   "DiameterInInches":<number>  //The Diameter of the transformer can in inches
+   "HeightInInches":<number>  //The Height of the transformer can in inches
+   "DepthInInches":<number>  //The Depth of the transformer can in inches
+   "Weight":<number>  //The weight of each individual transformer can in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Streetlight_General" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The horizontal position of the base plate relative to the center of the pole in inches
+   "Description":<string>  //Description of streetlight
+   "Owner":<string>  //Owner
+   "Type":<string>  //General type of light to model.
+   "CoordinateZ":<number>  //The distance from the center of the base plate to the butt of the pole in inches
+   "CoordinateA":<number>  //The angle of the streetlight relative to the parent structure in radians
+   "LengthInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "ArmDiameterInInches":<number>  //The diameter or thickness of the arm of the streetlight assembly
+   "ArmRiseInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "CanDiameterInInches":<number>  //The diameter or thickness of the light fixture at the tip of the streetlight assempbly
+   "CanHeightInInches":<number>  //The height of the can of the light fixture
+   "Weight":<number>  //Weight of the streetlight in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Streetlight_Decorative" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The horizontal position of the base plate relative to the center of the pole in inches
+   "Description":<string>  //Description of streetlight
+   "Owner":<string>  //Owner
+   "Type":<string>  //General type of light to model.
+   "CoordinateZ":<number>  //The distance from the center of the base plate to the butt of the pole in inches
+   "CoordinateA":<number>  //The angle of the streetlight relative to the parent structure in radians
+   "LengthInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "ArmDiameterInInches":<number>  //The diameter or thickness of the arm of the streetlight assembly
+   "ArmRiseInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "CanDiameterInInches":<number>  //The diameter or thickness of the light fixture at the tip of the streetlight assempbly
+   "CanHeightInInches":<number>  //The height of the can of the light fixture
+   "Weight":<number>  //Weight of the streetlight in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Streetlight_Spot_Light" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The horizontal position of the base plate relative to the center of the pole in inches
+   "Description":<string>  //Description of streetlight
+   "Owner":<string>  //Owner
+   "Type":<string>  //General type of light to model.
+   "CoordinateZ":<number>  //The distance from the center of the base plate to the butt of the pole in inches
+   "CoordinateA":<number>  //The angle of the streetlight relative to the parent structure in radians
+   "LengthInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "ArmDiameterInInches":<number>  //The diameter or thickness of the arm of the streetlight assembly
+   "ArmRiseInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "CanDiameterInInches":<number>  //The diameter or thickness of the light fixture at the tip of the streetlight assempbly
+   "CanHeightInInches":<number>  //The height of the can of the light fixture
+   "Weight":<number>  //Weight of the streetlight in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Streetlight_Flood_Light" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The horizontal position of the base plate relative to the center of the pole in inches
+   "Description":<string>  //Description of streetlight
+   "Owner":<string>  //Owner
+   "Type":<string>  //General type of light to model.
+   "CoordinateZ":<number>  //The distance from the center of the base plate to the butt of the pole in inches
+   "CoordinateA":<number>  //The angle of the streetlight relative to the parent structure in radians
+   "LengthInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "ArmDiameterInInches":<number>  //The diameter or thickness of the arm of the streetlight assembly
+   "ArmRiseInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "CanDiameterInInches":<number>  //The diameter or thickness of the light fixture at the tip of the streetlight assempbly
+   "CanHeightInInches":<number>  //The height of the can of the light fixture
+   "Weight":<number>  //Weight of the streetlight in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"Streetlight_Traffic_Signal" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The horizontal position of the base plate relative to the center of the pole in inches
+   "Description":<string>  //Description of streetlight
+   "Owner":<string>  //Owner
+   "Type":<string>  //General type of light to model.
+   "CoordinateZ":<number>  //The distance from the center of the base plate to the butt of the pole in inches
+   "CoordinateA":<number>  //The angle of the streetlight relative to the parent structure in radians
+   "LengthInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "ArmDiameterInInches":<number>  //The diameter or thickness of the arm of the streetlight assembly
+   "ArmRiseInInches":<number>  //The horizontal length from the face of the pole to the tip of the streetlight
+   "CanDiameterInInches":<number>  //The diameter or thickness of the light fixture at the tip of the streetlight assempbly
+   "CanHeightInInches":<number>  //The height of the can of the light fixture
+   "Weight":<number>  //Weight of the streetlight in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"GuyBrace_Down" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Guy wire description
+   "Owner":<string>  //Owner
+   "Type":<string>  //Type
+   "CoordinateZ":<number>  //
+   "StrutHeightInInches":<number>  //Height of the strut from groundline if it is a sidewalk guy
+   "StrutLengthInInches":<number>  //The length of the strut if it is a sidewalk guy
+   "StrutDiameter":<number>  //The diameter of the strut
+   "StrutWeightPerIn":<number>  //The weight of the strut in lbs per unit length
+   "StrutCapacity":<number>  //The capacity of the strut in lbs
+   "StrutBendingMomentMax":<number>  //The bending moment capacity of the strut in ft-lbs
+   "StrutFixity":<string>  //The fixity of the strut
+   "MergeStruts":<boolean>  //Merge with like struts at same position,
+   "DeltaHeightInInches":<number>  //Difference in height of the far end if it is a span guy
+   "Diameter":<number>  //Guy wire diameter in inches
+   "PercentSolid":<number>  //Percent Solid
+   "PreTension":<number>  //Pre-tension in pounds
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "LateralOffset":<number>  //LateralOffset Offset in Inches
+   "Tension Mode":<string>  //Tension mode
+   "Tension":<number>  //Tension in pounds
+   "RTS Strength":<number>  //RTS Strength in pounds
+   "PoundsPerInch":<number>  //Linear weight in pounds per inch of length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "GuyMaterial":<string>  //Guy Material
+   "StrutMaterial":<string>  //Strut Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"GuyBrace_Span_Head" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Guy wire description
+   "Owner":<string>  //Owner
+   "Type":<string>  //Type
+   "CoordinateZ":<number>  //
+   "StrutHeightInInches":<number>  //Height of the strut from groundline if it is a sidewalk guy
+   "StrutLengthInInches":<number>  //The length of the strut if it is a sidewalk guy
+   "StrutDiameter":<number>  //The diameter of the strut
+   "StrutWeightPerIn":<number>  //The weight of the strut in lbs per unit length
+   "StrutCapacity":<number>  //The capacity of the strut in lbs
+   "StrutBendingMomentMax":<number>  //The bending moment capacity of the strut in ft-lbs
+   "StrutFixity":<string>  //The fixity of the strut
+   "MergeStruts":<boolean>  //Merge with like struts at same position,
+   "DeltaHeightInInches":<number>  //Difference in height of the far end if it is a span guy
+   "Diameter":<number>  //Guy wire diameter in inches
+   "PercentSolid":<number>  //Percent Solid
+   "PreTension":<number>  //Pre-tension in pounds
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "LateralOffset":<number>  //LateralOffset Offset in Inches
+   "Tension Mode":<string>  //Tension mode
+   "Tension":<number>  //Tension in pounds
+   "RTS Strength":<number>  //RTS Strength in pounds
+   "PoundsPerInch":<number>  //Linear weight in pounds per inch of length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "GuyMaterial":<string>  //Guy Material
+   "StrutMaterial":<string>  //Strut Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"GuyBrace_Sidewalk" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Guy wire description
+   "Owner":<string>  //Owner
+   "Type":<string>  //Type
+   "CoordinateZ":<number>  //
+   "StrutHeightInInches":<number>  //Height of the strut from groundline if it is a sidewalk guy
+   "StrutLengthInInches":<number>  //The length of the strut if it is a sidewalk guy
+   "StrutDiameter":<number>  //The diameter of the strut
+   "StrutWeightPerIn":<number>  //The weight of the strut in lbs per unit length
+   "StrutCapacity":<number>  //The capacity of the strut in lbs
+   "StrutBendingMomentMax":<number>  //The bending moment capacity of the strut in ft-lbs
+   "StrutFixity":<string>  //The fixity of the strut
+   "MergeStruts":<boolean>  //Merge with like struts at same position,
+   "DeltaHeightInInches":<number>  //Difference in height of the far end if it is a span guy
+   "Diameter":<number>  //Guy wire diameter in inches
+   "PercentSolid":<number>  //Percent Solid
+   "PreTension":<number>  //Pre-tension in pounds
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "LateralOffset":<number>  //LateralOffset Offset in Inches
+   "Tension Mode":<string>  //Tension mode
+   "Tension":<number>  //Tension in pounds
+   "RTS Strength":<number>  //RTS Strength in pounds
+   "PoundsPerInch":<number>  //Linear weight in pounds per inch of length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "GuyMaterial":<string>  //Guy Material
+   "StrutMaterial":<string>  //Strut Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"GuyBrace_Crossarm" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Guy wire description
+   "Owner":<string>  //Owner
+   "Type":<string>  //Type
+   "CoordinateZ":<number>  //
+   "StrutHeightInInches":<number>  //Height of the strut from groundline if it is a sidewalk guy
+   "StrutLengthInInches":<number>  //The length of the strut if it is a sidewalk guy
+   "StrutDiameter":<number>  //The diameter of the strut
+   "StrutWeightPerIn":<number>  //The weight of the strut in lbs per unit length
+   "StrutCapacity":<number>  //The capacity of the strut in lbs
+   "StrutBendingMomentMax":<number>  //The bending moment capacity of the strut in ft-lbs
+   "StrutFixity":<string>  //The fixity of the strut
+   "MergeStruts":<boolean>  //Merge with like struts at same position,
+   "DeltaHeightInInches":<number>  //Difference in height of the far end if it is a span guy
+   "Diameter":<number>  //Guy wire diameter in inches
+   "PercentSolid":<number>  //Percent Solid
+   "PreTension":<number>  //Pre-tension in pounds
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "LateralOffset":<number>  //LateralOffset Offset in Inches
+   "Tension Mode":<string>  //Tension mode
+   "Tension":<number>  //Tension in pounds
+   "RTS Strength":<number>  //RTS Strength in pounds
+   "PoundsPerInch":<number>  //Linear weight in pounds per inch of length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "GuyMaterial":<string>  //Guy Material
+   "StrutMaterial":<string>  //Strut Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"GuyBrace_Pushbrace" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Guy wire description
+   "Owner":<string>  //Owner
+   "Type":<string>  //Type
+   "CoordinateZ":<number>  //
+   "StrutHeightInInches":<number>  //Height of the strut from groundline if it is a sidewalk guy
+   "StrutLengthInInches":<number>  //The length of the strut if it is a sidewalk guy
+   "StrutDiameter":<number>  //The diameter of the strut
+   "StrutWeightPerIn":<number>  //The weight of the strut in lbs per unit length
+   "StrutCapacity":<number>  //The capacity of the strut in lbs
+   "StrutBendingMomentMax":<number>  //The bending moment capacity of the strut in ft-lbs
+   "StrutFixity":<string>  //The fixity of the strut
+   "MergeStruts":<boolean>  //Merge with like struts at same position,
+   "DeltaHeightInInches":<number>  //Difference in height of the far end if it is a span guy
+   "Diameter":<number>  //Guy wire diameter in inches
+   "PercentSolid":<number>  //Percent Solid
+   "PreTension":<number>  //Pre-tension in pounds
+   "VerticalOffset":<number>  //Vertical Offset in Inches
+   "HorizontalOffset":<number>  //Horizontal Offset in Inches
+   "LateralOffset":<number>  //LateralOffset Offset in Inches
+   "Tension Mode":<string>  //Tension mode
+   "Tension":<number>  //Tension in pounds
+   "RTS Strength":<number>  //RTS Strength in pounds
+   "PoundsPerInch":<number>  //Linear weight in pounds per inch of length
+   "ModulusOfElasticity":<number>  //ModulusOfElasticity
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "GuyMaterial":<string>  //Guy Material
+   "StrutMaterial":<string>  //Strut Material
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Riser" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the riser
+   "Owner":<string>  //Owner
+   "CoordinateA":<number>  //Install Angle
+   "DiameterInInches":<number>  //The diameter of the riser
+   "OffsetInInches":<number>  //The offset if the riser is on standoffs
+   "LengthAboveGLInInches":<number>  //The length above GL
+   "PoundsPerInch":<number>  //The weight in pounds per inch of running length
+   "Apply Wind":<boolean>  //Apply wind to the riser?
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "Wind Shadowing":<boolean>  //Does the pole shadow wind on the riser?
+   "Self Supporting":<boolean>  //Is the riser vertically self supporting?
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"GenericEquipment" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "CoordinateX":<number>  //The distance in inches from the center of the parent pole to the point where the bracket is bolted to the pole
+   "Description":<string>  //Description of equipment
+   "Owner":<string>  //Owner
+   "CoordinateZ":<number>  //The distance in inches from the bottom of the parent (butt of the pole for example) to the center of the equipment
+   "CoordinateZ_Rel":<number>  //The distance in inches from the bottom of the parent (butt of the pole for example) to the center of the equipment
+   "CoordinateA":<number>  //Angle of equipment relative to the parent structure (typically pole)
+   "Parent Gap":<number>  //Distance between parent and equipment in inches
+   "Shape":<string>  //Shape of equipment
+   "Points":<shape>  //The points defining the shape
+   "DiameterOrWidthInInches":<number>  //The Diameter or Width in inches
+   "DepthInInches":<number>  //The Depth in inches which is only used if the shape of the equipment is a box
+   "HeightInInches":<number>  //The Height in inches
+   "Pitch":<number>  //Pitch in radians.
+   "Roll":<number>  //Roll in radians.
+   "Yaw":<number>  //Yaw in radians.
+   "Weight":<number>  //The weight of the element in pounds
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "Color":<color>  //The color of the element
+   "ShowLabel":<boolean>  //Indicates if the label is displayed
+   "TextColor":<color>  //The color of the element's text
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"PoleRestoration_C" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleRestoration_C2" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleRestoration_ET" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleRestoration_FiberWrap" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleRestoration_FiberWrap_II" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleRestoration_Truss" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"PoleRestoration_Wrap" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of restoration
+   "Description":<string>  //Description of the restoration
+   "Owner":<string>  //Owner
+   "LengthInInches":<number>  //The length in iches
+   "MomentCapacityTable":<array>  //The moment capacity table
+   "CoordinateZ":<number>  //Distance from the butt of the pole to the top of the truss or wrap
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Clearance" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the clearance item
+   "Group":<string>  //The clearance group
+   "Render":<boolean>  //Render
+   "Mode":<string>  //The population
+   "SagMinimum":<number>  //The vertical deflection minimum
+   "SagNominal":<number>  //The vertical deflection nominal
+   "SagMaximum":<number>  //The vertical deflection maximum
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"SpanAddition_Cut-Out" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"SpanAddition_Splice" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"SpanAddition_Damper" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"SpanAddition_Aviation_Ball" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"SpanAddition_Perch_Stopper" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"SpanAddition_Maintenance_Loop" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"SpanAddition_Other" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the span addition item
+   "Owner":<string>  //Owner
+   "Type":<string>  //The type of the span addition item
+   "OffsetInches":<number>  //Offset distance from pole
+   "Size":<number>  //Size of the addition in the primary dimension
+   "Weight":<number>  //Weight of the addition
+   "WindDragCoef":<number>  //Wind Drag Coefficient
+   "LoopOrientation":<string>  //The loop orientation
+   "LoopPosition":<string>  //The loop position
+   "LeadOne":<boolean>  //Lead one
+   "LeadOnePosition":<string>  //The lead one position
+   "LeadOneOffset":<number>  //Lead One offset distance from pole
+   "LeadTwo":<boolean>  //Lead two
+   "LeadTwoPosition":<string>  //The lead one position
+   "LeadTwoOffset":<number>  //Loop top ffset distance from pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"WoodPoleDamageOrDecay_Vehicle_Scrape" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Saw_Cut" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Mower_Cut" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Exposed_Pocket" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Enclosed_Pocket" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Void" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Heart_Rot" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Shell_Reduction" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Woodpecker_Hole" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"WoodPoleDamageOrDecay_Woodpecker_Nest" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Type":<string>  //Type of damage or decay
+   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "WidthInInches":<number>  //The width in inches
+   "HeightInInches":<number>  //The height in inches
+   "DepthInInches":<number>  //The depth in inches
+   "ShellThicknessInInches":<number>  //Shell thickness in inches
+   "ReducedCircumference":<number>  //Shell reduced circumference in inches
+   "EntryWidthInInches":<number>  //The entry width in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"CapacityAdjustment" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Brief description of the damage
+   "Owner":<string>  //Owner
+   "HeightInInches":<number>  //The height in inches
+   "CoordinateZ":<number>  //Distance from the butt of the pole to center of damage or decay
+   "CoordinateA":<number>  //The rotation angle around the center of the pole
+   "MomentCapacity":<number>  //The  moment capacity
+   "BucklingCapacity":<number>  //The buckling capacity
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"MultiPoleStructure" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Structure ID
+   "Owner":<string>  //Owner
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "ReportingMode":<string>  //Reporting Mode
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"LatticeStructure" : {
+   "Geolocation":<lat,lon>  //Coordinate of the pole   "Pole Number":<string>  //Structure ID
+   "Owner":<string>  //Owner
+   "LineOfLead":<number>  //The overall line of lead of the entire pole assembly
+   "NodeRenderDiam":<number>  //Node render diameter
+   "BeamRenderDiam":<number>  //Beam render diameter
+   "RenderLoads":<boolean>  //Render loads
+   "GravitationalAccellerationX":<number>  //GravitationalAccellerationX
+   "GravitationalAccellerationY":<number>  //GravitationalAccellerationY
+   "GravitationalAccellerationZ":<number>  //GravitationalAccellerationZ
+   "WorkingDataStore":<string>  //Working Data
+   "Name":<string>  //LoadCase name
+   "Method":<string>  //Calculation Method
+   "Deflection":<string>  //Solution method to use
+   "Fixity":<string>  //Groundline fixity mode
+   "Solver":<string>  //Solver to use
+   "Algorithm":<string>  //Algorithm to use
+   "District":<string>  //District
+   "Radial Ice":<number>  //Radial Thickness of Ice
+   "Ice Density":<number>  //Ice Density in lbs per cubic inch
+   "Wind Speed":<number>  //NESC Basic Wind Speed at 33 Feet / ASCE Fastest Wind
+   "Horiz Wind Pres":<number>  //Horizontal Wind Pressure in lbs per square foot
+   "Temperature":<number>  //Temperature
+   "TempMin":<number>  //Minimum Temperature
+   "TempMax":<number>  //Maximum Temperature
+   "WindType":<string>  //Wind calculation type
+   "Construction Grade":<string>  //Construction Grade
+   "Crossing Conditions":<string>  //Describes the crossings conditions of the site
+   "Installation or Replacement":<string>  //Use load factors at installation or load factors at replacement
+   "Override Wind":<boolean>  //Apply fixed wind angle
+   "NomWindAngle":<number>  //Nominal wind angle
+   "Terrian Exposure":<string>  //ASCE Terrian Exposure Code
+   "Force Coef":<number>  //ASCE Force Coefficient
+   "Apply FSR":<boolean>  //Apply ANSI O5.1.2008 Fiber Strength Reduction calculations for wood poles >= 60 feet in length
+   "Strength Reduction Factor":<number>  //Strength Reduction Factor
+   "Load Duration Factor":<number>  //Load Duration Factor
+   "Immaturity Factor":<number>  //Immaturity Factor
+   "Shaving Factor":<number>  //Shaving Factor
+   "Processing Factor":<number>  //Processing Factor
+   "Degradation Factor":<number>  //Degradation Factor
+   "Shear Area":<string>  //Shear Area
+   "ApplyCrossarmAllowance":<string>  //Cable chair allowance on crossarm mode
+   "CrossarmAllowance":<number>  //Allowance for cable chair on crossarm
+   "ApplyCableAllowance":<string>  //Ladder or Chair
+   "CableAllowance":<number>  //Cable tension allowance for chair or ladder
+   "250 Rule":<string>  //Rule applied from NESC 250 when calculating the loads
+   "Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Guy DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor Vertical LF":<number>  //NESC Vertical Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransWind LF":<number>  //NESC Transverse Wind Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor TransTension LF":<number>  //NESC Transverse Wire Tesnion Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor GeneralLongitude LF":<number>  //NESC General Non-Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Anchor DeadendLongitude LF":<number>  //NESC Deadend Longitudinal Load Factor for applied 250 rule calculations for the selected Construction Grade
+   "Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Manufactured Pole Strength Factor":<number>  //Pole Strength Factor value
+   "Crossarm Strength Factor":<number>  //Crosarm Strength Factor value
+   "Guy Strength Factor":<number>  //Guy Strength Factor value
+   "Anchor Strength Factor":<number>  //Anchor Strength Factor value
+   "PoleCapacityThreshhold":<number>  //PoleCapacityThreshhold
+   "Guy Inadequate Thresh":<number>  //
+   "Guy At Cap Thresh":<number>  //
+   "Guy Near Cap Thresh":<number>  //
+   "Span Cap Thresh":<number>  //
+   "BucklingConstUnguyed":<number>  //Buckling constant unguyed
+   "BucklingConstGuyed":<number>  //Buckling constant guyed
+   "BucklingConstGuyedDeadend":<number>  //Buckling constant guyed deadend
+   "SectionHeightMethod":<string>  //Buckling method
+   "BucklingSectionPercentBCH":<number>  //Percent of Buckling Column Height to use as Buckling Section
+   "ReportingAngleMode":<string>  //Reporting Angle Mode
+   "ReportingAngle":<number>  //Reporting angle
+   "SpanCapSignal":<boolean>  //
+   "ArmCapSignal":<boolean>  //
+   "GuyCapSignal":<boolean>  //
+   "AnchorCapSignal":<boolean>  //
+   "CarryCapacityUp":<boolean>  //Carry moment capacy upwards
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"LatticeSection" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the section
+   "Name":<string>  //Name of the section
+   "CoordinateZ":<number>  //Section Z relative to groundline
+   "Width":<number>  //Distance between min and max X
+   "Depth":<number>  //Distance between min and max Y
+   "Height":<number>  //Distance between min and max Z
+   "OverrideRendering":<boolean>  //Indicates if the rendering is controlled by this section
+   "NodeRenderDiam":<number>  //Node render diameter
+   "BeamRenderDiam":<number>  //Beam render diameter
+   "RenderLoads":<boolean>  //Render loads
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"LatticeGroup" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the group
+   "Name":<string>  //Name of the group
+   "Width":<number>  //Distance between min and max X
+   "Depth":<number>  //Distance between min and max Y
+   "Height":<number>  //Distance between min and max Z
+   "OverrideRendering":<boolean>  //Indicates if the rendering is controlled by this section
+   "NodeRenderDiam":<number>  //Node render diameter
+   "BeamRenderDiam":<number>  //Beam render diameter
+   "RenderLoads":<boolean>  //Render loads
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Material" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the material
+   "Name":<string>  //Name of the material
+   "YoungsModulus":<number>  //YoungsModulus
+   "PoissonsRatio":<number>  //Poisson's Ratio
+   "Density":<number>  //Density for the material in lbs per cubic inch
+   "ThermalCoefficient":<number>  //ThermalCoefficient
+   "ShearAreaY":<number>  //Shear Area Y
+   "ShearAreaZ":<number>  //Shear Area Z
+   "ShearModulus":<number>  //Shear Modulus
+   "ShearStrengthY":<number>  //The shear strength of the beam
+   "ShearStrengthZ":<number>  //The shear strength of the beam
+   "BucklingStrength":<number>  //The buckling strength of the beam
+   "TensionStrength":<number>  //The tensile strength of the beam
+   "MomentCapacityY":<number>  //Total allowable bending moment
+   "MomentCapacityZ":<number>  //Total allowable bending moment
+   "MomentCapacityX":<number>  //Total allowable bending moment
+   "Area":<number>  //Cross sectional area
+   "DimensionY":<number>  //Dimension in the Y axis
+   "DimensionZ":<number>  //Dimension in the Z axis
+   "IcePerimiter":<number>  //Ice accumulation perimiter (effective)
+   "WindArea":<number>  //Wind area per unit length
+   "Iyy":<number>  //Second moment of area in the horizontal axis
+   "Izz":<number>  //Second moment of area in the vertical axis
+   "Jxx":<number>  //Second moment of area in the radial axis
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Node" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the node
+   "Name":<string>  //Name of the node
+   "CoordinateX":<number>  //Node X relative to center
+   "CoordinateY":<number>  //Node Y relative to center
+   "CoordinateZ":<number>  //Node Z relative to section
+   "NodeRadius":<number>  //Node radius (plate size)
+   "ShearStrength":<number>  //The shear strength of the node
+   "MergeNode":<boolean>  //Indicates if the node is to be merged with proximal nodes
+   "MergeTollerance":<number>  //Max distance node is to be merged with proximal nodes
+   "OverrideRendering":<boolean>  //Indicates if the rendering is controlled by this section
+   "NodeRenderDiam":<number>  //Node render diameter
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"NodeJunction" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the insulator.
+   "Owner":<string>  //Owner
+   "Node":<string>  //Node
+   "CoordinateZ":<number>  //The Z coordinate relative to the parent.  This value is frequently set by SnapToParent
+   "CoordinateA":<number>  //The rotation of the insulator / span holder relative to its parent.  If the orientation is non-zero the stalk with lean alone this axis
+   "Side":<string>  //The junction position.
+   "CoordinateX":<number>  //Distance from the center of the parent.  In the case of a crossarm this is the position along the arm.  In the case of poles this is typically set by SnapToParent
+   "WidthInInches":<number>  //The effective width for wind area of the junction bolt
+   "Weight":<number>  //Weight of the junction in pounds
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"NodeConstraint" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the constraint
+   "Name":<string>  //Name of the constraint
+   "LateralConstraints":<string>  //Lateral Constraints
+   "RotationConstraints":<string>  //Rotation Constraints
+   "RotationHinges":<string>  //Rotation Hinges
+   "SettleHeaveX":<number>  //Prescribed lateral motion in the X axis
+   "SettleHeaveY":<number>  //Prescribed lateral motion in the Y axis
+   "SettleHeaveZ":<number>  //Prescribed lateral motion in the Z axis
+   "RackingXX":<number>  //Prescribed rotation in the XX axis
+   "RackingYY":<number>  //Prescribed rotation in the YY axis
+   "RackingZZ":<number>  //Prescribed rotation in the ZZ axis
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"NodeLoad" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the 
+   "Name":<string>  //Name of the load
+   "LoadX":<number>  //Applied load in the X axis
+   "LoadY":<number>  //Applied load in the Y axis
+   "LoadZ":<number>  //Applied load in the Z axis
+   "MomentX":<number>  //Applied Moment in the XX axis
+   "MomentY":<number>  //Applied Moment in the YY axis
+   "MomentZ":<number>  //Applied Moment in the ZZ axis
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"Beam" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the beam
+   "Name":<string>  //Name of the beam
+   "Node1":<string>  //Node 1
+   "Node2":<string>  //Node 2
+   "Material":<string>  //Material
+   "Mode":<string>  //Capacity Mode
+   "BeamType":<string>  //Beam Type
+   "OverrideRendering":<boolean>  //Indicates if the rendering is controlled by this section
+   "BeamRenderDiam":<number>  //Node render diameter
+   "WorkingDataStore":<string>  //Working Data
+}
+
+
+"BeamLoad_Uniform" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the 
+   "Name":<string>  //Name of the load
+   "Type":<string>  //Type of the load
+   "LoadX":<number>  //Applied load in the X axis
+   "LoadY":<number>  //Applied load in the Y axis
+   "LoadZ":<number>  //Applied load in the Z axis
+   "Offset":<number>  //Offset from node 1
+   "WorkingDataStore":<string>  //Working Data
+}
+
+"BeamLoad_Point" : {
+   "AttachedTo":<quid>  //GUID of the component this component is attached to   "Description":<string>  //Description of the 
+   "Name":<string>  //Name of the load
+   "Type":<string>  //Type of the load
+   "LoadX":<number>  //Applied load in the X axis
+   "LoadY":<number>  //Applied load in the Y axis
+   "LoadZ":<number>  //Applied load in the Z axis
+   "Offset":<number>  //Offset from node 1
+   "WorkingDataStore":<string>  //Working Data
+}
+
